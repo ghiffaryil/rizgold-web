@@ -82,24 +82,23 @@
 
 <section class="section about">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-4 col-sm-6">
+        <div class="row align-items-top">
+            <div class="col-lg-6">
                 <div class="about-img">
-                    <img src="frontend/images/about/img-1.jpg" alt="" class="img-fluid">
-                    <img src="frontend/images/about/img-2.jpg" alt="" class="img-fluid mt-4">
+                    <?php
+                    $foto_tentang_kami = $data_tentang_kami['Foto_Tentang_Kami'];
+                    ?>
+                    <img src="dashboard/media/tentang_kami/<?php echo $data_tentang_kami['Foto_Tentang_Kami'] ?>" alt="" class="img-fluid">
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-6">
-                <div class="about-img mt-4 mt-lg-0">
-                    <img src="frontend/images/about/img-3.jpg" alt="" class="img-fluid">
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="about-content pl-4 mt-4 mt-lg-0">
-                    <h2 class="title-color">Personal care <br>& healthy living</h2>
-                    <p class="mt-4 mb-5">We provide best leading medicle service Nulla perferendis veniam deleniti ipsum officia dolores repellat laudantium obcaecati neque.</p>
 
-                    <a href="service.html" class="btn btn-main-2 btn-round-full btn-icon">Services<i class="icofont-simple-right ml-3"></i></a>
+            <div class="col-lg-6">
+                <div class="about-content pl-4 mt-4 mt-lg-0">
+                    <h2 class="title-color"><?php echo $data_website['Judul_Website'] ?></h2>
+                    <p class="mt-4 mb-5 text-white"><?php echo $data_website['Deskripsi_Singkat'] ?></p>
+                    <p class="mt-4 mb-5 text-white"><?php echo $data_website['Deskripsi_Lengkap'] ?></p>
+
+                    <a href="service.html" class="btn btn-main-2 btn-round-full btn-icon">Pesan Sekarang<i class="icofont-simple-right ml-3"></i></a>
                 </div>
             </div>
         </div>
@@ -110,14 +109,14 @@
         <div class="cta position-relative">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="counter-stat">
+                    <div class="counter-stat text-white">
                         <i class="icofont-doctor"></i>
                         <span class="h3 counter" data-count="58">0</span>k
                         <p>Happy People</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="counter-stat">
+                    <div class="counter-stat text-white">
                         <i class="icofont-flag"></i>
                         <span class="h3 counter" data-count="700">0</span>+
                         <p>Surgery Comepleted</p>
@@ -125,14 +124,14 @@
                 </div>
 
                 <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="counter-stat">
+                    <div class="counter-stat text-white">
                         <i class="icofont-badge"></i>
                         <span class="h3 counter" data-count="40">0</span>+
                         <p>Expert Doctors</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="counter-stat">
+                    <div class="counter-stat text-white">
                         <i class="icofont-globe"></i>
                         <span class="h3 counter" data-count="20">0</span>
                         <p>Worldwide Branch</p>
@@ -142,19 +141,20 @@
         </div>
     </div>
 </section>
-<section class="section service gray-bg">
+<section class="section service gray-bg" style="padding: 150px 0 50px 0;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-7 text-center">
                 <div class="section-title">
-                    <h2>Award winning patient care</h2>
+                    <h2>Khasiat</h2>
                     <div class="divider mx-auto my-4"></div>
-                    <p>Lets know moreel necessitatibus dolor asperiores illum possimus sint voluptates incidunt molestias nostrum laudantium. Maiores porro cumque quaerat.</p>
+                    <p>Kami memiliki berbagai produk yang terbaik dan terpercaya, dibuat dari bahan tradisional berkualitas</p>
                 </div>
             </div>
         </div>
 
         <div class="row">
+
             <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="service-item mb-4">
                     <div class="icon d-flex align-items-center">
@@ -191,7 +191,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="service-item mb-4">
@@ -232,6 +231,57 @@
         </div>
     </div>
 </section>
+
+<!-- SLIDESHOW PRODUK -->
+<section class="section gray-bg" style="padding: 50px 0 50px 0; background:white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 text-center">
+                <div class="section-title">
+                    <h2>Produk Kami</h2>
+                    <div class="divider mx-auto my-4"></div>
+                    <p>Kami memiliki berbagai produk yang terbaik dan terpercaya, dibuat dari bahan tradisional berkualitas</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+
+            <?php
+            $search_field_where = array("Status");
+            $search_criteria_where = array("=");
+            $search_value_where = array("Aktif");
+            $search_connector_where = array("");
+            $nomor = 0;
+            $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pelayanan", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+
+            if ($result['Status'] == "Sukses") {
+                $data_hasil = $result['Hasil'];
+
+                foreach ($data_hasil as $data) {
+                    $nomor++;
+            ?>
+                    <div class="col-md-4">
+                        <div class="card mb-4 ">
+                            <img class="card-img-top" src="dashboard/media/pelayanan/cover/<?php echo $data['Cover_Pelayanan'] ?>" data-holder-rendered="true">
+                            <div class="card-body">
+                                <div class="">
+                                    <h4 style="color:#d6b961"><?php echo $data['Judul_Pelayanan'] ?></h4>
+                                </div>
+
+                                <p class="text-muted"><?php echo substr($data['Deskripsi'], 0, 100) ?>...</p>
+                            </div>
+                        </div>
+                    </div>
+            <?php
+                }
+            }
+            ?>
+        </div>
+    </div>
+
+</section>
+
 <section class="section appoinment">
     <div class="container">
         <div class="row align-items-center">
