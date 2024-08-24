@@ -1,33 +1,14 @@
-<style>
-    @media screen and (max-width: 992px) {
-        .bg-custom-home {
-            background: #000;
-            padding: 10px;
-            margin-top: 0px;
-        }
-
-        .banner-custom-home {
-            margin-top: 0px;
-            padding: 0px;
-        }
-    }
-
-    .banner-custom-home {
-        margin-top: 80px;
-    }
-</style>
-
 <!-- Slider Start -->
-<section class="banner banner-custom-home">
+ <section class="banner custom-home">
     <div class="container bg-custom-home">
         <div class="row">
             <div class="col-lg-6 col-md-12 col-xl-7">
                 <div class="block">
                     <div class="divider mb-3"></div>
-                    <span class="text-uppercase text-sm letter-spacing text-white">Total Health care solution</span>
-                    <h1 style="color: #d6b961;" class="mb-3 mt-3">Your most trusted health partner</h1>
+                    <!-- <span class="text-uppercase text-sm letter-spacing text-white">Total Health care solution</span> -->
+                    <h1 style="color: #d6b961;" class="mb-3 mt-3"><?php echo $data_website['Judul_Website']?></h1>
 
-                    <p class="mb-4 pr-5 text-white">A repudiandae ipsam labore ipsa voluptatum quidem quae laudantium quisquam aperiam maiores sunt fugit, deserunt rem suscipit placeat.</p>
+                    <p class="mb-4 pr-5 text-white"><?php echo $data_website['Deskripsi_Singkat']?></p>
                     <div class="btn-container ">
                         <a href="appoinment.html" target="_blank" class="btn btn-danger btn-icon btn-round-full">Get Started<i class="icofont-simple-right ml-2  "></i></a>
                     </div>
@@ -94,9 +75,9 @@
 
             <div class="col-lg-6">
                 <div class="about-content pl-4 mt-4 mt-lg-0">
-                    <h2 class="title-color"><?php echo $data_website['Judul_Website'] ?></h2>
-                    <p class="mt-4 mb-5 text-white"><?php echo $data_website['Deskripsi_Singkat'] ?></p>
-                    <p class="mt-4 mb-5 text-white"><?php echo $data_website['Deskripsi_Lengkap'] ?></p>
+                    <h2 class="title-color"><?php echo $data_tentang_kami['Info_Singkat'] ?></h2>
+                    <p class="mt-4 mb-5 text-white"><?php echo $data_tentang_kami['Info_Lengkap'] ?></p>
+                    <h4 class="mt-4 mb-5 text-white"><?php echo $data_tentang_kami['Info_Tambahan'] ?></h4>
 
                     <a href="service.html" class="btn btn-main-2 btn-round-full btn-icon">Pesan Sekarang<i class="icofont-simple-right ml-3"></i></a>
                 </div>
@@ -111,30 +92,30 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="counter-stat text-white">
                         <i class="icofont-doctor"></i>
-                        <span class="h3 counter" data-count="58">0</span>k
-                        <p>Happy People</p>
+                        <span class="h3 counter" data-count="<?php echo $data_tentang_kami['CTA_Produk'] ?>">0</span>k
+                        <p>Produk</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="counter-stat text-white">
                         <i class="icofont-flag"></i>
-                        <span class="h3 counter" data-count="700">0</span>+
-                        <p>Surgery Comepleted</p>
+                        <span class="h3 counter" data-count="<?php echo $data_tentang_kami['CTA_Terjual'] ?>">0</span>k
+                        <p>Produk Terjual</p>
                     </div>
                 </div>
 
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="counter-stat text-white">
                         <i class="icofont-badge"></i>
-                        <span class="h3 counter" data-count="40">0</span>+
-                        <p>Expert Doctors</p>
+                        <span class="h3 counter" data-count="<?php echo $data_tentang_kami['CTA_Pelanggan'] ?>">0</span>k
+                        <p>Pelanggan</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="counter-stat text-white">
                         <i class="icofont-globe"></i>
-                        <span class="h3 counter" data-count="20">0</span>
-                        <p>Worldwide Branch</p>
+                        <span class="h3 counter" data-count="<?php echo $data_tentang_kami['CTA_Puas'] ?>">0</span>k
+                        <p>Pelanggan Puas</p>
                     </div>
                 </div>
             </div>
@@ -256,20 +237,20 @@
             $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pelayanan", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
 
             if ($result['Status'] == "Sukses") {
-                $data_hasil = $result['Hasil'];
+                $data_pelayanan_hasil = $result['Hasil'];
 
-                foreach ($data_hasil as $data) {
+                foreach ($data_pelayanan_hasil as $data_pelayanan) {
                     $nomor++;
             ?>
                     <div class="col-md-4">
                         <div class="card mb-4 ">
-                            <img class="card-img-top" src="dashboard/media/pelayanan/cover/<?php echo $data['Cover_Pelayanan'] ?>" data-holder-rendered="true">
+                            <img class="card-img-top" src="dashboard/media/pelayanan/cover/<?php echo $data_pelayanan['Cover_Pelayanan'] ?>" data-holder-rendered="true">
                             <div class="card-body">
                                 <div class="">
-                                    <h4 style="color:#d6b961"><?php echo $data['Judul_Pelayanan'] ?></h4>
+                                    <h4 style="color:#d6b961"><?php echo $data_pelayanan['Judul_Pelayanan'] ?></h4>
                                 </div>
 
-                                <p class="text-muted"><?php echo substr($data['Deskripsi'], 0, 100) ?>...</p>
+                                <p class="text-muted"><?php echo substr($data_pelayanan['Deskripsi'], 0, 100) ?>...</p>
                             </div>
                         </div>
                     </div>
@@ -279,97 +260,72 @@
             ?>
         </div>
     </div>
-
 </section>
 
-<section class="section appoinment">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 ">
-                <div class="appoinment-content">
-                    <img src="frontend/images/about/img-3.jpg" alt="" class="img-fluid">
-                    <div class="emergency">
-                        <h2 class="text-lg"><i class="icofont-phone-circle text-lg"></i>+23 345 67980</h2>
+<section class="carousel">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+
+            <?php
+            $search_field_where = array("Status");
+            $search_criteria_where = array("=");
+            $search_value_where = array("Aktif");
+            $search_connector_where = array("");
+            $result_banner = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_banner", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+
+            if ($result_banner['Status'] == "Sukses") {
+                $data_banner_hasil = $result_banner['Hasil'];
+
+                $indicatorIndex = 0;
+                foreach ($data_banner_hasil as $data_banner) {
+            ?>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="<?php echo $indicatorIndex; ?>" <?php echo ($indicatorIndex === 0) ? 'class="active"' : ''; ?>></li>
+            <?php
+                    $indicatorIndex++;
+                }
+            }
+            ?>
+
+        </ol>
+        <div class="carousel-inner">
+
+            <?php
+            if ($result_banner['Status'] == "Sukses") {
+                $data_banner_hasil = $result_banner['Hasil'];
+
+                $itemIndex = 0;
+                foreach ($data_banner_hasil as $data_banner) {
+            ?>
+                    <div class="carousel-item <?php echo ($itemIndex === 0) ? 'active' : ''; ?>">
+                        <img class="d-block w-100" src="dashboard/media/banner/<?php echo $data_banner['Foto_Banner'] ?>" alt="Slide <?php echo $itemIndex + 1; ?>">
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-10 ">
-                <div class="appoinment-wrap mt-5 mt-lg-0">
-                    <h2 class="mb-2 title-color">Book appoinment</h2>
-                    <p class="mb-4">Mollitia dicta commodi est recusandae iste, natus eum asperiores corrupti qui velit . Iste dolorum atque similique praesentium soluta.</p>
-                    <form id="#" class="appoinment-form" method="post" action="#">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <select class="form-control" id="exampleFormControlSelect1">
-                                        <option>Choose Department</option>
-                                        <option>Software Design</option>
-                                        <option>Development cycle</option>
-                                        <option>Software Development</option>
-                                        <option>Maintenance</option>
-                                        <option>Process Query</option>
-                                        <option>Cost and Duration</option>
-                                        <option>Modal Delivery</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <select class="form-control" id="exampleFormControlSelect2">
-                                        <option>Select Doctors</option>
-                                        <option>Software Design</option>
-                                        <option>Development cycle</option>
-                                        <option>Software Development</option>
-                                        <option>Maintenance</option>
-                                        <option>Process Query</option>
-                                        <option>Cost and Duration</option>
-                                        <option>Modal Delivery</option>
-                                    </select>
-                                </div>
-                            </div>
+            <?php
+                    $itemIndex++;
+                }
+            }
+            ?>
 
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <input name="date" id="date" type="text" class="form-control" placeholder="dd/mm/yyyy">
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <input name="time" id="time" type="text" class="form-control" placeholder="Time">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <input name="name" id="name" type="text" class="form-control" placeholder="Full Name">
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <input name="phone" id="phone" type="Number" class="form-control" placeholder="Phone Number">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group-2 mb-4">
-                            <textarea name="message" id="message" class="form-control" rows="6" placeholder="Your Message"></textarea>
-                        </div>
-
-                        <a class="btn btn-main btn-round-full" href="appoinment.html">Make Appoinment <i class="icofont-simple-right ml-2  "></i></a>
-                    </form>
-                </div>
-            </div>
         </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
 </section>
+
+
 <section class="section testimonial-2 gray-bg">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-7">
                 <div class="section-title text-center">
-                    <h2>We served over 5000+ Patients</h2>
+                    <h2>Testimoni Pelanggan</h2>
                     <div class="divider mx-auto my-4"></div>
-                    <p>Lets know moreel necessitatibus dolor asperiores illum possimus sint voluptates incidunt molestias nostrum laudantium. Maiores porro cumque quaerat.</p>
+                    <p>Sudah banyak yang menyukai produk Rizgold dan merasa puas dengan produk Rizgold ini</p>
                 </div>
             </div>
         </div>
@@ -378,151 +334,35 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-12 testimonial-wrap-2">
-                <div class="testimonial-block style-2  gray-bg">
-                    <i class="icofont-quote-right"></i>
 
-                    <div class="testimonial-thumb">
-                        <img src="frontend/images/team/test-thumb1.jpg" alt="" class="img-fluid">
-                    </div>
+                <?php
+                $search_field_where = array("Status", "Publish");
+                $search_criteria_where = array("=", "=");
+                $search_value_where = array("Aktif", "Iya");
+                $search_connector_where = array("AND", "");
+                $nomor = 0;
+                $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_testimoni", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
 
-                    <div class="client-info ">
-                        <h4>Amazing service!</h4>
-                        <span>John Partho</span>
-                        <p>
-                            They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
-                        </p>
-                    </div>
-                </div>
+                if ($result['Status'] == "Sukses") {
+                    $data_hasil = $result['Hasil'];
 
-                <div class="testimonial-block style-2  gray-bg">
-                    <div class="testimonial-thumb">
-                        <img src="frontend/images/team/test-thumb2.jpg" alt="" class="img-fluid">
-                    </div>
+                    foreach ($data_hasil as $data_testimoni) {
+                        $nomor++;
+                ?>
 
-                    <div class="client-info">
-                        <h4>Expert doctors!</h4>
-                        <span>Mullar Sarth</span>
-                        <p>
-                            They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
-                        </p>
-                    </div>
+                        <div class="testimonial-block style-2 gray-bg">
+                            <i class="icofont-quote-right"></i>
+                            <div class="client-info text-center">
+                                <h3><?php echo $data_testimoni['Nama']; ?>, <small class="text-muted"><?php echo $data_testimoni['Instansi']; ?></small> </h3>
+                                <p><?php echo $data_testimoni['Testimoni']; ?></p>
+                            </div>
+                        </div>
 
-                    <i class="icofont-quote-right"></i>
-                </div>
+                <?php
+                    }
+                }
+                ?>
 
-                <div class="testimonial-block style-2  gray-bg">
-                    <div class="testimonial-thumb">
-                        <img src="frontend/images/team/test-thumb3.jpg" alt="" class="img-fluid">
-                    </div>
-
-                    <div class="client-info">
-                        <h4>Good Support!</h4>
-                        <span>Kolis Mullar</span>
-                        <p>
-                            They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
-                        </p>
-                    </div>
-
-                    <i class="icofont-quote-right"></i>
-                </div>
-
-                <div class="testimonial-block style-2  gray-bg">
-                    <div class="testimonial-thumb">
-                        <img src="frontend/images/team/test-thumb4.jpg" alt="" class="img-fluid">
-                    </div>
-
-                    <div class="client-info">
-                        <h4>Nice Environment!</h4>
-                        <span>Partho Sarothi</span>
-                        <p class="mt-4">
-                            They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
-                        </p>
-                    </div>
-                    <i class="icofont-quote-right"></i>
-                </div>
-
-                <div class="testimonial-block style-2  gray-bg">
-                    <div class="testimonial-thumb">
-                        <img src="frontend/images/team/test-thumb1.jpg" alt="" class="img-fluid">
-                    </div>
-
-                    <div class="client-info">
-                        <h4>Modern Service!</h4>
-                        <span>Kolis Mullar</span>
-                        <p>
-                            They provide great service facilty consectetur adipisicing elit. Itaque rem, praesentium, iure, ipsum magnam deleniti a vel eos adipisci suscipit fugit placeat.
-                        </p>
-                    </div>
-                    <i class="icofont-quote-right"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<section class="section clients">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-7">
-                <div class="section-title text-center">
-                    <h2>Partners who support us</h2>
-                    <div class="divider mx-auto my-4"></div>
-                    <p>Lets know moreel necessitatibus dolor asperiores illum possimus sint voluptates incidunt molestias nostrum laudantium. Maiores porro cumque quaerat.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="row clients-logo">
-            <div class="col-lg-2">
-                <div class="client-thumb">
-                    <img src="frontend/images/about/1.png" alt="" class="img-fluid">
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="client-thumb">
-                    <img src="frontend/images/about/2.png" alt="" class="img-fluid">
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="client-thumb">
-                    <img src="frontend/images/about/3.png" alt="" class="img-fluid">
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="client-thumb">
-                    <img src="frontend/images/about/4.png" alt="" class="img-fluid">
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="client-thumb">
-                    <img src="frontend/images/about/5.png" alt="" class="img-fluid">
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="client-thumb">
-                    <img src="frontend/images/about/6.png" alt="" class="img-fluid">
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="client-thumb">
-                    <img src="frontend/images/about/3.png" alt="" class="img-fluid">
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="client-thumb">
-                    <img src="frontend/images/about/4.png" alt="" class="img-fluid">
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="client-thumb">
-                    <img src="frontend/images/about/5.png" alt="" class="img-fluid">
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="client-thumb">
-                    <img src="frontend/images/about/6.png" alt="" class="img-fluid">
-                </div>
             </div>
         </div>
     </div>

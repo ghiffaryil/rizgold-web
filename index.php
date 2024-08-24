@@ -5,6 +5,25 @@
 
 <body>
 
+    <style>
+        @media screen and (max-width: 992px) {
+            .bg-custom-home {
+                background: #000;
+                padding: 10px;
+                margin-top: 0px;
+            }
+
+            .custom-home {
+                margin-top: 0px;
+                padding: 0px;
+            }
+        }
+
+        .custom-home {
+            margin-top: 80px;
+        }
+    </style>
+
     <?php
 
     include "app/config/function/init.php";

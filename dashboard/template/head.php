@@ -4,9 +4,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<link rel="icon" href="../frontend/assets/media/logo/logo_main.jpg">
+	<link rel="icon" href="../frontend/images/logo/logo_square.png">
 
-	<title>Admin Sanjaya Rental Mobil</title>
+	<title>RIZGOLD ADMIN</title>
 	<!-- Vendors Style-->
 	<link rel="stylesheet" href="css/vendors_css.css">
 	<!-- Style-->

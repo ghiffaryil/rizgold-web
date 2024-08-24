@@ -11,8 +11,8 @@ if (isset($_GET['view'])) {
         case 'contact':
             include "frontend/pages/contact/index.php";
             break;
-        case 'services':
-            include "frontend/pages/services/index.php";
+        case 'product':
+            include "frontend/pages/product/index.php";
             break;
         case 'service-per-kategori':
             include "frontend/pages/services/service-per-kategori.php";
