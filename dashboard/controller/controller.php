@@ -53,7 +53,7 @@ if (isset($_GET['menu'])) {
 			break;
 
 		case 'pesan':
-			include "views/kontak/kontak.php";
+			include "views/pesan/pesan.php";
 			break;
 
 		case 'newsletter':

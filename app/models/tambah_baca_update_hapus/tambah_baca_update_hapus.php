@@ -58,7 +58,6 @@ class a_tambah_baca_update_hapus extends a_database{
 		$sql = $sql.")";
 
 		// echo $sql;
-		// exit();
 
 		#FUNGSI
 		$query = $this->koneksi->query($sql);

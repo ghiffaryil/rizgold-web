@@ -148,38 +148,16 @@
 					<li class="treeview">
 						<a href="#">
 							<i class="mdi mdi-star"><span class="path1"></span><span class="path2"></span></i>
-							<span>Testimoni</span>
+							<span>Feedback User</span>
 							<span class="pull-right-container">
 								<i class="fa fa-angle-right pull-right"></i>
 							</span>
 						</a>
 						<ul class="treeview-menu">
 							<li><a href="?menu=testimoni"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Testimoni</a></li>
-						</ul>
-					</li>
-
-					<li class="treeview">
-						<a href="#">
-							<i class="mdi mdi-phone"><span class="path1"></span><span class="path2"></span></i>
-							<span>Pesan</span>
-							<span class="pull-right-container">
-								<i class="fa fa-angle-right pull-right"></i>
-							</span>
-						</a>
-						<ul class="treeview-menu">
+						
 							<li><a href="?menu=pesan"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Pesan</a></li>
-						</ul>
-					</li>
-
-					<li class="treeview">
-						<a href="#">
-							<i class="mdi mdi-email"><span class="path1"></span><span class="path2"></span></i>
-							<span>Newsletter</span>
-							<span class="pull-right-container">
-								<i class="fa fa-angle-right pull-right"></i>
-							</span>
-						</a>
-						<ul class="treeview-menu">
+						
 							<li><a href="?menu=newsletter"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Newsletter</a></li>
 						</ul>
 					</li>

@@ -5,9 +5,9 @@
             <div class="col-lg-3 mr-auto col-sm-6">
                 <div class="widget mb-5 mb-lg-0">
                     <div class="logo mb-4">
-                        <H2 style="color:#d6b961"><?php echo $data_website['Judul_Website']?></H2>
+                        <H2 style="color:#d6b961"><?php echo $data_website['Judul_Website'] ?></H2>
                     </div>
-                    <p class="text-white"><?php echo $data_website['Alamat_Lengkap']?></p>
+                    <p class="text-white"><?php echo $data_website['Alamat_Lengkap'] ?></p>
                 </div>
             </div>
 
@@ -30,9 +30,9 @@
                     <div class="divider mb-4"></div>
 
                     <ul class="list-unstyled footer-menu lh-35">
-                        <li><a class="text-white" href="<?php echo $data_website['URL_Facebook']?>"><i class="icofont-facebook"> </i> <?php echo $data_website['Nama_Facebook']?></a></li>
-                        <li><a class="text-white" href="<?php echo $data_website['URL_Instagram']?>"><i class="icofont-instagram"> </i> <?php echo $data_website['Nama_Instagram']?></a></li>
-                        <li><a class="text-white" href="<?php echo $data_website['URL_Youtube']?>"><i class="icofont-youtube"> </i> <?php echo $data_website['Nama_Youtube']?></a></li>
+                        <li><a class="text-white" href="<?php echo $data_website['URL_Facebook'] ?>"><i class="icofont-facebook"> </i> <?php echo $data_website['Nama_Facebook'] ?></a></li>
+                        <li><a class="text-white" href="<?php echo $data_website['URL_Instagram'] ?>"><i class="icofont-instagram"> </i> <?php echo $data_website['Nama_Instagram'] ?></a></li>
+                        <li><a class="text-white" href="<?php echo $data_website['URL_Youtube'] ?>"><i class="icofont-youtube"> </i> <?php echo $data_website['Nama_Youtube'] ?></a></li>
                     </ul>
                 </div>
             </div>
@@ -45,17 +45,17 @@
                     <div class="footer-contact-block mb-4">
                         <div class="icon d-flex align-items-center">
                             <i class="icofont-home mr-3 text-white"></i>
-                            <span class="text-white h6 mb-0"><?php echo $data_website['Nomor_Telpon']?></span>
+                            <span class="text-white h6 mb-0"><?php echo $data_website['Nomor_Telpon'] ?></span>
                         </div>
                     </div>
-                  
+
                     <div class="footer-contact-block mb-4">
                         <div class="icon d-flex align-items-center">
                             <i class="icofont-email mr-3 text-white"></i>
-                            <span class="text-white h6 mb-0"><?php echo $data_website['Email_Customer_Service']?></span>
+                            <span class="text-white h6 mb-0"><?php echo $data_website['Email_Customer_Service'] ?></span>
                         </div>
                     </div>
-                 
+
                 </div>
             </div>
         </div>
@@ -69,9 +69,9 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="subscribe-form text-lg-right mt-5 mt-lg-0">
-                        <form action="#" class="subscribe">
-                            <input type="text" class="form-control" placeholder="Your Email address" required>
-                            <button type="submit" class="btn btn-main btn-round-full">Subscribe</button>
+                        <form method="post" class="subscribe">
+                            <input id="Email" class="form-control" placeholder="Email" name="Email" required>
+                            <button type="button" id="submit_add_newsletter" class="btn btn-main btn-round-full">Subscribe</button>
                         </form>
                     </div>
                 </div>
@@ -87,3 +87,32 @@
         </div>
     </div>
 </footer>
+
+<script>
+    $(document).ready(function() {
+        $('#submit_add_newsletter').on('click', function(e) {
+            e.preventDefault();
+
+            var inputEmail = $('#Email').val();
+
+            $.ajax({
+                type: 'POST',
+                url: 'frontend/function/newsletter/add_newsletter.php',
+                data: {
+                    "Email": inputEmail
+                },
+                dataType: 'json',
+                success: function(response) {
+                    alert(response.message);
+
+                    if (response.status == "success") {
+                        var inputEmail = $('#Email').val('');
+                    }
+                },
+                error: function() {
+                    alert('Maaf, terjadi Kesalahan!');
+                }
+            });
+        });
+    });
+</script>
