@@ -14,14 +14,11 @@ if (isset($_GET['view'])) {
         case 'product':
             include "frontend/pages/product/index.php";
             break;
-        case 'service-per-kategori':
-            include "frontend/pages/services/service-per-kategori.php";
+        case 'product-detail':
+            include "frontend/pages/products/product-detail.php";
             break;
-        case 'service-detail':
-            include "frontend/pages/services/service-detail.php";
-            break;
-        case 'testimoni':
-            include "frontend/pages/testimoni/index.php";
+        case 'article':
+            include "frontend/pages/article/index.php";
             break;
 
         default:

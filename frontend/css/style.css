@@ -18,7 +18,7 @@ body {
   font-size: 16px;
   color: #000;
   /* color: #6F8BA4; */
-  background-color: #000;
+  background-color: #131521;
   font-weight: 400;
   overflow-x: hidden;
 }
@@ -243,7 +243,7 @@ input[type=email]:focus, input[type=password]:focus, input[type=text]:focus, inp
   width: 100%;
   height: 100%;
   opacity: 0.9;
-  background: #d6b961;
+  /* background: #d6b961; */
 }
 
 .overly-2 {
@@ -504,7 +504,7 @@ a:focus {
   position: relative;
   overflow: hidden;
   /* background: #fff; */
-  background: url("../images/bg/Banner_Rizgold2.png") no-repeat;
+  background: url("../images/bg/Banner_Rizgold4.png") no-repeat;
   background-size: cover;
   min-height: 550px;
 }
@@ -830,7 +830,7 @@ a:focus {
   width: 100%;
   height: 100%;
   /* background: rgba(34, 58, 102, 0.95); */
-  background: #937f45;
+  background: #251d14d4;
 }
 
 .mb-30 {

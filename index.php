@@ -8,7 +8,7 @@
     <style>
         @media screen and (max-width: 992px) {
             .bg-custom-home {
-                background: #000;
+                background: #131521;
                 padding: 10px;
                 margin-top: 0px;
             }

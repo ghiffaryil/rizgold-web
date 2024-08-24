@@ -11,7 +11,7 @@
     </style>
 
 
-    <nav class="navbar navbar-expand-lg navigation fixed-top" id="navbar" style="padding: 0 10px 0 0; background: black;">
+    <nav class="navbar navbar-expand-lg navigation fixed-top" id="navbar" style="padding: 0 10px 0 0; background: #131521;">
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 <img src="frontend/images/logo/logo_rizgold_h2.png" alt="" class="img-fluid" style="width: 100%; height: 60px;">
