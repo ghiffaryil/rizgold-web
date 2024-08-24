@@ -27,32 +27,33 @@
                         <div class="feature-icon mb-4">
                             <i class="icofont-surgeon-alt"></i>
                         </div>
-                        <span>24 Hours Service</span>
-                        <h4 class="mb-3">Online Appoinment</h4>
-                        <p class="mb-4">Get ALl time support for emergency.We have introduced the principle of family medicine.</p>
-                        <a href="appoinment.html" class="btn btn-main btn-round-full">Make a appoinment</a>
+                        <span>Produk</span>
+                        <h4 class="mb-3"><?php echo $data_website['Judul_Website'] ?></h4>
+                        <p class="mb-4"><?php echo $data_website['Deskripsi_Singkat'] ?></p>
                     </div>
 
                     <div class="feature-item mb-5 mb-lg-0">
                         <div class="feature-icon mb-4">
                             <i class="icofont-ui-clock"></i>
                         </div>
-                        <span>Timing schedule</span>
-                        <h4 class="mb-3">Working Hours</h4>
-                        <ul class="w-hours list-unstyled">
-                            <li class="d-flex justify-content-between">Sun - Wed : <span>8:00 - 17:00</span></li>
-                            <li class="d-flex justify-content-between">Thu - Fri : <span>9:00 - 17:00</span></li>
-                            <li class="d-flex justify-content-between">Sat - sun : <span>10:00 - 17:00</span></li>
-                        </ul>
+                        <span>Sertifikasi</span>
+                        <h4 class="mb-3">Izin & Sertifikasi Produk</h4>
+                        <p class="mb-4"><?php echo $data_tentang_kami['Info_Singkat'] ?> <br> <?php echo $data_tentang_kami['Info_Tambahan'] ?></p>
+
+                        <div class="align-items-center text-center">
+                            <img src="frontend/images/logo/logo_halal.png" alt="" style="height:70px;">
+                            <img src="frontend/images/logo/logo_bpom.jpg" alt="" style="height:70px;">
+                            <img src="frontend/images/logo/logo_gold_premium.png" alt="" style="height:70px;">
+                        </div>
                     </div>
 
                     <div class="feature-item mb-5 mb-lg-0">
                         <div class="feature-icon mb-4">
                             <i class="icofont-support"></i>
                         </div>
-                        <span>Emegency Cases</span>
-                        <h4 class="mb-3">1-800-700-6200</h4>
-                        <p>Get ALl time support for emergency.We have introduced the principle of family medicine.Get Conneted with us for any urgency .</p>
+                        <span>Layanan Konsumen</span>
+                        <h4 class="mb-3"><?php echo $data_website['Nomor_Handphone'] ?></h4>
+                        <p><?php echo $data_website['Alamat_Lengkap'] ?></p>
                     </div>
                 </div>
             </div>
