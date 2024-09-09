@@ -1,1469 +1,749 @@
-<!--begin::Toolbar-->
-<div id="kt_app_toolbar" class="app-toolbar pt-lg-9 pt-6">
-    <!--begin::Toolbar container-->
-    <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack flex-wrap">
-        <!--begin::Toolbar wrapper-->
-        <div class="d-flex flex-stack flex-wrap gap-4 w-100">
-            <!--begin::Page title-->
-            <div class="page-title d-flex flex-column gap-3 me-3">
-                <!--begin::Title-->
-                <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Customer List</h1>
-                <!--end::Title-->
-            </div>
-            <!--end::Page title-->
-            <!--begin::Actions-->
-            <div class="d-flex align-items-center gap-3 gap-lg-5">
-                <!--begin::Secondary button-->
-                <div class="m-0">
-                    <a href="#" class="btn btn-flex btn-sm btn-color-gray-700 bg-body fw-bold px-4" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project">New Project</a>
-                </div>
-                <!--end::Secondary button-->
-                <!--begin::Primary button-->
-                <a href="#" class="btn btn-flex btn-center btn-dark btn-sm px-4" data-bs-toggle="modal" data-bs-target="#kt_modal_invite_friends">Reports</a>
-                <!--end::Primary button-->
-            </div>
-            <!--end::Actions-->
-        </div>
-        <!--end::Toolbar wrapper-->
-    </div>
-    <!--end::Toolbar container-->
-</div>
-<!--end::Toolbar-->
+<?php
+#-----------------------------------------------------------------------------------
+#GET PAGE
+if (isset($_GET['url_kembali'])) {
+    $url_kembali = $a_hash->decode_link_kembali($_GET['url_kembali']);
+    $kehalaman = "$url_kembali";
+} else {
+    $kehalaman = "?menu=" . $_GET['menu'];
+}
 
-<!--begin::Content-->
-<div id="kt_app_content" class="app-content pb-0">
-    <!--begin::Card-->
+if (isset($_GET['id'])) {
+    $Get_Id_Primary = $a_hash->decode($_GET['id'], $_GET['menu']);
+}
+
+#-----------------------------------------------------------------------------------
+#FUNGSI SIMPAN DATA (CREATE)
+if (isset($_POST['submit_simpan'])) {
+
+    if (!isset($_POST['Profile'])) {
+        $_POST['Profile'] = "Tidak";
+    }
+    if (!isset($_POST['Pembelian'])) {
+        $_POST['Pembelian'] = "Tidak";
+    }
+    if (!isset($_POST['Laporan'])) {
+        $_POST['Laporan'] = "Tidak";
+    }
+    if (!isset($_POST['Konten'])) {
+        $_POST['Konten'] = "Tidak";
+    }
+
+
+    // Determine the initial based on the 'Status_Kemitraan'
+    if (($_POST['Status_Kemitraan'] == "Agen")) {
+        $Initial = "A";
+    } else {
+        $Initial = "D";
+    }
+
+    // Get the current date and time in 'ymdhis' format
+    $dateTime = date('ymdhis');
+
+    // Generate a random 3-digit number
+    $randomNumber = rand(100, 999);
+
+    // BACA DATA TERAKHIR
+    $a_result_terbaru = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_pengguna", "Id_Pengguna");
+    if ($a_result_terbaru['Status'] == "Sukses") {
+        $Id_Auto_Increment = $a_result_terbaru['Hasil'][0]['Id_Pengguna'] + 1;
+    } else {
+        $Id_Auto_Increment = 1;
+    }
+
+    // Step 2: Concatenate all parts to create the unique 'Organisasi_Kode'
+    $Organisasi_Kode = $Initial . $dateTime . $randomNumber . $Id_Auto_Increment;
+
+    $form_field = array(
+        "Organisasi_Kode",
+        "Username",
+        "Password",
+        "Nama_Depan",
+        "Nama_Belakang",
+        "Nama_Perusahaan",
+        "Status_Kemitraan",
+        "Tempat_Lahir",
+        "Tanggal_Lahir",
+        "Alamat",
+        "Nomor_Telepon",
+        "Email",
+        "No_KTP",
+        "No_NPWP",
+        "Foto",
+        "Profile",
+        "Pembelian",
+        "Laporan",
+        "Konten",
+        "Tanggal_Registrasi",
+        "Waktu_Simpan_Data",
+        "Waktu_Update_Data",
+        "Status"
+    );
+    $form_value = array(
+        "$Organisasi_Kode",
+        "$_POST[Username]",
+        "$_POST[Password]",
+        "$_POST[Nama_Depan]",
+        "$_POST[Nama_Belakang]",
+        "$_POST[Nama_Perusahaan]",
+        "$_POST[Status_Kemitraan]",
+        "",
+        "0000-00-00",
+        "$_POST[Alamat]",
+        "$_POST[Nomor_Telepon]",
+        "$_POST[Email]",
+        "",
+        "",
+        "",
+        "$_POST[Profile]",
+        "$_POST[Pembelian]",
+        "$_POST[Laporan]",
+        "$_POST[Konten]",
+        "$Waktu_Sekarang",
+        "$Waktu_Sekarang",
+        "$Waktu_Sekarang",
+        "Aktif"
+    );
+
+    $result = $a_tambah_baca_update_hapus->tambah_data("tb_pengguna", $form_field, $form_value);
+
+    if ($result['Status'] == "Sukses") {
+
+        // INSERT FOTO
+        if ($_FILES['Foto']['size'] <> 0 && $_FILES['Foto']['error'] == 0) {
+
+            $post_file_upload = $_FILES['Foto'];
+            $path_file_upload = $_FILES['Foto']['name'];
+            $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
+            $nama_file_upload = $a_hash->hash_nama_file($Id_Auto_Increment, "_Foto") . "_" . $Id_Auto_Increment . "_Foto";
+            $folder_penyimpanan_file_upload = "assets/images/kemitraan_foto/";
+            $tipe_file_yang_diizikan_file_upload = array("png", "gif", "jpg", "jpeg");
+            $maksimum_ukuran_file_upload = 10000000;
+
+            $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
+
+            if ($result_upload_file['Status'] == "Sukses") {
+                $form_field = array("Foto");
+                $form_value = array("$nama_file_upload.$ext_file_upload");
+                $form_field_where = array("Id_Pengguna");
+                $form_criteria_where = array("=");
+                $form_value_where = array("$Id_Auto_Increment");
+                $form_connector_where = array("");
+
+                $result = $a_tambah_baca_update_hapus->update_data("tb_pengguna", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
+            }
+        }
+
+
+        echo "<script>alert('Data Tersimpan');document.location.href='$kehalaman'</script>";
+    } else {
+        echo "<script>alert('Terjadi Kesalahan Saat Menyimpan Data');document.location.href='$kehalaman'</script>";
+    }
+}
+
+
+#-----------------------------------------------------------------------------------
+#FUNGSI EDIT DATA (READ)
+
+if (isset($_GET['edit'])) {
+    $result = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Role", $Get_Id_Primary);
+    if ($result['Status'] == "Sukses") {
+        $edit = $result['Hasil'];
+    } else {
+        echo "<script>alert('Terjadi Kesalahan Saat Membaca Data');document.location.href='$kehalaman'</script>";
+    }
+}
+#-----------------------------------------------------------------------------------
+#FUNGSI UPDATE DATA (UPDATE)
+if (isset($_POST['submit_update'])) {
+
+    $Get_Id_Primary = $_POST['Id_Role'];
+
+    if (!isset($_POST['Profile'])) {
+        $_POST['Profile'] = "Tidak";
+    }
+    if (!isset($_POST['Pembelian'])) {
+        $_POST['Pembelian'] = "Tidak";
+    }
+    if (!isset($_POST['Laporan'])) {
+        $_POST['Laporan'] = "Tidak";
+    }
+    if (!isset($_POST['Konten'])) {
+        $_POST['Konten'] = "Tidak";
+    }
+
+    $form_field = array(
+        "Nama_Role",
+        "Deskripsi",
+        "Baca",
+        "Tambah",
+        "Ubah",
+        "Hapus",
+        "Waktu_Update_Data"
+    );
+
+    $form_value = array(
+        "$_POST[Nama_Role]",
+        "$_POST[Deskripsi]",
+        "$_POST[Pembelian]",
+        "$_POST[Profile]",
+        "$_POST[Laporan]",
+        "$_POST[Konten]",
+        $Waktu_Sekarang
+    );
+
+    $form_field_where = array("Id_Role");
+    $form_criteria_where = array("=");
+    $form_value_where = array("$Get_Id_Primary");
+    $form_connector_where = array("");
+
+    $result = $a_tambah_baca_update_hapus->update_data("tb_pengguna", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
+
+    if ($result['Status'] == "Sukses") {
+        echo "<script>alert('Data Terupdate');document.location.href='$kehalaman'</script>";
+    } else {
+        echo "<script>alert('Terjadi Kesalahan Saat Mengupdate Data');document.location.href='$kehalaman'</script>";
+    }
+}
+#-----------------------------------------------------------------------------------
+#FUNGSI DELETE DATA (DELETE)
+if (isset($_GET['hapus_data_ke_tong_sampah'])) {
+
+    $result = $a_tambah_baca_update_hapus->hapus_data_ke_tong_sampah("tb_pengguna", "Id_Role", $Get_Id_Primary);
+
+    if ($result['Status'] == "Sukses") {
+        echo "<script>document.location.href='$kehalaman'</script>";
+    } else {
+        echo "<script>alert('Terjadi Kesalahan Saat Menghapus Data');document.location.href='$kehalaman'</script>";
+    }
+}
+
+#-----------------------------------------------------------------------------------
+#FUNGSI ARCHIVE DATA (ARCHIVE)
+if (isset($_GET['arsip_data'])) {
+
+    $result = $a_tambah_baca_update_hapus->arsip_data("tb_pengguna", "Id_Role", $Get_Id_Primary);
+
+    if ($result['Status'] == "Sukses") {
+        echo "<script>document.location.href='$kehalaman'</script>";
+    } else {
+        echo "<script>alert('Terjadi Kesalahan Saat Memindahkan Data Ke Arsip');document.location.href='$kehalaman'</script>";
+    }
+}
+
+
+#-----------------------------------------------------------------------------------
+#FUNGSI DELETE DATA (DELETE)
+if (isset($_GET['restore'])) {
+
+    $result = $a_tambah_baca_update_hapus->restore_data_dari_tong_sampah("tb_pengguna", "Id_Role", $Get_Id_Primary);
+
+    if ($result['Status'] == "Sukses") {
+        echo "<script>document.location.href='$kehalaman'</script>";
+    } else {
+        echo "<script>alert('Terjadi Kesalahan Saat Restore Data Dari Tong Sampah');document.location.href='$kehalaman'</script>";
+    }
+}
+
+#-----------------------------------------------------------------------------------
+#FUNGSI DELETE PREMANENT DATA (DELETE PREMANENT)
+if (isset($_GET['hapus_data_permanen'])) {
+
+    $result = $a_tambah_baca_update_hapus->hapus_data_permanen("tb_pengguna", "Id_Role", $Get_Id_Primary);
+    if ($result['Status'] == "Sukses") {
+        echo "<script>document.location.href='$kehalaman'</script>";
+    } else {
+        echo "<script>alert('Terjadi Kesalahan Saat Menghapus Data');document.location.href='$kehalaman'</script>";
+    }
+}
+
+#-----------------------------------------------------------------------------------
+#FUNGSI HITUNG DATA (COUNT)
+
+
+if (isset($_GET['filter'])) {
+    $filter = $_GET['filter'];
+} else {
+    $filter = "";
+}
+
+$count_field_where = array("Status", "Status_Kemitraan");
+$count_criteria_where = array("=", "LIKE");
+$count_connector_where = array("AND", "");
+
+#-----------------------------------------------------------------------------------
+#HITUNG AKTIF
+$count_value_where = array("Aktif", "%$filter%");
+$hitung_Aktif = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_pengguna", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
+$hitung_Aktif = $hitung_Aktif['Hasil'];
+
+#-----------------------------------------------------------------------------------
+#HITUNG TERARSIP
+$count_value_where = array("Terarsip", "%$filter%");
+$hitung_Terarsip = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_pengguna", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
+$hitung_Terarsip = $hitung_Terarsip['Hasil'];
+
+#-----------------------------------------------------------------------------------
+#HITUNG TERHAPUS
+$count_value_where = array("Terhapus", "%$filter%");
+$hitung_Terhapus = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_pengguna", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
+$hitung_Terhapus = $hitung_Terhapus['Hasil'];
+#-----------------------------------------------------------------------------------
+?>
+
+
+<div class="pt-lg-9">
     <div class="card">
-        <!--begin::Card header-->
-        <div class="card-header border-0 pt-6">
-            <!--begin::Card title-->
+        <div class="card-header">
             <div class="card-title">
-                <!--begin::Search-->
-                <div class="d-flex align-items-center position-relative my-1">
-                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                    </i>
-                    <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search user" />
-                </div>
-                <!--end::Search-->
+                <?php if ((isset($_GET["tambah"])) or (isset($_GET["edit"]))) { ?>
+                    <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Tambah Kemitraan</h1>
+                <?php } else { ?>
+                    <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">List Kemitraan</h1>
+                <?php } ?>
             </div>
-            <!--begin::Card title-->
-            <!--begin::Card toolbar-->
-            <div class="card-toolbar">
-                <!--begin::Toolbar-->
-                <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                    <!--begin::Filter-->
-                    <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                        <i class="ki-duotone ki-filter fs-2">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>Filter</button>
-                    <!--begin::Menu 1-->
-                    <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
-                        <!--begin::Header-->
-                        <div class="px-7 py-5">
-                            <div class="fs-5 text-dark fw-bold">Filter Options</div>
-                        </div>
-                        <!--end::Header-->
-                        <!--begin::Separator-->
-                        <div class="separator border-gray-200"></div>
-                        <!--end::Separator-->
-                        <!--begin::Content-->
-                        <div class="px-7 py-5" data-kt-user-table-filter="form">
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <label class="form-label fs-6 fw-semibold">Role:</label>
-                                <select class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
-                                    <option></option>
-                                    <option value="Administrator">Administrator</option>
-                                    <option value="Analyst">Analyst</option>
-                                    <option value="Developer">Developer</option>
-                                    <option value="Support">Support</option>
-                                    <option value="Trial">Trial</option>
-                                </select>
-                            </div>
-                            <!--end::Input group-->
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <label class="form-label fs-6 fw-semibold">Two Step Verification:</label>
-                                <select class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="two-step" data-hide-search="true">
-                                    <option></option>
-                                    <option value="Enabled">Enabled</option>
-                                </select>
-                            </div>
-                            <!--end::Input group-->
-                            <!--begin::Actions-->
-                            <div class="d-flex justify-content-end">
-                                <button type="reset" class="btn btn-light btn-active-light-primary fw-semibold me-2 px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="reset">Reset</button>
-                                <button type="submit" class="btn btn-primary fw-semibold px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="filter">Apply</button>
-                            </div>
-                            <!--end::Actions-->
-                        </div>
-                        <!--end::Content-->
-                    </div>
-                    <!--end::Menu 1-->
-                    <!--end::Filter-->
-                    <!--begin::Export-->
-                    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
-                        <i class="ki-duotone ki-exit-up fs-2">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>Export</button>
-                    <!--end::Export-->
-                    <!--begin::Add user-->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
-                        <i class="ki-duotone ki-plus fs-2"></i>Add User</button>
-                    <!--end::Add user-->
-                </div>
-                <!--end::Toolbar-->
-                <!--begin::Group actions-->
-                <div class="d-flex justify-content-end align-items-center d-none" data-kt-user-table-toolbar="selected">
-                    <div class="fw-bold me-5">
-                        <span class="me-2" data-kt-user-table-select="selected_count"></span>Selected
-                    </div>
-                    <button type="button" class="btn btn-danger" data-kt-user-table-select="delete_selected">Delete Selected</button>
-                </div>
-                <!--end::Group actions-->
-                <!--begin::Modal - Adjust Balance-->
-                <div class="modal fade" id="kt_modal_export_users" tabindex="-1" aria-hidden="true">
-                    <!--begin::Modal dialog-->
-                    <div class="modal-dialog modal-dialog-centered mw-650px">
-                        <!--begin::Modal content-->
-                        <div class="modal-content">
-                            <!--begin::Modal header-->
-                            <div class="modal-header">
-                                <!--begin::Modal title-->
-                                <h2 class="fw-bold">Export Users</h2>
-                                <!--end::Modal title-->
-                                <!--begin::Close-->
-                                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
-                                    <i class="ki-duotone ki-cross fs-1">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i>
-                                </div>
-                                <!--end::Close-->
-                            </div>
-                            <!--end::Modal header-->
-                            <!--begin::Modal body-->
-                            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                                <!--begin::Form-->
-                                <form id="kt_modal_export_users_form" class="form" action="#">
-                                    <!--begin::Input group-->
-                                    <div class="fv-row mb-10">
-                                        <!--begin::Label-->
-                                        <label class="fs-6 fw-semibold form-label mb-2">Select Roles:</label>
-                                        <!--end::Label-->
-                                        <!--begin::Input-->
-                                        <select name="role" data-control="select2" data-placeholder="Select a role" data-hide-search="true" class="form-select form-select-solid fw-bold">
-                                            <option></option>
-                                            <option value="Administrator">Administrator</option>
-                                            <option value="Analyst">Analyst</option>
-                                            <option value="Developer">Developer</option>
-                                            <option value="Support">Support</option>
-                                            <option value="Trial">Trial</option>
-                                        </select>
-                                        <!--end::Input-->
-                                    </div>
-                                    <!--end::Input group-->
-                                    <!--begin::Input group-->
-                                    <div class="fv-row mb-10">
-                                        <!--begin::Label-->
-                                        <label class="required fs-6 fw-semibold form-label mb-2">Select Export Format:</label>
-                                        <!--end::Label-->
-                                        <!--begin::Input-->
-                                        <select name="format" data-control="select2" data-placeholder="Select a format" data-hide-search="true" class="form-select form-select-solid fw-bold">
-                                            <option></option>
-                                            <option value="excel">Excel</option>
-                                            <option value="pdf">PDF</option>
-                                            <option value="cvs">CVS</option>
-                                            <option value="zip">ZIP</option>
-                                        </select>
-                                        <!--end::Input-->
-                                    </div>
-                                    <!--end::Input group-->
-                                    <!--begin::Actions-->
-                                    <div class="text-center">
-                                        <button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Discard</button>
-                                        <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
-                                            <span class="indicator-label">Submit</span>
-                                            <span class="indicator-progress">Please wait...
-                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                        </button>
-                                    </div>
-                                    <!--end::Actions-->
-                                </form>
-                                <!--end::Form-->
-                            </div>
-                            <!--end::Modal body-->
-                        </div>
-                        <!--end::Modal content-->
-                    </div>
-                    <!--end::Modal dialog-->
-                </div>
-                <!--end::Modal - New Card-->
-                <!--begin::Modal - Add task-->
-                <div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
-                    <!--begin::Modal dialog-->
-                    <div class="modal-dialog modal-dialog-centered mw-650px">
-                        <!--begin::Modal content-->
-                        <div class="modal-content">
-                            <!--begin::Modal header-->
-                            <div class="modal-header" id="kt_modal_add_user_header">
-                                <!--begin::Modal title-->
-                                <h2 class="fw-bold">Add User</h2>
-                                <!--end::Modal title-->
-                                <!--begin::Close-->
-                                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
-                                    <i class="ki-duotone ki-cross fs-1">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i>
-                                </div>
-                                <!--end::Close-->
-                            </div>
-                            <!--end::Modal header-->
-                            <!--begin::Modal body-->
-                            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                                <!--begin::Form-->
-                                <form id="kt_modal_add_user_form" class="form" action="#">
-                                    <!--begin::Scroll-->
-                                    <div class="d-flex flex-column scroll-y me-n7 pe-7" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="300px">
-                                        <!--begin::Input group-->
-                                        <div class="fv-row mb-7">
-                                            <!--begin::Label-->
-                                            <label class="d-block fw-semibold fs-6 mb-5">Avatar</label>
-                                            <!--end::Label-->
-                                            <!--begin::Image placeholder-->
-                                            <style>
-                                                .image-input-placeholder {
-                                                    background-image: url('assets/media/svg/files/blank-image.svg');
-                                                }
-
-                                                [data-bs-theme="dark"] .image-input-placeholder {
-                                                    background-image: url('assets/media/svg/files/blank-image-dark.svg');
-                                                }
-                                            </style>
-                                            <!--end::Image placeholder-->
-                                            <!--begin::Image input-->
-                                            <div class="image-input image-input-outline image-input-placeholder" data-kt-image-input="true">
-                                                <!--begin::Preview existing avatar-->
-                                                <div class="image-input-wrapper w-125px h-125px" style="background-image: url(assets/media/avatars/300-6.jpg);"></div>
-                                                <!--end::Preview existing avatar-->
-                                                <!--begin::Label-->
-                                                <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
-                                                    <i class="ki-duotone ki-pencil fs-7">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                    </i>
-                                                    <!--begin::Inputs-->
-                                                    <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
-                                                    <input type="hidden" name="avatar_remove" />
-                                                    <!--end::Inputs-->
-                                                </label>
-                                                <!--end::Label-->
-                                                <!--begin::Cancel-->
-                                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
-                                                    <i class="ki-duotone ki-cross fs-2">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                    </i>
-                                                </span>
-                                                <!--end::Cancel-->
-                                                <!--begin::Remove-->
-                                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
-                                                    <i class="ki-duotone ki-cross fs-2">
-                                                        <span class="path1"></span>
-                                                        <span class="path2"></span>
-                                                    </i>
-                                                </span>
-                                                <!--end::Remove-->
-                                            </div>
-                                            <!--end::Image input-->
-                                            <!--begin::Hint-->
-                                            <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
-                                            <!--end::Hint-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="fv-row mb-7">
-                                            <!--begin::Label-->
-                                            <label class="required fw-semibold fs-6 mb-2">Full Name</label>
-                                            <!--end::Label-->
-                                            <!--begin::Input-->
-                                            <input type="text" name="user_name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Full name" value="Emma Smith" />
-                                            <!--end::Input-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="fv-row mb-7">
-                                            <!--begin::Label-->
-                                            <label class="required fw-semibold fs-6 mb-2">Email</label>
-                                            <!--end::Label-->
-                                            <!--begin::Input-->
-                                            <input type="email" name="user_email" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="example@domain.com" value="smith@kpmg.com" />
-                                            <!--end::Input-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="mb-7">
-                                            <!--begin::Label-->
-                                            <label class="required fw-semibold fs-6 mb-5">Role</label>
-                                            <!--end::Label-->
-                                            <!--begin::Roles-->
-                                            <!--begin::Input row-->
-                                            <div class="d-flex fv-row">
-                                                <!--begin::Radio-->
-                                                <div class="form-check form-check-custom form-check-solid">
-                                                    <!--begin::Input-->
-                                                    <input class="form-check-input me-3" name="user_role" type="radio" value="0" id="kt_modal_update_role_option_0" checked='checked' />
-                                                    <!--end::Input-->
-                                                    <!--begin::Label-->
-                                                    <label class="form-check-label" for="kt_modal_update_role_option_0">
-                                                        <div class="fw-bold text-gray-800">Administrator</div>
-                                                        <div class="text-gray-600">Best for business owners and company administrators</div>
-                                                    </label>
-                                                    <!--end::Label-->
-                                                </div>
-                                                <!--end::Radio-->
-                                            </div>
-                                            <!--end::Input row-->
-                                            <div class='separator separator-dashed my-5'></div>
-                                            <!--begin::Input row-->
-                                            <div class="d-flex fv-row">
-                                                <!--begin::Radio-->
-                                                <div class="form-check form-check-custom form-check-solid">
-                                                    <!--begin::Input-->
-                                                    <input class="form-check-input me-3" name="user_role" type="radio" value="1" id="kt_modal_update_role_option_1" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Label-->
-                                                    <label class="form-check-label" for="kt_modal_update_role_option_1">
-                                                        <div class="fw-bold text-gray-800">Developer</div>
-                                                        <div class="text-gray-600">Best for developers or people primarily using the API</div>
-                                                    </label>
-                                                    <!--end::Label-->
-                                                </div>
-                                                <!--end::Radio-->
-                                            </div>
-                                            <!--end::Input row-->
-                                            <div class='separator separator-dashed my-5'></div>
-                                            <!--begin::Input row-->
-                                            <div class="d-flex fv-row">
-                                                <!--begin::Radio-->
-                                                <div class="form-check form-check-custom form-check-solid">
-                                                    <!--begin::Input-->
-                                                    <input class="form-check-input me-3" name="user_role" type="radio" value="2" id="kt_modal_update_role_option_2" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Label-->
-                                                    <label class="form-check-label" for="kt_modal_update_role_option_2">
-                                                        <div class="fw-bold text-gray-800">Analyst</div>
-                                                        <div class="text-gray-600">Best for people who need full access to analytics data, but don't need to update business settings</div>
-                                                    </label>
-                                                    <!--end::Label-->
-                                                </div>
-                                                <!--end::Radio-->
-                                            </div>
-                                            <!--end::Input row-->
-                                            <div class='separator separator-dashed my-5'></div>
-                                            <!--begin::Input row-->
-                                            <div class="d-flex fv-row">
-                                                <!--begin::Radio-->
-                                                <div class="form-check form-check-custom form-check-solid">
-                                                    <!--begin::Input-->
-                                                    <input class="form-check-input me-3" name="user_role" type="radio" value="3" id="kt_modal_update_role_option_3" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Label-->
-                                                    <label class="form-check-label" for="kt_modal_update_role_option_3">
-                                                        <div class="fw-bold text-gray-800">Support</div>
-                                                        <div class="text-gray-600">Best for employees who regularly refund payments and respond to disputes</div>
-                                                    </label>
-                                                    <!--end::Label-->
-                                                </div>
-                                                <!--end::Radio-->
-                                            </div>
-                                            <!--end::Input row-->
-                                            <div class='separator separator-dashed my-5'></div>
-                                            <!--begin::Input row-->
-                                            <div class="d-flex fv-row">
-                                                <!--begin::Radio-->
-                                                <div class="form-check form-check-custom form-check-solid">
-                                                    <!--begin::Input-->
-                                                    <input class="form-check-input me-3" name="user_role" type="radio" value="4" id="kt_modal_update_role_option_4" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Label-->
-                                                    <label class="form-check-label" for="kt_modal_update_role_option_4">
-                                                        <div class="fw-bold text-gray-800">Trial</div>
-                                                        <div class="text-gray-600">Best for people who need to preview content data, but don't need to make any updates</div>
-                                                    </label>
-                                                    <!--end::Label-->
-                                                </div>
-                                                <!--end::Radio-->
-                                            </div>
-                                            <!--end::Input row-->
-                                            <!--end::Roles-->
-                                        </div>
-                                        <!--end::Input group-->
-                                    </div>
-                                    <!--end::Scroll-->
-                                    <!--begin::Actions-->
-                                    <div class="text-center pt-15">
-                                        <button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Discard</button>
-                                        <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
-                                            <span class="indicator-label">Submit</span>
-                                            <span class="indicator-progress">Please wait...
-                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                        </button>
-                                    </div>
-                                    <!--end::Actions-->
-                                </form>
-                                <!--end::Form-->
-                            </div>
-                            <!--end::Modal body-->
-                        </div>
-                        <!--end::Modal content-->
-                    </div>
-                    <!--end::Modal dialog-->
-                </div>
-                <!--end::Modal - Add task-->
-            </div>
-            <!--end::Card toolbar-->
         </div>
-        <!--end::Card header-->
-        <!--begin::Card body-->
-        <div class="card-body py-4">
-            <!--begin::Table-->
-            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
-                <thead>
-                    <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                        <th class="w-10px pe-2">
-                            <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
-                            </div>
-                        </th>
-                        <th class="min-w-125px">User</th>
-                        <th class="min-w-125px">Role</th>
-                        <th class="min-w-125px">Last login</th>
-                        <th class="min-w-125px">Two-step</th>
-                        <th class="min-w-125px">Joined Date</th>
-                        <th class="text-end min-w-100px">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="text-gray-600 fw-semibold">
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/avatars/300-6.jpg" alt="Emma Smith" class="w-100" />
-                                    </div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Emma Smith</a>
-                                <span>smith@kpmg.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Administrator</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">Yesterday</div>
-                        </td>
-                        <td></td>
-                        <td>10 Mar 2023, 10:30 am</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label fs-3 bg-light-danger text-danger">M</div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Melody Macy</a>
-                                <span>melody@altbox.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Analyst</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">20 mins ago</div>
-                        </td>
-                        <td>
-                            <div class="badge badge-light-success fw-bold">Enabled</div>
-                        </td>
-                        <td>21 Feb 2023, 2:40 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/avatars/300-1.jpg" alt="Max Smith" class="w-100" />
-                                    </div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Max Smith</a>
-                                <span>max@kt.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Developer</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">3 days ago</div>
-                        </td>
-                        <td></td>
-                        <td>15 Apr 2023, 6:05 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/avatars/300-5.jpg" alt="Sean Bean" class="w-100" />
-                                    </div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Sean Bean</a>
-                                <span>sean@dellito.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Support</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">5 hours ago</div>
-                        </td>
-                        <td>
-                            <div class="badge badge-light-success fw-bold">Enabled</div>
-                        </td>
-                        <td>20 Jun 2023, 6:05 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/avatars/300-25.jpg" alt="Brian Cox" class="w-100" />
-                                    </div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Brian Cox</a>
-                                <span>brian@exchange.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Developer</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">2 days ago</div>
-                        </td>
-                        <td>
-                            <div class="badge badge-light-success fw-bold">Enabled</div>
-                        </td>
-                        <td>25 Oct 2023, 10:10 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label fs-3 bg-light-warning text-warning">C</div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Mikaela Collins</a>
-                                <span>mik@pex.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Administrator</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">5 days ago</div>
-                        </td>
-                        <td></td>
-                        <td>20 Dec 2023, 6:05 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/avatars/300-9.jpg" alt="Francis Mitcham" class="w-100" />
-                                    </div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Francis Mitcham</a>
-                                <span>f.mit@kpmg.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Trial</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">3 weeks ago</div>
-                        </td>
-                        <td></td>
-                        <td>25 Jul 2023, 5:30 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label fs-3 bg-light-danger text-danger">O</div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Olivia Wild</a>
-                                <span>olivia@corpmail.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Administrator</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">Yesterday</div>
-                        </td>
-                        <td></td>
-                        <td>20 Jun 2023, 2:40 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label fs-3 bg-light-primary text-primary">N</div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Neil Owen</a>
-                                <span>owen.neil@gmail.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Analyst</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">20 mins ago</div>
-                        </td>
-                        <td>
-                            <div class="badge badge-light-success fw-bold">Enabled</div>
-                        </td>
-                        <td>20 Jun 2023, 2:40 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/avatars/300-23.jpg" alt="Dan Wilson" class="w-100" />
-                                    </div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Dan Wilson</a>
-                                <span>dam@consilting.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Developer</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">3 days ago</div>
-                        </td>
-                        <td></td>
-                        <td>22 Sep 2023, 10:10 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label fs-3 bg-light-danger text-danger">E</div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Emma Bold</a>
-                                <span>emma@intenso.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Support</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">5 hours ago</div>
-                        </td>
-                        <td>
-                            <div class="badge badge-light-success fw-bold">Enabled</div>
-                        </td>
-                        <td>10 Mar 2023, 8:43 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/avatars/300-12.jpg" alt="Ana Crown" class="w-100" />
-                                    </div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Ana Crown</a>
-                                <span>ana.cf@limtel.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Developer</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">2 days ago</div>
-                        </td>
-                        <td>
-                            <div class="badge badge-light-success fw-bold">Enabled</div>
-                        </td>
-                        <td>21 Feb 2023, 2:40 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label fs-3 bg-light-info text-info">A</div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Robert Doe</a>
-                                <span>robert@benko.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Administrator</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">5 days ago</div>
-                        </td>
-                        <td></td>
-                        <td>25 Jul 2023, 5:30 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/avatars/300-13.jpg" alt="John Miller" class="w-100" />
-                                    </div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">John Miller</a>
-                                <span>miller@mapple.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Trial</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">3 weeks ago</div>
-                        </td>
-                        <td></td>
-                        <td>19 Aug 2023, 2:40 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label fs-3 bg-light-success text-success">L</div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Lucy Kunic</a>
-                                <span>lucy.m@fentech.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Administrator</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">Yesterday</div>
-                        </td>
-                        <td></td>
-                        <td>05 May 2023, 2:40 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label fs-3 bg-light-danger text-danger">M</div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Melody Macy</a>
-                                <span>melody@altbox.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Analyst</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">20 mins ago</div>
-                        </td>
-                        <td>
-                            <div class="badge badge-light-success fw-bold">Enabled</div>
-                        </td>
-                        <td>15 Apr 2023, 6:43 am</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/avatars/300-1.jpg" alt="Max Smith" class="w-100" />
-                                    </div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Max Smith</a>
-                                <span>max@kt.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Developer</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">3 days ago</div>
-                        </td>
-                        <td></td>
-                        <td>10 Nov 2023, 10:30 am</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/avatars/300-5.jpg" alt="Sean Bean" class="w-100" />
-                                    </div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Sean Bean</a>
-                                <span>sean@dellito.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Support</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">5 hours ago</div>
-                        </td>
-                        <td>
-                            <div class="badge badge-light-success fw-bold">Enabled</div>
-                        </td>
-                        <td>25 Jul 2023, 6:43 am</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/avatars/300-25.jpg" alt="Brian Cox" class="w-100" />
-                                    </div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Brian Cox</a>
-                                <span>brian@exchange.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Developer</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">2 days ago</div>
-                        </td>
-                        <td>
-                            <div class="badge badge-light-success fw-bold">Enabled</div>
-                        </td>
-                        <td>15 Apr 2023, 10:30 am</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label fs-3 bg-light-warning text-warning">C</div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Mikaela Collins</a>
-                                <span>mik@pex.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Administrator</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">5 days ago</div>
-                        </td>
-                        <td></td>
-                        <td>25 Jul 2023, 9:23 pm</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="1" />
-                            </div>
-                        </td>
-                        <td class="d-flex align-items-center">
-                            <!--begin:: Avatar -->
-                            <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                <a href="#">
-                                    <div class="symbol-label">
-                                        <img src="assets/media/avatars/300-9.jpg" alt="Francis Mitcham" class="w-100" />
-                                    </div>
-                                </a>
-                            </div>
-                            <!--end::Avatar-->
-                            <!--begin::User details-->
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">Francis Mitcham</a>
-                                <span>f.mit@kpmg.com</span>
-                            </div>
-                            <!--begin::User details-->
-                        </td>
-                        <td>Trial</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">3 weeks ago</div>
-                        </td>
-                        <td></td>
-                        <td>10 Nov 2023, 6:43 am</td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                            <!--begin::Menu-->
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3">Edit</a>
-                                </div>
-                                <!--end::Menu item-->
-                                <!--begin::Menu item-->
-                                <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                                </div>
-                                <!--end::Menu item-->
-                            </div>
-                            <!--end::Menu-->
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <!--end::Table-->
-        </div>
-        <!--end::Card body-->
     </div>
-    <!--end::Card-->
 </div>
-<!--end::Content-->
+
+<div id="kt_app_content" class="app-content pb-0">
+
+    <?php if ((isset($_GET["tambah"])) or (isset($_GET["edit"]))) { ?>
+
+        <div class="card py-4">
+            <div class="card-body">
+
+
+                <form id="" method="POST" enctype="multipart/form-data">
+                    <div class="d-flex flex-column">
+                        <div class="row mb-7">
+
+                            <div class="col-lg-3">
+                                <label class="d-block fw-semibold fs-2 mb-5">Foto Mitra</label>
+                                <style>
+                                    .image-input-placeholder {
+                                        background-image: url('assets/media/svg/files/blank-image.svg');
+                                    }
+
+                                    [data-bs-theme="dark"] .image-input-placeholder {
+                                        background-image: url('assets/media/svg/files/blank-image-dark.svg');
+                                    }
+                                </style>
+                                <div class="image-input image-input-outline image-input-placeholder" data-kt-image-input="false">
+
+                                    <div class="image-input-wrapper w-250px h-250px" style="background-image: url(assets/media/svg/files/blank-image.svg);"></div>
+                                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                                        <i class="ki-duotone ki-pencil fs-7">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                        <input type="file" name="Foto" accept=".png, .jpg, .jpeg" />
+                                    </label>
+                                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                        <i class="ki-duotone ki-cross fs-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                    </span>
+                                </div>
+                                <div class="form-text">File yang diizinkan types: png, jpg, jpeg.</div>
+
+                            </div>
+
+                            <div class="col-lg-9">
+                                <div class="row mb-7">
+                                    <div class="col-lg-6">
+                                        <label class="required fw-semibold fs-6 mb-2">Username</label>
+                                        <input required name="Username" type="text" pattern="[a-z0-9_]*" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Masukkan Username" />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="required fw-semibold fs-6 mb-2">Password</label>
+                                        <input required name="Password" type="password" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Masukkan Password" />
+                                    </div>
+                                </div>
+
+                                <div class="row mb-7">
+                                    <div class="col-lg-6">
+                                        <label class="required fw-semibold fs-6 mb-2">Nama Depan</label>
+                                        <input required name="Nama_Depan" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Masukkan Nama Depan" />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="required fw-semibold fs-6 mb-2">Nama Belakang</label>
+                                        <input required name="Nama_Belakang" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Masukkan Nama Belakang" />
+                                    </div>
+                                </div>
+
+                                <div class="row mb-7">
+                                    <div class="col-lg-6">
+                                        <label class="required fw-semibold fs-6 mb-2">Email</label>
+                                        <input type="email" name="Email" id="email" class="form-control form-control-solid mb-3 mb-lg-0"
+                                            placeholder="Masukkan Email"
+                                            oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9@._+-]/g, '')"
+                                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                            title="Masukkan email yang valid (e.g., example@domain.com)"
+                                            required />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="required fw-semibold fs-6 mb-2">Nomor Telepon</label>
+                                        <input name="Nomor_Telepon" type="text" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Masukkan Nomor Telepon" />
+                                    </div>
+                                </div>
+
+                                <div class="row mb-7">
+                                    <div class="col-lg-6">
+
+                                        <label class="required fw-semibold fs-6 mb-2">Nama Perusahaan</label>
+                                        <input name="Nama_Perusahaan" type="text" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Masukkan Nama Perusahaan/Toko/Unit Bisnis" />
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label class="required fw-semibold fs-6 mb-2">Status Kemitraan</label>
+                                        <select name="Status_Kemitraan" required class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
+                                            <option></option>
+                                            <option value="Distributor">Distributor</option>
+                                            <option value="Agen">Agen</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="fv-row mb-7">
+                                    <label class="required fw-semibold fs-6 mb-2">Alamat</label>
+                                    <textarea name="Alamat" class="form-control form-control-solid mb-3 mb-lg-0" rows="3"></textarea>
+                                </div>
+
+                                <hr>
+
+                                <div class="mb-7">
+                                    <label class="required fw-semibold fs-6 mb-5">Hak Akses</label>
+                                    <div class="d-flex fv-row">
+                                        <div class="form-check form-check-custom form-check-solid">
+                                            <input class="form-check-input me-3" name="Profile" type="checkbox" value="Iya" />
+                                            <label class="form-check-label">
+                                                <div class="fw-bold text-gray-800">Edit Profile</div>
+                                                <div class="text-gray-600">User mendapat hak akses untuk mengedit profile</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class='separator separator-dashed my-5'></div>
+                                    <div class="d-flex fv-row">
+                                        <div class="form-check form-check-custom form-check-solid">
+                                            <input class="form-check-input me-3" name="Pembelian" type="checkbox" value="Iya" />
+                                            <label class="form-check-label">
+                                                <div class="fw-bold text-gray-800">Pembelian</div>
+                                                <div class="text-gray-600">User mendapat hak akses untuk melakukan pembelian produk</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class='separator separator-dashed my-5'></div>
+                                    <div class="d-flex fv-row">
+                                        <div class="form-check form-check-custom form-check-solid">
+                                            <input class="form-check-input me-3" name="Laporan" type="checkbox" value="Iya" />
+                                            <label class="form-check-label">
+                                                <div class="fw-bold text-gray-800">Laporan</div>
+                                                <div class="text-gray-600">User mendapat hak akses untuk mendownload laporan</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class='separator separator-dashed my-5'></div>
+                                    <div class="d-flex fv-row">
+                                        <div class="form-check form-check-custom form-check-solid">
+                                            <input class="form-check-input me-3" name="Konten" type="checkbox" value="Iya" />
+                                            <label class="form-check-label">
+                                                <div class="fw-bold text-gray-800">Konten</div>
+                                                <div class="text-gray-600">User mendapat hak akses untuk mengambil file-file konten</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-7">
+                            <hr>
+                            <div class="pt-5 col-lg-12 text-center">
+                                <a href="<?php echo $kehalaman ?>"><button type="button" class="btn btn-light-danger me-3">Kembali</button></a>
+                                <button type="submit" class="btn btn-primary" name="submit_simpan">
+                                    <span class="indicator-label">Simpan</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+
+    <?php } ?>
+    <?php if (!((isset($_GET["tambah"])) or (isset($_GET["edit"])))) { ?>
+
+        <div class="card py-0">
+            <div class="card-header pt-4 text-end" style="min-height: 0;">
+
+                <div class="card-title">
+                    <div class="d-flex align-items-center position-relative my-1">
+                        <div class="align-items-center position-relative fs-6">
+                            <ul class="list-inline">
+                                <li class="list-inline-item"><a href="<?php echo $kehalaman ?>&filter_status=Aktif">AKTIF (<?php echo $hitung_Aktif ?>)</a></li>
+                                <li class="list-inline-item text-primary"> | </li>
+                                <li class="list-inline-item"><a href="<?php echo $kehalaman ?>&filter_status=Terhapus">SAMPAH (<?php echo $hitung_Terhapus ?>)</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-toolbar">
+                    <select name="filter" id="filterSelect" class="form-select">
+                        <option <?php if (!(isset($_GET['filter']))) {
+                                    echo "selected";
+                                } ?> value="All">Semua</option>
+                        <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Distributor")) {
+                                    echo "selected";
+                                } ?> value="Distributor">Distributor</option>
+                        <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Agen")) {
+                                    echo "selected";
+                                } ?> value="Agen">Agen</option>
+                    </select>
+
+                    <script>
+                        document.getElementById('filterSelect').addEventListener('change', function() {
+                            var selectedValue = this.value;
+                            var baseUrl = "<?php echo $kehalaman; ?>"; // Your base URL
+                            if (selectedValue == "All") {
+                                window.location.href = baseUrl;
+                            } else if (selectedValue) {
+                                window.location.href = baseUrl + "&filter=" + encodeURIComponent(selectedValue);
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+
+            <div class="card-header border-0 pt-6">
+                <div class="card-title">
+                    <div class="d-flex align-items-center position-relative my-1">
+                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search user" />
+                    </div>
+                </div>
+                <div class="card-toolbar">
+                    <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+                        <button type="button" class="btn btn-sm btn-light me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
+                            <i class="ki-duotone ki-exit-up fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>Export</button>
+                        <a href="<?php echo $kehalaman ?>&tambah" class="btn btn-sm btn-light-primary">
+                            <i class="ki-duotone ki-plus fs-2"></i>Tambah</a>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-center d-none" data-kt-user-table-toolbar="selected">
+                        <div class="fw-bold me-5">
+                            <span class="me-2" data-kt-user-table-select="selected_count"></span>Selected
+                        </div>
+                        <button type="button" class="btn btn-danger" data-kt-user-table-select="delete_selected">Delete Selected</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card-body py-4">
+
+
+                <script type="text/javascript">
+                    function konfirmasi_hapus_data_permanen(id) {
+                        var txt;
+                        var r = confirm("Apakah Anda Yakin Ingin Menghapus Permanen Data Ini ?");
+                        if (r == true) {
+                            document.location.href = '<?php echo $kehalaman ?>&hapus_data_permanen&id=' + id
+                        } else {
+
+                        }
+                    }
+
+                    function konfirmasi_hapus_data_ke_tong_sampah(id) {
+
+                        var txt;
+                        var r = confirm("Apakah Anda Yakin Ingin Menghapus Data Ini ?");
+                        if (r == true) {
+                            document.location.href = '<?php echo $kehalaman ?>&hapus_data_ke_tong_sampah&id=' + id
+                        } else {
+
+                        }
+                    }
+
+                    function konfirmasi_arsip_data(id) {
+                        var txt;
+                        var r = confirm("Apakah Anda Yakin Ingin Mengarsip Data Ini ?");
+                        if (r == true) {
+                            document.location.href = '<?php echo $kehalaman ?>&arsip_data&id=' + id
+                        } else {
+
+                        }
+                    }
+
+                    function konfirmasi_restore_data_dari_arsip(id) {
+                        var txt;
+                        var r = confirm("Apakah Anda Yakin Ingin Mengeluarkan Data Ini Dari Arsip ?");
+                        if (r == true) {
+                            document.location.href = '<?php echo $kehalaman ?>&restore_data_dari_arsip&id=' + id
+                        } else {
+
+                        }
+                    }
+
+                    function konfirmasi_restore_data_dari_tong_sampah(id) {
+                        var txt;
+                        var r = confirm("Apakah Anda Yakin Ingin Merestore Data Ini Dari Tong Sampah ?");
+                        if (r == true) {
+                            document.location.href = '<?php echo $kehalaman ?>&restore_data_dari_tong_sampah&id=' + id
+                        } else {
+
+                        }
+                    }
+                </script>
+
+                <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
+                    <thead>
+                        <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                            <th class="">No</th>
+                            <th class="">Nama Agen/Distributor</th>
+                            <th class="">Nomor Telepon</th>
+                            <th class="">Email</th>
+                            <th class="">Kemitraan</th>
+                            <th class="text-center ">Profile</th>
+                            <th class="text-center ">Pembelian</th>
+                            <th class="text-center ">Laporan</th>
+                            <th class="text-center ">Konten</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600 fw-semibold">
+                        <?php
+                        if (isset($_GET['filter_status'])) {
+                            $filter_status = $_GET['filter_status'];
+                        } else {
+                            $filter_status = "Aktif";
+                        }
+
+                        if (isset($_GET['filter'])) {
+                            $filter = $_GET['filter'];
+                        } else {
+                            $filter = "";
+                        }
+
+                        $search_field_where = array("Status", "Status_Kemitraan");
+                        $search_criteria_where = array("=", "LIKE");
+                        $search_value_where = array("$filter_status", "%$filter%");
+                        $search_connector_where = array("AND", "");
+
+                        $nomor = 0;
+
+                        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pengguna", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+
+                        if ($result['Status'] == "Sukses") {
+                            $data_hasil = $result['Hasil'];
+
+                            foreach ($data_hasil as $data) {
+                                $nomor++; ?>
+
+                                <?php $encode_id = $a_hash->encode($data['Id_Role'], $_GET['menu']); ?>
+
+                                <tr>
+                                    <td>
+                                        <?php echo $nomor ?>
+                                    </td>
+                                    <td class="d-flex align-items-center">
+                                        <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
+
+                                            <?php if ($data['Foto'] == "") {
+                                                // Array of random background colors
+                                                $colors = [
+                                                    'bg-primary',
+                                                    'bg-success',
+                                                    'bg-danger',
+                                                    'bg-info',
+                                                    'bg-dark',
+                                                    'bg-warning',
+                                                    'bg-secondary',
+                                                    'bg-light-primary',
+                                                    'bg-light-success',
+                                                    'bg-light-danger',
+                                                    'bg-light-info',
+                                                    'bg-light-dark',
+                                                    'bg-light-warning',
+                                                    'bg-light-secondary'
+                                                ];
+
+                                                // Pick a random color from the array
+                                                $randomColor = $colors[array_rand($colors)];
+                                            ?>
+                                                <div class="symbol-label <?php echo $randomColor ?>">
+                                                    <?php // Get the first letter of 'Nama_Depan' and 'Nama_Belakang'
+                                                    $initials = strtoupper(substr($data['Nama_Depan'], 0, 1)) . strtoupper(substr($data['Nama_Belakang'], 0, 1));
+                                                    // Display the initials
+                                                    echo $initials;
+                                                    ?>
+                                                </div>
+                                            <?php } else { ?>
+                                                <div class="symbol-label bg-warning">
+                                                    <img src="assets/images/kemitraan_foto/<?php echo $data['Foto'] ?>" class="w-100" />
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <a href="#" class="text-gray-800 text-hover-primary mb-1"><?php echo $data['Nama_Depan'] . " " . $data['Nama_Belakang'] ?></a>
+                                            <span><?php echo $data['Nama_Perusahaan'] ?></span>
+                                        </div>
+                                    </td>
+                                    <td><?php echo $data['Nomor_Telepon'] ?></td>
+                                    <td><?php echo $data['Email'] ?></td>
+                                    <td><span class="badge <?php if ($data['Status_Kemitraan'] == "Agen") {
+                                                                echo 'badge-warning';
+                                                            } else {
+                                                                echo 'badge-primary';
+                                                            } ?>"><?php echo $data['Status_Kemitraan'] ?></span></td>
+                                    <td class="text-center">
+                                        <div class="badge badge-<?php if ($data['Profile'] == "Iya") {
+                                                                    echo 'light-success';
+                                                                } else {
+                                                                    echo 'light-danger';
+                                                                } ?> fw-bold"><?php echo $data['Profile'] ?></div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="badge badge-<?php if ($data['Pembelian'] == "Iya") {
+                                                                    echo 'light-success';
+                                                                } else {
+                                                                    echo 'light-danger';
+                                                                } ?> fw-bold"><?php echo $data['Pembelian'] ?></div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="badge badge-<?php if ($data['Laporan'] == "Iya") {
+                                                                    echo 'light-success';
+                                                                } else {
+                                                                    echo 'light-danger';
+                                                                } ?> fw-bold"><?php echo $data['Laporan'] ?></div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="badge badge-<?php if ($data['Konten'] == "Iya") {
+                                                                    echo 'light-success';
+                                                                } else {
+                                                                    echo 'light-danger';
+                                                                } ?> fw-bold"><?php echo $data['Konten'] ?></div>
+                                    </td>
+
+                                </tr>
+
+                        <?php
+                            }
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    <?php } ?>
+
+
+</div>

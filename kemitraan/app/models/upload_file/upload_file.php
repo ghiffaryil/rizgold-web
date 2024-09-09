@@ -1,9 +1,9 @@
 <?php
 
 class a_upload_file {
-	public function upload_file($post_file, $nama_file, $folder_penyimpanan, $format_file = array() ,$maksimum_ukuran_file = 100000000){
+	public function upload_file($post_file, $nama_file, $folder_penyimpanan_value, $format_file = array() ,$maksimum_ukuran_file = 100000000){
 		$array_keterangan_error = array();
-		$folder_penyimpanan = $folder_penyimpanan;
+		$folder_penyimpanan = $folder_penyimpanan_value;
 		$tipe_file = strtolower(pathinfo($folder_penyimpanan . basename($post_file["name"]),PATHINFO_EXTENSION));
 		$target_penyimpanan_file = $folder_penyimpanan . $nama_file.".".$tipe_file;
 		$status_upload = 1;

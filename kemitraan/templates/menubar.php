@@ -46,10 +46,28 @@
                             <!--end:Menu link-->
                         </div>
                         <!--end:Menu item-->
+
+
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="?menu=mitra" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                <span class="menu-icon">
+                                    <i class="ki-duotone ki-file fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                    </i>
+                                </span>
+                                <span class="menu-title">Semua Data</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="?menu=mitra&distributor" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <a class="menu-link" href="?menu=mitra&filter=Distributor" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-profile-user fs-1">
                                         <span class="path1"></span>
@@ -67,7 +85,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="?menu=mitra&agen" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <a class="menu-link" href="?menu=mitra&filter=Agen" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-people fs-1">
                                         <span class="path1"></span>
@@ -168,7 +186,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="?menu=konten&foto" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <a class="menu-link" href="?menu=konten&filter=foto" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-instagram fs-1">
                                         <span class="path1"></span>
@@ -184,7 +202,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="?menu=konten&video" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <a class="menu-link" href="?menu=konten&filter=video" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-youtube fs-1">
                                         <span class="path1"></span>
@@ -200,7 +218,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="?menu=konten&tutorial" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <a class="menu-link" href="?menu=konten&filter=tutorial" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-file-down fs-1">
                                         <span class="path1"></span>
@@ -246,6 +264,44 @@
                                     </i>
                                 </span>
                                 <span class="menu-title">Laporan Penjualan</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+                    </div>
+                    <!--end:Menu sub-->
+                </div>
+                <!--end:Menu item-->
+
+
+
+
+                <!--begin:Menu item-->
+                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && ($_GET['menu'] == "laporan")) {
+                                                                                                                                echo "here";
+                                                                                                                            } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+                    <!--begin:Menu link-->
+                    <span class="menu-link">
+                        <span class="menu-title">Pengaturan</span>
+                        <span class="menu-arrow d-lg-none"></span>
+                    </span>
+                    <!--end:Menu link-->
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="?menu=pengaturan&sub_menu=role" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                <span class="menu-icon">
+                                    <i class="ki-duotone ki-notepad fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                        <span class="path5"></span>
+                                    </i>
+                                </span>
+                                <span class="menu-title">Role User</span>
                             </a>
                             <!--end:Menu link-->
                         </div>

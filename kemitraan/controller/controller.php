@@ -10,6 +10,10 @@ if (isset($_GET['menu'])) {
 		case 'produk':
 			include "pages/produk/index.php";
 			break;
+		
+		case 'pengaturan':
+			include "pages/pengaturan/index.php";
+			break;
 
 		case 'laporan':
 			include "pages/laporan/index.php";
