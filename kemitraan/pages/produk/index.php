@@ -1,108 +1,99 @@
-<!--begin::Toolbar-->
-<div id="kt_app_toolbar" class="app-toolbar pt-lg-9 pt-6">
-    <!--begin::Toolbar container-->
-    <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack flex-wrap">
-        <!--begin::Toolbar wrapper-->
-        <div class="d-flex flex-stack flex-wrap gap-4 w-100">
-            <!--begin::Page title-->
-            <div class="page-title d-flex flex-column gap-3 me-3">
-                <!--begin::Title-->
-                <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Products</h1>
-                <!--end::Title-->
-                <!--begin::Breadcrumb-->
-                <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
-                    <!--begin::Item-->
-                    <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
-                        <a href="../dist/index.html" class="text-gray-500">
-                            <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
-                        </a>
-                    </li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
-                    <li class="breadcrumb-item">
-                        <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-                    </li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
-                    <li class="breadcrumb-item text-gray-700 fw-bold lh-1">eCommerce</li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
-                    <li class="breadcrumb-item">
-                        <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-                    </li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
-                    <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Catalog</li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
-                    <li class="breadcrumb-item">
-                        <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-                    </li>
-                    <!--end::Item-->
-                    <!--begin::Item-->
-                    <li class="breadcrumb-item text-gray-500">Products</li>
-                    <!--end::Item-->
-                </ul>
-                <!--end::Breadcrumb-->
-            </div>
-            <!--end::Page title-->
-            <!--begin::Actions-->
-            <div class="d-flex align-items-center gap-3 gap-lg-5">
-                <!--begin::Secondary button-->
-                <div class="m-0">
-                    <a href="#" class="btn btn-flex btn-sm btn-color-gray-700 bg-body fw-bold px-4" data-bs-toggle="modal" data-bs-target="#kt_modal_create_project">New Project</a>
+<div class="pt-lg-9">
+    <div class="card">
+        <div class="card-header">
+            <div class="">
+                <div id="kt_app_toolbar" class="app-toolbar py-4">
+                    <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack flex-wrap">
+                        <div class="d-flex flex-stack flex-wrap gap-4 w-100">
+                            <div class="page-title d-flex flex-column gap-3 me-3">
+                                <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Produk</h1>
+                                <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
+                                    <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
+                                        <a href="index.php" class="text-gray-500">
+                                            <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                                    </li>
+                                    <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Produk</li>
+                                    <li class="breadcrumb-item">
+                                        <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                                    </li>
+                                    <li class="breadcrumb-item text-gray-500"><a href="<?php echo $kehalaman ?>" class="text-dark">Data Produk</a></li>
+                                    <?php if (isset($_GET["edit"])) { ?>
+                                        <li class="breadcrumb-item">
+                                            <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                                        </li>
+                                        <li class="breadcrumb-item text-gray-500">Edit Produk</li>
+                                    <?php } else if (isset($_GET["tambah"])) { ?>
+                                        <li class="breadcrumb-item">
+                                            <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                                        </li>
+                                        <li class="breadcrumb-item text-gray-500">Tambah Produk</li>
+                                    <?php } ?>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!--end::Secondary button-->
-                <!--begin::Primary button-->
-                <a href="#" class="btn btn-flex btn-center btn-dark btn-sm px-4" data-bs-toggle="modal" data-bs-target="#kt_modal_invite_friends">Reports</a>
-                <!--end::Primary button-->
             </div>
-            <!--end::Actions-->
+            <div class="card-toolbar">
+                <span class="badge badge-<?php if ((isset($_GET['edit'])) and ($edit['Status'] == "Aktif")) {
+                                                echo "success";
+                                            } else {
+                                                echo "danger";
+                                            } ?> fs-6"><?php echo $edit['Status'] ?></span>
+            </div>
         </div>
-        <!--end::Toolbar wrapper-->
     </div>
-    <!--end::Toolbar container-->
 </div>
-<!--end::Toolbar-->
+
+
 <!--begin::Content-->
 <div id="kt_app_content" class="app-content pb-0">
     <!--begin::Products-->
     <div class="card card-flush">
-        <!--begin::Card header-->
-        <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-            <!--begin::Card title-->
+
+        <div class="card-header pt-4 text-end" style="min-height: 0;">
             <div class="card-title">
-                <!--begin::Search-->
                 <div class="d-flex align-items-center position-relative my-1">
-                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-4">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                    </i>
-                    <input type="text" data-kt-ecommerce-product-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Product" />
+                    <div class="align-items-center position-relative fs-6">
+                        <ul class="list-inline">
+                            <li class="list-inline-item"><a href="<?php echo $kehalaman ?>&filter_status=Aktif">AKTIF (<?php echo $hitung_Aktif ?>)</a></li>
+                            <li class="list-inline-item text-primary"> | </li>
+                            <li class="list-inline-item"><a href="<?php echo $kehalaman ?>&filter_status=Terhapus">SAMPAH (<?php echo $hitung_Terhapus ?>)</a></li>
+                        </ul>
+                    </div>
                 </div>
-                <!--end::Search-->
             </div>
-            <!--end::Card title-->
-            <!--begin::Card toolbar-->
-            <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-                <div class="w-100 mw-150px">
-                    <!--begin::Select2-->
-                    <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Status" data-kt-ecommerce-product-filter="status">
-                        <option></option>
-                        <option value="all">All</option>
-                        <option value="published">Published</option>
-                        <option value="scheduled">Scheduled</option>
-                        <option value="inactive">Inactive</option>
-                    </select>
-                    <!--end::Select2-->
-                </div>
-                <!--begin::Add product-->
-                <a href="#" class="btn btn-primary">Add Product</a>
-                <!--end::Add product-->
+            <div class="card-toolbar">
+                <select name="filter" id="filterSelect" class="form-select">
+                    <option <?php if (!(isset($_GET['filter']))) {
+                                echo "selected";
+                            } ?> value="All">Semua</option>
+                    <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Distributor")) {
+                                echo "selected";
+                            } ?> value="Distributor">Distributor</option>
+                    <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Agen")) {
+                                echo "selected";
+                            } ?> value="Agen">Agen</option>
+                </select>
+
+                <script>
+                    document.getElementById('filterSelect').addEventListener('change', function() {
+                        var selectedValue = this.value;
+                        var baseUrl = "<?php echo $kehalaman; ?>"; // Your base URL
+                        if (selectedValue == "All") {
+                            window.location.href = baseUrl;
+                        } else if (selectedValue) {
+                            window.location.href = baseUrl + "&filter=" + encodeURIComponent(selectedValue);
+                        }
+                    });
+                </script>
             </div>
-            <!--end::Card toolbar-->
         </div>
-        <!--end::Card header-->
+
         <!--begin::Card body-->
         <div class="card-body pt-0">
             <!--begin::Table-->

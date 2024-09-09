@@ -353,10 +353,10 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                         $filter_status = "Aktif";
                     }
 
-                    $search_field_where = array("Status");
-                    $search_criteria_where = array("=");
-                    $search_value_where = array("$filter_status");
-                    $search_connector_where = array("");
+                    $search_field_where = array("Status","Nama_Role");
+                    $search_criteria_where = array("=","<>");
+                    $search_value_where = array("$filter_status","Admin");
+                    $search_connector_where = array("AND","");
 
                     $nomor = 0;
 

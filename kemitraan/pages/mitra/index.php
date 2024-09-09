@@ -1,343 +1,44 @@
-<?php
-#-----------------------------------------------------------------------------------
-#GET PAGE
-if (isset($_GET['url_kembali'])) {
-    $url_kembali = $a_hash->decode_link_kembali($_GET['url_kembali']);
-    $kehalaman = "$url_kembali";
-} else {
-    $kehalaman = "?menu=" . $_GET['menu'];
-}
-
-if (isset($_GET['id'])) {
-    $Get_Id_Primary = $a_hash->decode($_GET['id'], $_GET['menu']);
-}
-
-#-----------------------------------------------------------------------------------
-#FUNGSI SIMPAN DATA (CREATE)
-if (isset($_POST['submit_simpan'])) {
-
-    if (!isset($_POST['Profile'])) {
-        $_POST['Profile'] = "Tidak";
-    }
-    if (!isset($_POST['Pembelian'])) {
-        $_POST['Pembelian'] = "Tidak";
-    }
-    if (!isset($_POST['Laporan'])) {
-        $_POST['Laporan'] = "Tidak";
-    }
-    if (!isset($_POST['Konten'])) {
-        $_POST['Konten'] = "Tidak";
-    }
-
-
-    // Determine the initial based on the 'Status_Kemitraan'
-    if (($_POST['Status_Kemitraan'] == "Agen")) {
-        $Initial = "A";
-    } else {
-        $Initial = "D";
-    }
-
-    // Get the current date and time in 'ymdhis' format
-    $dateTime = date('ymdhis');
-
-    // Generate a random 3-digit number
-    $randomNumber = rand(100, 999);
-
-    // BACA DATA TERAKHIR
-    $a_result_terbaru = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_pengguna", "Id_Pengguna");
-    if ($a_result_terbaru['Status'] == "Sukses") {
-        $Id_Auto_Increment = $a_result_terbaru['Hasil'][0]['Id_Pengguna'] + 1;
-    } else {
-        $Id_Auto_Increment = 1;
-    }
-
-    // Step 2: Concatenate all parts to create the unique 'Organisasi_Kode'
-    $Organisasi_Kode = $Initial . $dateTime . $randomNumber . $Id_Auto_Increment;
-
-    if ($_POST['Tanggal_Lahir'] == "") {
-        $_POST['Tanggal_Lahir'] = "0000-00-00";
-    }
-
-    $form_field = array(
-        "Organisasi_Kode",
-        "Username",
-        "Password",
-        "Nama_Depan",
-        "Nama_Belakang",
-        "Nama_Perusahaan",
-        "Status_Kemitraan",
-        "Tempat_Lahir",
-        "Tanggal_Lahir",
-        "Alamat",
-        "Nomor_Telepon",
-        "Email",
-        "No_KTP",
-        "No_NPWP",
-        "Profile",
-        "Pembelian",
-        "Laporan",
-        "Konten",
-        "Tanggal_Registrasi",
-        "Waktu_Simpan_Data",
-        "Waktu_Update_Data",
-        "Status"
-    );
-    $form_value = array(
-        "$Organisasi_Kode",
-        "$_POST[Username]",
-        "$_POST[Password]",
-        "$_POST[Nama_Depan]",
-        "$_POST[Nama_Belakang]",
-        "$_POST[Nama_Perusahaan]",
-        "$_POST[Status_Kemitraan]",
-        "$_POST[Tempat_Lahir]",
-        "$_POST[Tanggal_Lahir]",
-        "$_POST[Alamat]",
-        "$_POST[Nomor_Telepon]",
-        "$_POST[Email]",
-        "$_POST[No_KTP]",
-        "$_POST[No_NPWP]",
-        "$_POST[Profile]",
-        "$_POST[Pembelian]",
-        "$_POST[Laporan]",
-        "$_POST[Konten]",
-        "$Waktu_Sekarang",
-        "$Waktu_Sekarang",
-        "$Waktu_Sekarang",
-        "Aktif"
-    );
-
-    $result = $a_tambah_baca_update_hapus->tambah_data("tb_pengguna", $form_field, $form_value);
-
-    if ($result['Status'] == "Sukses") {
-
-        // INSERT FOTO
-        if ($_FILES['Foto']['size'] <> 0 && $_FILES['Foto']['error'] == 0) {
-
-            $post_file_upload = $_FILES['Foto'];
-            $path_file_upload = $_FILES['Foto']['name'];
-            $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
-            $nama_file_upload = $a_hash->hash_nama_file($Id_Auto_Increment, "_Foto") . "_" . $Id_Auto_Increment . "_Foto";
-            $folder_penyimpanan_file_upload = "assets/images/kemitraan_foto/";
-            $tipe_file_yang_diizikan_file_upload = array("png", "gif", "jpg", "jpeg");
-            $maksimum_ukuran_file_upload = 10000000;
-
-            $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
-
-            if ($result_upload_file['Status'] == "Sukses") {
-                $form_field = array("Foto");
-                $form_value = array("$nama_file_upload.$ext_file_upload");
-                $form_field_where = array("Id_Pengguna");
-                $form_criteria_where = array("=");
-                $form_value_where = array("$Id_Auto_Increment");
-                $form_connector_where = array("");
-
-                $result = $a_tambah_baca_update_hapus->update_data("tb_pengguna", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
-            }
-        }
-
-        echo "<script>alert('Data Tersimpan');document.location.href='$kehalaman'</script>";
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Menyimpan Data');document.location.href='$kehalaman'</script>";
-    }
-}
-
-
-#-----------------------------------------------------------------------------------
-#FUNGSI EDIT DATA (READ)
-
-if (isset($_GET['edit'])) {
-    $result = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
-    if ($result['Status'] == "Sukses") {
-        $edit = $result['Hasil'];
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Membaca Data');document.location.href='$kehalaman'</script>";
-    }
-}
-#-----------------------------------------------------------------------------------
-#FUNGSI UPDATE DATA (UPDATE)
-if (isset($_POST['submit_update'])) {
-
-    if ($_POST['Tanggal_Lahir'] == "") {
-        $_POST['Tanggal_Lahir'] = "0000-00-00";
-    }
-
-    $form_field = array(
-        "Nama_Depan",
-        "Nama_Belakang",
-        "Nama_Perusahaan",
-        "Status_Kemitraan",
-        "Tempat_Lahir",
-        "Tanggal_Lahir",
-        "Alamat",
-        "Nomor_Telepon",
-        "Email",
-        "No_KTP",
-        "No_NPWP",
-        "Profile",
-        "Pembelian",
-        "Laporan",
-        "Konten",
-        "Waktu_Update_Data"
-    );
-    $form_value = array(
-        "$_POST[Nama_Depan]",
-        "$_POST[Nama_Belakang]",
-        "$_POST[Nama_Perusahaan]",
-        "$_POST[Status_Kemitraan]",
-        "$_POST[Tempat_Lahir]",
-        "$_POST[Tanggal_Lahir]",
-        "$_POST[Alamat]",
-        "$_POST[Nomor_Telepon]",
-        "$_POST[Email]",
-        "$_POST[No_KTP]",
-        "$_POST[No_NPWP]",
-        "$_POST[Profile]",
-        "$_POST[Pembelian]",
-        "$_POST[Laporan]",
-        "$_POST[Konten]",
-        "$Waktu_Sekarang"
-    );
-
-    $form_field_where = array("Id_Pengguna");
-    $form_criteria_where = array("=");
-    $form_value_where = array("$Get_Id_Primary");
-    $form_connector_where = array("");
-
-    $result = $a_tambah_baca_update_hapus->update_data("tb_pengguna", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
-
-    if ($result['Status'] == "Sukses") {
-
-        // INSERT FOTO
-        if ($_FILES['Foto']['size'] <> 0 && $_FILES['Foto']['error'] == 0) {
-
-            $post_file_upload = $_FILES['Foto'];
-            $path_file_upload = $_FILES['Foto']['name'];
-            $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
-            $nama_file_upload = $a_hash->hash_nama_file($Get_Id_Primary, "_Foto") . "_" . $Get_Id_Primary . "_Foto";
-            $folder_penyimpanan_file_upload = "assets/images/kemitraan_foto/";
-            $tipe_file_yang_diizikan_file_upload = array("png", "gif", "jpg", "jpeg");
-            $maksimum_ukuran_file_upload = 10000000;
-
-            $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
-
-            if ($result_upload_file['Status'] == "Sukses") {
-                $form_field = array("Foto");
-                $form_value = array("$nama_file_upload.$ext_file_upload");
-                $form_field_where = array("Id_Pengguna");
-                $form_criteria_where = array("=");
-                $form_value_where = array("$Get_Id_Primary");
-                $form_connector_where = array("");
-
-                $result = $a_tambah_baca_update_hapus->update_data("tb_pengguna", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
-            }
-        }
-
-        echo "<script>alert('Data Terupdate');document.location.href='$kehalaman'</script>";
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Mengupdate Data');document.location.href='$kehalaman'</script>";
-    }
-}
-#-----------------------------------------------------------------------------------
-#FUNGSI DELETE DATA (DELETE)
-if (isset($_GET['hapus_data_ke_tong_sampah'])) {
-
-    $result = $a_tambah_baca_update_hapus->hapus_data_ke_tong_sampah("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
-
-    if ($result['Status'] == "Sukses") {
-        echo "<script>document.location.href='$kehalaman'</script>";
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Menghapus Data');document.location.href='$kehalaman'</script>";
-    }
-}
-
-#-----------------------------------------------------------------------------------
-#FUNGSI ARCHIVE DATA (ARCHIVE)
-if (isset($_GET['arsip_data'])) {
-
-    $result = $a_tambah_baca_update_hapus->arsip_data("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
-
-    if ($result['Status'] == "Sukses") {
-        echo "<script>document.location.href='$kehalaman'</script>";
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Memindahkan Data Ke Arsip');document.location.href='$kehalaman'</script>";
-    }
-}
-
-
-#-----------------------------------------------------------------------------------
-#FUNGSI DELETE DATA (DELETE)
-if (isset($_GET['restore_data_dari_tong_sampah'])) {
-
-    $result = $a_tambah_baca_update_hapus->restore_data_dari_tong_sampah("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
-
-    if ($result['Status'] == "Sukses") {
-        echo "<script>document.location.href='$kehalaman'</script>";
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Restore Data Dari Tong Sampah');document.location.href='$kehalaman'</script>";
-    }
-}
-
-#-----------------------------------------------------------------------------------
-#FUNGSI DELETE PREMANENT DATA (DELETE PREMANENT)
-if (isset($_GET['hapus_data_permanen'])) {
-
-    $result = $a_tambah_baca_update_hapus->hapus_data_permanen("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
-    if ($result['Status'] == "Sukses") {
-        echo "<script>document.location.href='$kehalaman'</script>";
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Menghapus Data');document.location.href='$kehalaman'</script>";
-    }
-}
-
-#-----------------------------------------------------------------------------------
-#FUNGSI HITUNG DATA (COUNT)
-
-
-if (isset($_GET['filter'])) {
-    $filter = $_GET['filter'];
-} else {
-    $filter = "";
-}
-
-$count_field_where = array("Status", "Status_Kemitraan");
-$count_criteria_where = array("=", "LIKE");
-$count_connector_where = array("AND", "");
-
-#-----------------------------------------------------------------------------------
-#HITUNG AKTIF
-$count_value_where = array("Aktif", "%$filter%");
-$hitung_Aktif = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_pengguna", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
-$hitung_Aktif = $hitung_Aktif['Hasil'];
-
-#-----------------------------------------------------------------------------------
-#HITUNG TERARSIP
-$count_value_where = array("Terarsip", "%$filter%");
-$hitung_Terarsip = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_pengguna", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
-$hitung_Terarsip = $hitung_Terarsip['Hasil'];
-
-#-----------------------------------------------------------------------------------
-#HITUNG TERHAPUS
-$count_value_where = array("Terhapus", "%$filter%");
-$hitung_Terhapus = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_pengguna", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
-$hitung_Terhapus = $hitung_Terhapus['Hasil'];
-#-----------------------------------------------------------------------------------
-?>
-
+<?php include "function/crud_mitra.php"; ?>
 
 <div class="pt-lg-9">
     <div class="card">
         <div class="card-header">
-            <div class="card-title">
-                <?php if ((isset($_GET["tambah"])) or (isset($_GET["edit"]))) { ?>
-                    <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0"><?php if (isset($_GET["edit"])) {
-                                                                                                                            echo "Edit";
-                                                                                                                        } else {
-                                                                                                                            echo "Tambah";
-                                                                                                                        } ?> Kemitraan</h1>
-                <?php } else { ?>
-                    <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">List Kemitraan</h1>
-                <?php } ?>
+            <div class="">
+                <div id="kt_app_toolbar" class="app-toolbar py-4">
+                    <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack flex-wrap">
+                        <div class="d-flex flex-stack flex-wrap gap-4 w-100">
+                            <div class="page-title d-flex flex-column gap-3 me-3">
+                                <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Mitra</h1>
+                                <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
+                                    <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
+                                        <a href="index.php" class="text-gray-500">
+                                            <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                                    </li>
+                                    <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Mitra</li>
+                                    <li class="breadcrumb-item">
+                                        <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                                    </li>
+                                    <li class="breadcrumb-item text-gray-500"><a href="<?php echo $kehalaman ?>" class="text-gray-800 text-hover-primary">Data Mitra</a></li>
+                                    <?php if (isset($_GET["edit"])) { ?>
+                                        <li class="breadcrumb-item">
+                                            <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                                        </li>
+                                        <li class="breadcrumb-item text-gray-500">Edit Mitra</li>
+                                    <?php } else if (isset($_GET["tambah"])) { ?>
+                                        <li class="breadcrumb-item">
+                                            <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                                        </li>
+                                        <li class="breadcrumb-item text-gray-500">Tambah Mitra</li>
+                                    <?php } ?>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="card-toolbar">
                 <span class="badge badge-<?php if ((isset($_GET['edit'])) and ($edit['Status'] == "Aktif")) {
@@ -351,9 +52,6 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 </div>
 
 <div id="kt_app_content" class="app-content pb-0">
-
-
-
     <script type="text/javascript">
         function konfirmasi_hapus_data_permanen(id) {
             var txt;
@@ -476,13 +174,13 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                                         <label class="required fw-semibold fs-6 mb-2">Username</label>
                                         <input <?php if (isset($_GET['tambah'])) { ?>required <?php } ?> name="Username" type="text" pattern="[a-z0-9_]*" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
                                                                                                                                                                                                                                                                                                         echo $edit['Username'];
-                                                                                                                                                                                                                                                                                                    } ?>" disabled />
+                                                                                                                                                                                                                                                                                                    } ?>" />
                                     </div>
                                     <div class="col-lg-6" <?php if (isset($_GET['edit'])) { ?> style="display:none" <?php } ?>>
                                         <label class="required fw-semibold fs-6 mb-2">Password</label>
                                         <input <?php if (isset($_GET['tambah'])) { ?>required <?php } ?> name="Password" type="password" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
                                                                                                                                                                                                             echo $edit['Password'];
-                                                                                                                                                                                                        } ?>" disabled />
+                                                                                                                                                                                                        } ?>" />
                                     </div>
                                 </div>
 
@@ -555,9 +253,9 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                                     <div class="col-lg-6">
 
                                         <label class="required fw-semibold fs-6 mb-2">Nama Perusahaan</label>
-                                        <input name="Nama_Perusahaan" type="text" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                    echo $edit['Nama_Perusahaan'];
-                                                                                                                                                } ?>" />
+                                        <input required name="Nama_Perusahaan" type="text" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                                            echo $edit['Nama_Perusahaan'];
+                                                                                                                                                        } ?>" />
                                     </div>
 
                                     <div class="col-lg-6">
@@ -664,7 +362,6 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 
         <div class="card py-0">
             <div class="card-header pt-4 text-end" style="min-height: 0;">
-
                 <div class="card-title">
                     <div class="d-flex align-items-center position-relative my-1">
                         <div class="align-items-center position-relative fs-6">
@@ -821,7 +518,9 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                                             <?php } ?>
                                         </div>
                                         <div class="d-flex flex-column">
-                                            <a class="text-gray-800 text-hover-primary mb-1"><?php echo $data['Nama_Depan'] . " " . $data['Nama_Belakang'] ?></a>
+                                            <a class="text-gray-800 text-hover-primary mb-1" href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>">
+                                                <?php echo $data['Nama_Depan'] . " " . $data['Nama_Belakang'] ?>
+                                            </a>
                                             <span><?php echo $data['Nama_Perusahaan'] ?></span>
                                         </div>
                                     </td>
@@ -862,7 +561,7 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                                     </td>
 
                                     <td class="text-center">
-                                        <a href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>" data-id="<?php echo $encode_id; ?>">
+                                        <a href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>">
                                             <i class="ki-solid ki-notepad-edit text-warning fs-2">
                                             </i>
                                         </a>
@@ -896,8 +595,6 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 
 </div>
 
-
-<!-- MODAL EXPORT -->
 <div class="modal fade" id="kt_modal_export_users" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered mw-450px">
         <div class="modal-content">

@@ -47,7 +47,7 @@
                                             <span class="path4"></span>
                                         </i>
                                     </span>
-                                    <span class="menu-title">Semua Data</span>
+                                    <span class="menu-title">Data Mitra</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
@@ -121,19 +121,7 @@
                     <!--end:Menu link-->
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
-                        <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link" href="?menu=produk&tambah" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
-                                <span class="menu-icon">
-                                    <i class="ki-duotone ki-plus fs-1">
-                                    </i>
-                                </span>
-                                <span class="menu-title">Tambah Produk</span>
-                            </a>
-                            <!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item-->
+
 
                         <!--begin:Menu item-->
                         <div class="menu-item">
@@ -148,7 +136,21 @@
                                         <span class="path5"></span>
                                     </i>
                                 </span>
-                                <span class="menu-title">List Produk</span>
+                                <span class="menu-title">Data Produk</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="?menu=produk&tambah" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                <span class="menu-icon">
+                                    <i class="ki-duotone ki-plus fs-1">
+                                    </i>
+                                </span>
+                                <span class="menu-title">Tambah Produk</span>
                             </a>
                             <!--end:Menu link-->
                         </div>
