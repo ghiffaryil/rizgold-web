@@ -262,7 +262,6 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 
                     <button type="button" class="btn btn-sm btn-light-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
                         <i class="ki-duotone ki-plus fs-2"></i>Tambah</button>
-
                 </div>
 
 
@@ -294,7 +293,6 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                 }
 
                 function konfirmasi_hapus_data_ke_tong_sampah(id) {
-
                     var txt;
                     var r = confirm("Apakah Anda Yakin Ingin Menghapus Data Ini ?");
                     if (r == true) {

@@ -54,6 +54,10 @@ if (isset($_POST['submit_simpan'])) {
     // Step 2: Concatenate all parts to create the unique 'Organisasi_Kode'
     $Organisasi_Kode = $Initial . $dateTime . $randomNumber . $Id_Auto_Increment;
 
+    if ($_POST['Tanggal_Lahir'] == "") {
+        $_POST['Tanggal_Lahir'] = "0000-00-00";
+    }
+
     $form_field = array(
         "Organisasi_Kode",
         "Username",
@@ -69,7 +73,6 @@ if (isset($_POST['submit_simpan'])) {
         "Email",
         "No_KTP",
         "No_NPWP",
-        "Foto",
         "Profile",
         "Pembelian",
         "Laporan",
@@ -87,14 +90,13 @@ if (isset($_POST['submit_simpan'])) {
         "$_POST[Nama_Belakang]",
         "$_POST[Nama_Perusahaan]",
         "$_POST[Status_Kemitraan]",
-        "",
-        "0000-00-00",
+        "$_POST[Tempat_Lahir]",
+        "$_POST[Tanggal_Lahir]",
         "$_POST[Alamat]",
         "$_POST[Nomor_Telepon]",
         "$_POST[Email]",
-        "",
-        "",
-        "",
+        "$_POST[No_KTP]",
+        "$_POST[No_NPWP]",
         "$_POST[Profile]",
         "$_POST[Pembelian]",
         "$_POST[Laporan]",
@@ -134,7 +136,6 @@ if (isset($_POST['submit_simpan'])) {
             }
         }
 
-
         echo "<script>alert('Data Tersimpan');document.location.href='$kehalaman'</script>";
     } else {
         echo "<script>alert('Terjadi Kesalahan Saat Menyimpan Data');document.location.href='$kehalaman'</script>";
@@ -146,7 +147,7 @@ if (isset($_POST['submit_simpan'])) {
 #FUNGSI EDIT DATA (READ)
 
 if (isset($_GET['edit'])) {
-    $result = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Role", $Get_Id_Primary);
+    $result = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
     if ($result['Status'] == "Sukses") {
         $edit = $result['Hasil'];
     } else {
@@ -157,42 +158,48 @@ if (isset($_GET['edit'])) {
 #FUNGSI UPDATE DATA (UPDATE)
 if (isset($_POST['submit_update'])) {
 
-    $Get_Id_Primary = $_POST['Id_Role'];
-
-    if (!isset($_POST['Profile'])) {
-        $_POST['Profile'] = "Tidak";
-    }
-    if (!isset($_POST['Pembelian'])) {
-        $_POST['Pembelian'] = "Tidak";
-    }
-    if (!isset($_POST['Laporan'])) {
-        $_POST['Laporan'] = "Tidak";
-    }
-    if (!isset($_POST['Konten'])) {
-        $_POST['Konten'] = "Tidak";
+    if ($_POST['Tanggal_Lahir'] == "") {
+        $_POST['Tanggal_Lahir'] = "0000-00-00";
     }
 
     $form_field = array(
-        "Nama_Role",
-        "Deskripsi",
-        "Baca",
-        "Tambah",
-        "Ubah",
-        "Hapus",
+        "Nama_Depan",
+        "Nama_Belakang",
+        "Nama_Perusahaan",
+        "Status_Kemitraan",
+        "Tempat_Lahir",
+        "Tanggal_Lahir",
+        "Alamat",
+        "Nomor_Telepon",
+        "Email",
+        "No_KTP",
+        "No_NPWP",
+        "Profile",
+        "Pembelian",
+        "Laporan",
+        "Konten",
         "Waktu_Update_Data"
     );
-
     $form_value = array(
-        "$_POST[Nama_Role]",
-        "$_POST[Deskripsi]",
-        "$_POST[Pembelian]",
+        "$_POST[Nama_Depan]",
+        "$_POST[Nama_Belakang]",
+        "$_POST[Nama_Perusahaan]",
+        "$_POST[Status_Kemitraan]",
+        "$_POST[Tempat_Lahir]",
+        "$_POST[Tanggal_Lahir]",
+        "$_POST[Alamat]",
+        "$_POST[Nomor_Telepon]",
+        "$_POST[Email]",
+        "$_POST[No_KTP]",
+        "$_POST[No_NPWP]",
         "$_POST[Profile]",
+        "$_POST[Pembelian]",
         "$_POST[Laporan]",
         "$_POST[Konten]",
-        $Waktu_Sekarang
+        "$Waktu_Sekarang"
     );
 
-    $form_field_where = array("Id_Role");
+    $form_field_where = array("Id_Pengguna");
     $form_criteria_where = array("=");
     $form_value_where = array("$Get_Id_Primary");
     $form_connector_where = array("");
@@ -200,6 +207,32 @@ if (isset($_POST['submit_update'])) {
     $result = $a_tambah_baca_update_hapus->update_data("tb_pengguna", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
 
     if ($result['Status'] == "Sukses") {
+
+        // INSERT FOTO
+        if ($_FILES['Foto']['size'] <> 0 && $_FILES['Foto']['error'] == 0) {
+
+            $post_file_upload = $_FILES['Foto'];
+            $path_file_upload = $_FILES['Foto']['name'];
+            $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
+            $nama_file_upload = $a_hash->hash_nama_file($Get_Id_Primary, "_Foto") . "_" . $Get_Id_Primary . "_Foto";
+            $folder_penyimpanan_file_upload = "assets/images/kemitraan_foto/";
+            $tipe_file_yang_diizikan_file_upload = array("png", "gif", "jpg", "jpeg");
+            $maksimum_ukuran_file_upload = 10000000;
+
+            $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
+
+            if ($result_upload_file['Status'] == "Sukses") {
+                $form_field = array("Foto");
+                $form_value = array("$nama_file_upload.$ext_file_upload");
+                $form_field_where = array("Id_Pengguna");
+                $form_criteria_where = array("=");
+                $form_value_where = array("$Get_Id_Primary");
+                $form_connector_where = array("");
+
+                $result = $a_tambah_baca_update_hapus->update_data("tb_pengguna", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
+            }
+        }
+
         echo "<script>alert('Data Terupdate');document.location.href='$kehalaman'</script>";
     } else {
         echo "<script>alert('Terjadi Kesalahan Saat Mengupdate Data');document.location.href='$kehalaman'</script>";
@@ -209,7 +242,7 @@ if (isset($_POST['submit_update'])) {
 #FUNGSI DELETE DATA (DELETE)
 if (isset($_GET['hapus_data_ke_tong_sampah'])) {
 
-    $result = $a_tambah_baca_update_hapus->hapus_data_ke_tong_sampah("tb_pengguna", "Id_Role", $Get_Id_Primary);
+    $result = $a_tambah_baca_update_hapus->hapus_data_ke_tong_sampah("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
 
     if ($result['Status'] == "Sukses") {
         echo "<script>document.location.href='$kehalaman'</script>";
@@ -222,7 +255,7 @@ if (isset($_GET['hapus_data_ke_tong_sampah'])) {
 #FUNGSI ARCHIVE DATA (ARCHIVE)
 if (isset($_GET['arsip_data'])) {
 
-    $result = $a_tambah_baca_update_hapus->arsip_data("tb_pengguna", "Id_Role", $Get_Id_Primary);
+    $result = $a_tambah_baca_update_hapus->arsip_data("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
 
     if ($result['Status'] == "Sukses") {
         echo "<script>document.location.href='$kehalaman'</script>";
@@ -234,9 +267,9 @@ if (isset($_GET['arsip_data'])) {
 
 #-----------------------------------------------------------------------------------
 #FUNGSI DELETE DATA (DELETE)
-if (isset($_GET['restore'])) {
+if (isset($_GET['restore_data_dari_tong_sampah'])) {
 
-    $result = $a_tambah_baca_update_hapus->restore_data_dari_tong_sampah("tb_pengguna", "Id_Role", $Get_Id_Primary);
+    $result = $a_tambah_baca_update_hapus->restore_data_dari_tong_sampah("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
 
     if ($result['Status'] == "Sukses") {
         echo "<script>document.location.href='$kehalaman'</script>";
@@ -249,7 +282,7 @@ if (isset($_GET['restore'])) {
 #FUNGSI DELETE PREMANENT DATA (DELETE PREMANENT)
 if (isset($_GET['hapus_data_permanen'])) {
 
-    $result = $a_tambah_baca_update_hapus->hapus_data_permanen("tb_pengguna", "Id_Role", $Get_Id_Primary);
+    $result = $a_tambah_baca_update_hapus->hapus_data_permanen("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
     if ($result['Status'] == "Sukses") {
         echo "<script>document.location.href='$kehalaman'</script>";
     } else {
@@ -297,10 +330,21 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
         <div class="card-header">
             <div class="card-title">
                 <?php if ((isset($_GET["tambah"])) or (isset($_GET["edit"]))) { ?>
-                    <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Tambah Kemitraan</h1>
+                    <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0"><?php if (isset($_GET["edit"])) {
+                                                                                                                            echo "Edit";
+                                                                                                                        } else {
+                                                                                                                            echo "Tambah";
+                                                                                                                        } ?> Kemitraan</h1>
                 <?php } else { ?>
                     <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">List Kemitraan</h1>
                 <?php } ?>
+            </div>
+            <div class="card-toolbar">
+                <span class="badge badge-<?php if ((isset($_GET['edit'])) and ($edit['Status'] == "Aktif")) {
+                                                echo "success";
+                                            } else {
+                                                echo "danger";
+                                            } ?> fs-6"><?php echo $edit['Status'] ?></span>
             </div>
         </div>
     </div>
@@ -308,16 +352,92 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 
 <div id="kt_app_content" class="app-content pb-0">
 
-    <?php if ((isset($_GET["tambah"])) or (isset($_GET["edit"]))) { ?>
 
+
+    <script type="text/javascript">
+        function konfirmasi_hapus_data_permanen(id) {
+            var txt;
+            var r = confirm("Apakah Anda Yakin Ingin Menghapus Permanen Data Ini ?");
+            if (r == true) {
+                document.location.href = '<?php echo $kehalaman ?>&hapus_data_permanen&id=' + id
+            } else {
+
+            }
+        }
+
+        function konfirmasi_hapus_data_ke_tong_sampah(id) {
+            var txt;
+            var r = confirm("Apakah Anda Yakin Ingin Menghapus Data Ini ?");
+            if (r == true) {
+                document.location.href = '<?php echo $kehalaman ?>&hapus_data_ke_tong_sampah&id=' + id
+            } else {
+
+            }
+        }
+
+        function konfirmasi_arsip_data(id) {
+            var txt;
+            var r = confirm("Apakah Anda Yakin Ingin Mengarsip Data Ini ?");
+            if (r == true) {
+                document.location.href = '<?php echo $kehalaman ?>&arsip_data&id=' + id
+            } else {
+
+            }
+        }
+
+        function konfirmasi_restore_data_dari_arsip(id) {
+            var txt;
+            var r = confirm("Apakah Anda Yakin Ingin Mengeluarkan Data Ini Dari Arsip ?");
+            if (r == true) {
+                document.location.href = '<?php echo $kehalaman ?>&restore_data_dari_arsip&id=' + id
+            } else {
+
+            }
+        }
+
+        function konfirmasi_restore_data_dari_tong_sampah(id) {
+            var txt;
+            var r = confirm("Apakah Anda Yakin Ingin Merestore Data Ini Dari Tong Sampah ?");
+            if (r == true) {
+                document.location.href = '<?php echo $kehalaman ?>&restore_data_dari_tong_sampah&id=' + id
+            } else {
+
+            }
+        }
+    </script>
+
+    <?php if ((isset($_GET["tambah"])) or (isset($_GET["edit"]))) { ?>
         <div class="card py-4">
             <div class="card-body">
 
-
                 <form id="" method="POST" enctype="multipart/form-data">
                     <div class="d-flex flex-column">
-                        <div class="row mb-7">
+                        <div class="row">
+                            <div class="text-end">
+                                <?php if (isset($_GET['edit'])) { ?>
 
+                                    <?php $encode_id = $a_hash->encode($edit['Id_Pengguna'], $_GET['menu']); ?>
+
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item">
+                                            <?php if (($edit['Status'] == "Terarsip") or ($edit['Status'] == "Terhapus")) { ?>
+                                                <a href="#" onclick="konfirmasi_restore_data_dari_tong_sampah('<?php echo $encode_id; ?>')"><i class="ki-solid ki-arrows-circle text-primary"> </i>Restore</a>
+                                            <?php } ?>
+
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <?php if ($edit['Status'] == "Terhapus") { ?>
+                                                <a href="#" class="text-danger" onclick="konfirmasi_hapus_data_permanen('<?php echo $encode_id; ?>')"><i class="ki-solid ki-trash text-danger"> </i>Hapus Permanen </a>
+                                            <?php } elseif (($edit['Status'] == "Aktif") or ($edit['Status'] == "Terarsip")) { ?>
+                                                <a href="#" class="text-danger" onclick="konfirmasi_hapus_data_ke_tong_sampah('<?php echo $encode_id; ?>')"><i class="ki-solid ki-trash text-danger"> </i>Hapus </a>
+                                            <?php } ?>
+                                        </li>
+                                    </ul>
+                                <?php } ?>
+                            </div>
+                        </div>
+
+                        <div class="row mb-7">
                             <div class="col-lg-3">
                                 <label class="d-block fw-semibold fs-2 mb-5">Foto Mitra</label>
                                 <style>
@@ -331,7 +451,7 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                                 </style>
                                 <div class="image-input image-input-outline image-input-placeholder" data-kt-image-input="false">
 
-                                    <div class="image-input-wrapper w-250px h-250px" style="background-image: url(assets/media/svg/files/blank-image.svg);"></div>
+                                    <div class="image-input-wrapper w-250px h-250px" style="<?php if (isset($_GET['edit']) and ($edit['Foto'] != "")) { ?> background-image: url(assets/images/kemitraan_foto/<?php echo $edit['Foto'] ?>); <?php } else { ?> background-image: url(assets/media/svg/files/blank-image.svg); <?php } ?>"></div>
                                     <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
                                         <i class="ki-duotone ki-pencil fs-7">
                                             <span class="path1"></span>
@@ -352,24 +472,32 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 
                             <div class="col-lg-9">
                                 <div class="row mb-7">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6" <?php if (isset($_GET['edit'])) { ?> style="display:none" <?php } ?>>
                                         <label class="required fw-semibold fs-6 mb-2">Username</label>
-                                        <input required name="Username" type="text" pattern="[a-z0-9_]*" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Masukkan Username" />
+                                        <input <?php if (isset($_GET['tambah'])) { ?>required <?php } ?> name="Username" type="text" pattern="[a-z0-9_]*" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                                                                                                                                                                                        echo $edit['Username'];
+                                                                                                                                                                                                                                                                                                    } ?>" disabled />
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6" <?php if (isset($_GET['edit'])) { ?> style="display:none" <?php } ?>>
                                         <label class="required fw-semibold fs-6 mb-2">Password</label>
-                                        <input required name="Password" type="password" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Masukkan Password" />
+                                        <input <?php if (isset($_GET['tambah'])) { ?>required <?php } ?> name="Password" type="password" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                                                                                            echo $edit['Password'];
+                                                                                                                                                                                                        } ?>" disabled />
                                     </div>
                                 </div>
 
                                 <div class="row mb-7">
                                     <div class="col-lg-6">
                                         <label class="required fw-semibold fs-6 mb-2">Nama Depan</label>
-                                        <input required name="Nama_Depan" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Masukkan Nama Depan" />
+                                        <input required name="Nama_Depan" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                                                                                                                                echo $edit['Nama_Depan'];
+                                                                                                                                                                                                                                            } ?>" />
                                     </div>
                                     <div class="col-lg-6">
                                         <label class="required fw-semibold fs-6 mb-2">Nama Belakang</label>
-                                        <input required name="Nama_Belakang" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Masukkan Nama Belakang" />
+                                        <input required name="Nama_Belakang" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                                                                                                                                    echo $edit['Nama_Belakang'];
+                                                                                                                                                                                                                                                } ?>" />
                                     </div>
                                 </div>
 
@@ -377,15 +505,49 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                                     <div class="col-lg-6">
                                         <label class="required fw-semibold fs-6 mb-2">Email</label>
                                         <input type="email" name="Email" id="email" class="form-control form-control-solid mb-3 mb-lg-0"
-                                            placeholder="Masukkan Email"
                                             oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9@._+-]/g, '')"
                                             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                             title="Masukkan email yang valid (e.g., example@domain.com)"
-                                            required />
+                                            required
+                                            value="<?php if (isset($_GET["edit"])) {
+                                                        echo $edit['Email'];
+                                                    } ?>" />
                                     </div>
                                     <div class="col-lg-6">
                                         <label class="required fw-semibold fs-6 mb-2">Nomor Telepon</label>
-                                        <input name="Nomor_Telepon" type="text" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Masukkan Nomor Telepon" />
+                                        <input name="Nomor_Telepon" type="text" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                                echo $edit['Nomor_Telepon'];
+                                                                                                                                            } ?>" />
+                                    </div>
+                                </div>
+
+                                <div class="row mb-7">
+                                    <div class="col-lg-6">
+                                        <label class="fw-semibold fs-6 mb-2">Tempat Lahir</label>
+                                        <input name="Tempat_Lahir" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                                                                                                                            echo $edit['Tempat_Lahir'];
+                                                                                                                                                                                                                                        } ?>" />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="fw-semibold fs-6 mb-2">Tanggal Lahir</label>
+                                        <input name="Tanggal_Lahir" type="date" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                                echo $edit['Tanggal_Lahir'];
+                                                                                                                                            } ?>" />
+                                    </div>
+                                </div>
+
+                                <div class="row mb-7">
+                                    <div class="col-lg-6">
+                                        <label class="fw-semibold fs-6 mb-2">No KTP</label>
+                                        <input name="No_KTP" type="text" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                                                                                                    echo $edit['No_KTP'];
+                                                                                                                                                                                                                } ?>" />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label class="fw-semibold fs-6 mb-2">No NPWP</label>
+                                        <input name="No_NPWP" type="text" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                            echo $edit['No_NPWP'];
+                                                                                                                                        } ?>" />
                                     </div>
                                 </div>
 
@@ -393,22 +555,28 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                                     <div class="col-lg-6">
 
                                         <label class="required fw-semibold fs-6 mb-2">Nama Perusahaan</label>
-                                        <input name="Nama_Perusahaan" type="text" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Masukkan Nama Perusahaan/Toko/Unit Bisnis" />
+                                        <input name="Nama_Perusahaan" type="text" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                                    echo $edit['Nama_Perusahaan'];
+                                                                                                                                                } ?>" />
                                     </div>
 
                                     <div class="col-lg-6">
                                         <label class="required fw-semibold fs-6 mb-2">Status Kemitraan</label>
                                         <select name="Status_Kemitraan" required class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
-                                            <option></option>
-                                            <option value="Distributor">Distributor</option>
-                                            <option value="Agen">Agen</option>
+                                            <?php if (isset($_GET["edit"])) {
+                                            ?><option value="<?php echo  $edit['Status_Kemitraan']; ?>"><?php echo  $edit['Status_Kemitraan']; ?></option><?php
+                                                                                                                                                        } ?>"
+                                                <option value="Distributor">Distributor</option>
+                                                <option value="Agen">Agen</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="fv-row mb-7">
                                     <label class="required fw-semibold fs-6 mb-2">Alamat</label>
-                                    <textarea name="Alamat" class="form-control form-control-solid mb-3 mb-lg-0" rows="3"></textarea>
+                                    <textarea name="Alamat" class="form-control form-control-solid mb-3 mb-lg-0" rows="3"><?php if (isset($_GET["edit"])) {
+                                                                                                                                echo $edit['Alamat'];
+                                                                                                                            } ?></textarea>
                                 </div>
 
                                 <hr>
@@ -417,7 +585,9 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                                     <label class="required fw-semibold fs-6 mb-5">Hak Akses</label>
                                     <div class="d-flex fv-row">
                                         <div class="form-check form-check-custom form-check-solid">
-                                            <input class="form-check-input me-3" name="Profile" type="checkbox" value="Iya" />
+                                            <input class="form-check-input me-3" name="Profile" type="checkbox" value="Iya" <?php if ((isset($_GET["edit"])) and $edit['Profile'] == "Iya") {
+                                                                                                                                echo "checked";
+                                                                                                                            } ?> />
                                             <label class="form-check-label">
                                                 <div class="fw-bold text-gray-800">Edit Profile</div>
                                                 <div class="text-gray-600">User mendapat hak akses untuk mengedit profile</div>
@@ -427,7 +597,9 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                                     <div class='separator separator-dashed my-5'></div>
                                     <div class="d-flex fv-row">
                                         <div class="form-check form-check-custom form-check-solid">
-                                            <input class="form-check-input me-3" name="Pembelian" type="checkbox" value="Iya" />
+                                            <input class="form-check-input me-3" name="Pembelian" type="checkbox" value="Iya" <?php if ((isset($_GET["edit"])) and $edit['Pembelian'] == "Iya") {
+                                                                                                                                    echo "checked";
+                                                                                                                                } ?> />
                                             <label class="form-check-label">
                                                 <div class="fw-bold text-gray-800">Pembelian</div>
                                                 <div class="text-gray-600">User mendapat hak akses untuk melakukan pembelian produk</div>
@@ -437,7 +609,9 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                                     <div class='separator separator-dashed my-5'></div>
                                     <div class="d-flex fv-row">
                                         <div class="form-check form-check-custom form-check-solid">
-                                            <input class="form-check-input me-3" name="Laporan" type="checkbox" value="Iya" />
+                                            <input class="form-check-input me-3" name="Laporan" type="checkbox" value="Iya" <?php if ((isset($_GET["edit"])) and $edit['Laporan'] == "Iya") {
+                                                                                                                                echo "checked";
+                                                                                                                            } ?> />
                                             <label class="form-check-label">
                                                 <div class="fw-bold text-gray-800">Laporan</div>
                                                 <div class="text-gray-600">User mendapat hak akses untuk mendownload laporan</div>
@@ -447,7 +621,9 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                                     <div class='separator separator-dashed my-5'></div>
                                     <div class="d-flex fv-row">
                                         <div class="form-check form-check-custom form-check-solid">
-                                            <input class="form-check-input me-3" name="Konten" type="checkbox" value="Iya" />
+                                            <input class="form-check-input me-3" name="Konten" type="checkbox" value="Iya" <?php if ((isset($_GET["edit"])) and $edit['Konten'] == "Iya") {
+                                                                                                                                echo "checked";
+                                                                                                                            } ?> />
                                             <label class="form-check-label">
                                                 <div class="fw-bold text-gray-800">Konten</div>
                                                 <div class="text-gray-600">User mendapat hak akses untuk mengambil file-file konten</div>
@@ -462,9 +638,18 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                             <hr>
                             <div class="pt-5 col-lg-12 text-center">
                                 <a href="<?php echo $kehalaman ?>"><button type="button" class="btn btn-light-danger me-3">Kembali</button></a>
-                                <button type="submit" class="btn btn-primary" name="submit_simpan">
-                                    <span class="indicator-label">Simpan</span>
-                                </button>
+                                <?php if (isset($_GET['edit'])) {
+                                ?>
+                                    <button type="submit" class="btn btn-primary" name="submit_update">
+                                        <span class="indicator-label">Ubah</span>
+                                    </button>
+                                <?php
+                                } else {
+                                ?>
+                                    <button type="submit" class="btn btn-primary" name="submit_simpan">
+                                        <span class="indicator-label">Simpan</span>
+                                    </button>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
@@ -547,63 +732,7 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                 </div>
             </div>
 
-
             <div class="card-body py-4">
-
-
-                <script type="text/javascript">
-                    function konfirmasi_hapus_data_permanen(id) {
-                        var txt;
-                        var r = confirm("Apakah Anda Yakin Ingin Menghapus Permanen Data Ini ?");
-                        if (r == true) {
-                            document.location.href = '<?php echo $kehalaman ?>&hapus_data_permanen&id=' + id
-                        } else {
-
-                        }
-                    }
-
-                    function konfirmasi_hapus_data_ke_tong_sampah(id) {
-
-                        var txt;
-                        var r = confirm("Apakah Anda Yakin Ingin Menghapus Data Ini ?");
-                        if (r == true) {
-                            document.location.href = '<?php echo $kehalaman ?>&hapus_data_ke_tong_sampah&id=' + id
-                        } else {
-
-                        }
-                    }
-
-                    function konfirmasi_arsip_data(id) {
-                        var txt;
-                        var r = confirm("Apakah Anda Yakin Ingin Mengarsip Data Ini ?");
-                        if (r == true) {
-                            document.location.href = '<?php echo $kehalaman ?>&arsip_data&id=' + id
-                        } else {
-
-                        }
-                    }
-
-                    function konfirmasi_restore_data_dari_arsip(id) {
-                        var txt;
-                        var r = confirm("Apakah Anda Yakin Ingin Mengeluarkan Data Ini Dari Arsip ?");
-                        if (r == true) {
-                            document.location.href = '<?php echo $kehalaman ?>&restore_data_dari_arsip&id=' + id
-                        } else {
-
-                        }
-                    }
-
-                    function konfirmasi_restore_data_dari_tong_sampah(id) {
-                        var txt;
-                        var r = confirm("Apakah Anda Yakin Ingin Merestore Data Ini Dari Tong Sampah ?");
-                        if (r == true) {
-                            document.location.href = '<?php echo $kehalaman ?>&restore_data_dari_tong_sampah&id=' + id
-                        } else {
-
-                        }
-                    }
-                </script>
-
                 <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
                     <thead>
                         <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
@@ -612,10 +741,11 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                             <th class="">Nomor Telepon</th>
                             <th class="">Email</th>
                             <th class="">Kemitraan</th>
-                            <th class="text-center ">Profile</th>
-                            <th class="text-center ">Pembelian</th>
-                            <th class="text-center ">Laporan</th>
-                            <th class="text-center ">Konten</th>
+                            <th class="text-center">Profile</th>
+                            <th class="text-center">Pembelian</th>
+                            <th class="text-center">Laporan</th>
+                            <th class="text-center">Konten</th>
+                            <th class="text-center">Tindakan</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 fw-semibold">
@@ -645,9 +775,8 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                             $data_hasil = $result['Hasil'];
 
                             foreach ($data_hasil as $data) {
-                                $nomor++; ?>
-
-                                <?php $encode_id = $a_hash->encode($data['Id_Role'], $_GET['menu']); ?>
+                                $nomor++;
+                                $encode_id = $a_hash->encode($data['Id_Pengguna'], $_GET['menu']); ?>
 
                                 <tr>
                                     <td>
@@ -692,14 +821,14 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                                             <?php } ?>
                                         </div>
                                         <div class="d-flex flex-column">
-                                            <a href="#" class="text-gray-800 text-hover-primary mb-1"><?php echo $data['Nama_Depan'] . " " . $data['Nama_Belakang'] ?></a>
+                                            <a class="text-gray-800 text-hover-primary mb-1"><?php echo $data['Nama_Depan'] . " " . $data['Nama_Belakang'] ?></a>
                                             <span><?php echo $data['Nama_Perusahaan'] ?></span>
                                         </div>
                                     </td>
                                     <td><?php echo $data['Nomor_Telepon'] ?></td>
                                     <td><?php echo $data['Email'] ?></td>
                                     <td><span class="badge <?php if ($data['Status_Kemitraan'] == "Agen") {
-                                                                echo 'badge-warning';
+                                                                echo 'badge-info';
                                                             } else {
                                                                 echo 'badge-primary';
                                                             } ?>"><?php echo $data['Status_Kemitraan'] ?></span></td>
@@ -732,6 +861,25 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
                                                                 } ?> fw-bold"><?php echo $data['Konten'] ?></div>
                                     </td>
 
+                                    <td class="text-center">
+                                        <a href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>" data-id="<?php echo $encode_id; ?>">
+                                            <i class="ki-solid ki-notepad-edit text-warning fs-2">
+                                            </i>
+                                        </a>
+                                        <?php if ($filter_status == "Terhapus") { ?>
+                                            <a href="#" onclick="konfirmasi_hapus_data_permanen('<?php echo $encode_id; ?>')"><i class="ki-solid ki-trash text-danger fs-2">
+                                                </i></a>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <a href="#" onclick="konfirmasi_hapus_data_ke_tong_sampah('<?php echo $encode_id; ?>')"><i class="ki-solid ki-trash text-danger fs-2">
+
+                                                </i></a>
+                                        <?php
+                                        }
+                                        ?>
+                                    </td>
+
                                 </tr>
 
                         <?php
@@ -746,4 +894,40 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
     <?php } ?>
 
 
+</div>
+
+
+<!-- MODAL EXPORT -->
+<div class="modal fade" id="kt_modal_export_users" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-450px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="fw-bold">Export Data</h2>
+                <div class="btn btn-icon btn-sm btn-active-icon-danger" data-bs-dismiss="modal">
+                    <i class="ki-duotone ki-cross fs-1">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                </div>
+            </div>
+            <div class="modal-body scroll-y">
+                <form id="kt_modal_export_users_form" class="form" action="">
+                    <div class="fv-row mb-10">
+                        <label class="required fs-6 fw-semibold form-label mb-2">Pilih Format:</label>
+                        <select name="format" data-control="select2" data-placeholder="Pilih format export" data-hide-search="true" class="form-select form-select-solid fw-bold">
+                            <option></option>
+                            <option value="excel">Excel</option>
+                            <option value="pdf">PDF</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-sm btn-light me-3" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-sm btn-primary" data-kt-users-modal-action="submit">
+                            <span class="indicator-label">Export</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
