@@ -11,8 +11,8 @@ if (isset($_GET['menu'])) {
 			include "pages/produk/index.php";
 			break;
 		
-		case 'pengaturan':
-			include "pages/pengaturan/index.php";
+		case 'role':
+			include "pages/pengaturan/role.php";
 			break;
 
 		case 'laporan':

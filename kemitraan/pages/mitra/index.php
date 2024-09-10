@@ -104,6 +104,7 @@
         }
     </script>
 
+    <!-- FORM ADD -->
     <?php if ((isset($_GET["tambah"])) or (isset($_GET["edit"]))) { ?>
         <div class="card py-4">
             <div class="card-body">
@@ -119,7 +120,7 @@
                                     <ul class="list-inline">
                                         <li class="list-inline-item">
                                             <?php if (($edit['Status'] == "Terarsip") or ($edit['Status'] == "Terhapus")) { ?>
-                                                <a href="#" onclick="konfirmasi_restore_data_dari_tong_sampah('<?php echo $encode_id; ?>')"><i class="ki-solid ki-arrows-circle text-primary"> </i>Restore</a>
+                                                <a href="#" onclick="konfirmasi_restore_data_dari_tong_sampah('<?php echo $encode_id; ?>')"><i class="ki-solid ki-arrow-circle-left text-primary"> </i>Restore</a>
                                             <?php } ?>
 
                                         </li>
@@ -150,14 +151,14 @@
                                 <div class="image-input image-input-outline image-input-placeholder" data-kt-image-input="false">
 
                                     <div class="image-input-wrapper w-250px h-250px" style="<?php if (isset($_GET['edit']) and ($edit['Foto'] != "")) { ?> background-image: url(assets/images/kemitraan_foto/<?php echo $edit['Foto'] ?>); <?php } else { ?> background-image: url(assets/media/svg/files/blank-image.svg); <?php } ?>"></div>
-                                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Ubah Foto">
                                         <i class="ki-duotone ki-pencil fs-7">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                         </i>
                                         <input type="file" name="Foto" accept=".png, .jpg, .jpeg" />
                                     </label>
-                                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Batal">
                                         <i class="ki-duotone ki-cross fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -355,14 +356,16 @@
 
             </div>
         </div>
-
-
     <?php } ?>
-    <?php if (!((isset($_GET["tambah"])) or (isset($_GET["edit"])))) { ?>
 
+    <!-- FORM DATA TABLE -->
+    <?php if (!((isset($_GET["tambah"])) or (isset($_GET["edit"])))) { ?>
         <div class="card py-0">
             <div class="card-header pt-4 text-end" style="min-height: 0;">
                 <div class="card-title">
+                    <h1>Data Mitra</h1>
+                </div>
+                <div class="card-toolbar">
                     <div class="d-flex align-items-center position-relative my-1">
                         <div class="align-items-center position-relative fs-6">
                             <ul class="list-inline">
@@ -373,50 +376,54 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-toolbar">
-                    <select name="filter" id="filterSelect" class="form-select">
-                        <option <?php if (!(isset($_GET['filter']))) {
-                                    echo "selected";
-                                } ?> value="All">Semua</option>
-                        <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Distributor")) {
-                                    echo "selected";
-                                } ?> value="Distributor">Distributor</option>
-                        <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Agen")) {
-                                    echo "selected";
-                                } ?> value="Agen">Agen</option>
-                    </select>
-
-                    <script>
-                        document.getElementById('filterSelect').addEventListener('change', function() {
-                            var selectedValue = this.value;
-                            var baseUrl = "<?php echo $kehalaman; ?>"; // Your base URL
-                            if (selectedValue == "All") {
-                                window.location.href = baseUrl;
-                            } else if (selectedValue) {
-                                window.location.href = baseUrl + "&filter=" + encodeURIComponent(selectedValue);
-                            }
-                        });
-                    </script>
-                </div>
             </div>
 
             <div class="card-header border-0 pt-6">
                 <div class="card-title">
                     <div class="d-flex align-items-center position-relative my-1">
+
+                        <select name="filter" id="filterSelect" class="form-select form-select-solid">
+                            <option <?php if (!(isset($_GET['filter']))) {
+                                        echo "selected";
+                                    } ?> value="All">Semua</option>
+                            <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Distributor")) {
+                                        echo "selected";
+                                    } ?> value="Distributor">Distributor</option>
+                            <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Agen")) {
+                                        echo "selected";
+                                    } ?> value="Agen">Agen</option>
+                        </select>
+
+                        <script>
+                            document.getElementById('filterSelect').addEventListener('change', function() {
+                                var selectedValue = this.value;
+                                var baseUrl = "<?php echo $kehalaman; ?>"; // Your base URL
+                                if (selectedValue == "All") {
+                                    window.location.href = baseUrl;
+                                } else if (selectedValue) {
+                                    <?php if (isset($_GET['filter_status'])) { ?>
+                                        window.location.href = baseUrl + "&filter_status=<?php echo $_GET['filter_status'] ?>&filter=" + encodeURIComponent(selectedValue);
+                                    <?php } else { ?>
+                                        window.location.href = baseUrl + "&filter=" + encodeURIComponent(selectedValue);
+                                    <?php } ?>
+                                }
+                            });
+                        </script>
+                    </div>
+
+                    &nbsp;&nbsp;
+
+                    <div class="d-flex align-items-center position-relative my-1">
                         <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
                             <span class="path1"></span>
                             <span class="path2"></span>
                         </i>
-                        <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search user" />
+                        <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search" />
                     </div>
                 </div>
+
                 <div class="card-toolbar">
                     <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                        <button type="button" class="btn btn-sm btn-light me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
-                            <i class="ki-duotone ki-exit-up fs-2">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                            </i>Export</button>
                         <a href="<?php echo $kehalaman ?>&tambah" class="btn btn-sm btn-light-primary">
                             <i class="ki-duotone ki-plus fs-2"></i>Tambah</a>
                     </div>
@@ -447,184 +454,129 @@
                     </thead>
                     <tbody class="text-gray-600 fw-semibold">
                         <?php
-                        if (isset($_GET['filter_status'])) {
-                            $filter_status = $_GET['filter_status'];
-                        } else {
-                            $filter_status = "Aktif";
-                        }
 
-                        if (isset($_GET['filter'])) {
-                            $filter = $_GET['filter'];
-                        } else {
-                            $filter = "";
-                        }
-
-                        $search_field_where = array("Status", "Status_Kemitraan");
-                        $search_criteria_where = array("=", "LIKE");
-                        $search_value_where = array("$filter_status", "%$filter%");
-                        $search_connector_where = array("AND", "");
-
+                        $search_controller = new Search_Controller();
+                        $filter_status = isset($_GET['filter_status']) ? $_GET['filter_status'] : "Aktif";
+                        $filter = isset($_GET['filter']) ? $_GET['filter'] : "";
+                        $data_hasil = $search_controller->select_search_filter($filter_status, $filter);
                         $nomor = 0;
 
-                        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pengguna", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                        foreach ($data_hasil as $data) {
+                            $nomor++;
+                            $encode_id = $a_hash->encode($data['Id_Pengguna'], $_GET['menu']); ?>
 
-                        if ($result['Status'] == "Sukses") {
-                            $data_hasil = $result['Hasil'];
+                            <tr>
+                                <td>
+                                    <?php echo $nomor ?>
+                                </td>
+                                <td class="d-flex align-items-center">
+                                    <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
 
-                            foreach ($data_hasil as $data) {
-                                $nomor++;
-                                $encode_id = $a_hash->encode($data['Id_Pengguna'], $_GET['menu']); ?>
+                                        <?php if ($data['Foto'] == "") {
+                                            // Array of random background colors
+                                            $colors = [
+                                                'bg-primary',
+                                                'bg-success',
+                                                'bg-danger',
+                                                'bg-info',
+                                                'bg-dark',
+                                                'bg-warning',
+                                                'bg-secondary',
+                                                'bg-light-primary',
+                                                'bg-light-success',
+                                                'bg-light-danger',
+                                                'bg-light-info',
+                                                'bg-light-dark',
+                                                'bg-light-warning',
+                                                'bg-light-secondary'
+                                            ];
 
-                                <tr>
-                                    <td>
-                                        <?php echo $nomor ?>
-                                    </td>
-                                    <td class="d-flex align-items-center">
-                                        <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-
-                                            <?php if ($data['Foto'] == "") {
-                                                // Array of random background colors
-                                                $colors = [
-                                                    'bg-primary',
-                                                    'bg-success',
-                                                    'bg-danger',
-                                                    'bg-info',
-                                                    'bg-dark',
-                                                    'bg-warning',
-                                                    'bg-secondary',
-                                                    'bg-light-primary',
-                                                    'bg-light-success',
-                                                    'bg-light-danger',
-                                                    'bg-light-info',
-                                                    'bg-light-dark',
-                                                    'bg-light-warning',
-                                                    'bg-light-secondary'
-                                                ];
-
-                                                // Pick a random color from the array
-                                                $randomColor = $colors[array_rand($colors)];
-                                            ?>
-                                                <div class="symbol-label <?php echo $randomColor ?>">
-                                                    <?php // Get the first letter of 'Nama_Depan' and 'Nama_Belakang'
-                                                    $initials = strtoupper(substr($data['Nama_Depan'], 0, 1)) . strtoupper(substr($data['Nama_Belakang'], 0, 1));
-                                                    // Display the initials
-                                                    echo $initials;
-                                                    ?>
-                                                </div>
-                                            <?php } else { ?>
-                                                <div class="symbol-label bg-warning">
-                                                    <img src="assets/images/kemitraan_foto/<?php echo $data['Foto'] ?>" class="w-100" />
-                                                </div>
-                                            <?php } ?>
-                                        </div>
-                                        <div class="d-flex flex-column">
-                                            <a class="text-gray-800 text-hover-primary mb-1" href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>">
-                                                <?php echo $data['Nama_Depan'] . " " . $data['Nama_Belakang'] ?>
-                                            </a>
-                                            <span><?php echo $data['Nama_Perusahaan'] ?></span>
-                                        </div>
-                                    </td>
-                                    <td><?php echo $data['Nomor_Telepon'] ?></td>
-                                    <td><?php echo $data['Email'] ?></td>
-                                    <td><span class="badge <?php if ($data['Status_Kemitraan'] == "Agen") {
-                                                                echo 'badge-info';
+                                            // Pick a random color from the array
+                                            $randomColor = $colors[array_rand($colors)];
+                                        ?>
+                                            <div class="symbol-label <?php echo $randomColor ?>">
+                                                <?php // Get the first letter of 'Nama_Depan' and 'Nama_Belakang'
+                                                $initials = strtoupper(substr($data['Nama_Depan'], 0, 1)) . strtoupper(substr($data['Nama_Belakang'], 0, 1));
+                                                // Display the initials
+                                                echo $initials;
+                                                ?>
+                                            </div>
+                                        <?php } else { ?>
+                                            <div class="symbol-label bg-warning">
+                                                <img src="assets/images/kemitraan_foto/<?php echo $data['Foto'] ?>" class="w-100" />
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="d-flex flex-column">
+                                        <a class="text-gray-800 text-hover-primary mb-1" href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>">
+                                            <?php echo $data['Nama_Depan'] . " " . $data['Nama_Belakang'] ?>
+                                        </a>
+                                        <span><?php echo $data['Nama_Perusahaan'] ?></span>
+                                    </div>
+                                </td>
+                                <td><?php echo $data['Nomor_Telepon'] ?></td>
+                                <td><?php echo $data['Email'] ?></td>
+                                <td><span class="badge <?php if ($data['Status_Kemitraan'] == "Agen") {
+                                                            echo 'badge-info';
+                                                        } else {
+                                                            echo 'badge-primary';
+                                                        } ?>"><?php echo $data['Status_Kemitraan'] ?></span></td>
+                                <td class="text-center">
+                                    <div class="badge badge-<?php if ($data['Profile'] == "Iya") {
+                                                                echo 'light-success';
                                                             } else {
-                                                                echo 'badge-primary';
-                                                            } ?>"><?php echo $data['Status_Kemitraan'] ?></span></td>
-                                    <td class="text-center">
-                                        <div class="badge badge-<?php if ($data['Profile'] == "Iya") {
-                                                                    echo 'light-success';
-                                                                } else {
-                                                                    echo 'light-danger';
-                                                                } ?> fw-bold"><?php echo $data['Profile'] ?></div>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="badge badge-<?php if ($data['Pembelian'] == "Iya") {
-                                                                    echo 'light-success';
-                                                                } else {
-                                                                    echo 'light-danger';
-                                                                } ?> fw-bold"><?php echo $data['Pembelian'] ?></div>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="badge badge-<?php if ($data['Laporan'] == "Iya") {
-                                                                    echo 'light-success';
-                                                                } else {
-                                                                    echo 'light-danger';
-                                                                } ?> fw-bold"><?php echo $data['Laporan'] ?></div>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="badge badge-<?php if ($data['Konten'] == "Iya") {
-                                                                    echo 'light-success';
-                                                                } else {
-                                                                    echo 'light-danger';
-                                                                } ?> fw-bold"><?php echo $data['Konten'] ?></div>
-                                    </td>
+                                                                echo 'light-danger';
+                                                            } ?> fw-bold"><?php echo $data['Profile'] ?></div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="badge badge-<?php if ($data['Pembelian'] == "Iya") {
+                                                                echo 'light-success';
+                                                            } else {
+                                                                echo 'light-danger';
+                                                            } ?> fw-bold"><?php echo $data['Pembelian'] ?></div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="badge badge-<?php if ($data['Laporan'] == "Iya") {
+                                                                echo 'light-success';
+                                                            } else {
+                                                                echo 'light-danger';
+                                                            } ?> fw-bold"><?php echo $data['Laporan'] ?></div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="badge badge-<?php if ($data['Konten'] == "Iya") {
+                                                                echo 'light-success';
+                                                            } else {
+                                                                echo 'light-danger';
+                                                            } ?> fw-bold"><?php echo $data['Konten'] ?></div>
+                                </td>
 
-                                    <td class="text-center">
+                                <td class="text-center">
+                                    <?php if ($filter_status == "Terhapus") { ?>
+                                        <a href="#" onclick="konfirmasi_restore_data_dari_tong_sampah('<?php echo $encode_id; ?>')"><i class="ki-solid ki-arrow-circle-left text-primary fs-2"> </i></a>
+                                        <a href="#" onclick="konfirmasi_hapus_data_permanen('<?php echo $encode_id; ?>')"><i class="ki-solid ki-trash text-danger fs-2">
+                                            </i></a>
+                                    <?php
+                                    } else {
+                                    ?>
                                         <a href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>">
                                             <i class="ki-solid ki-notepad-edit text-warning fs-2">
                                             </i>
                                         </a>
-                                        <?php if ($filter_status == "Terhapus") { ?>
-                                            <a href="#" onclick="konfirmasi_hapus_data_permanen('<?php echo $encode_id; ?>')"><i class="ki-solid ki-trash text-danger fs-2">
-                                                </i></a>
-                                        <?php
-                                        } else {
-                                        ?>
-                                            <a href="#" onclick="konfirmasi_hapus_data_ke_tong_sampah('<?php echo $encode_id; ?>')"><i class="ki-solid ki-trash text-danger fs-2">
+                                        <a href="#" onclick="konfirmasi_hapus_data_ke_tong_sampah('<?php echo $encode_id; ?>')"><i class="ki-solid ki-trash text-danger fs-2"></i></a>
+                                    <?php
+                                    }
+                                    ?>
+                                </td>
 
-                                                </i></a>
-                                        <?php
-                                        }
-                                        ?>
-                                    </td>
-
-                                </tr>
+                            </tr>
 
                         <?php
-                            }
+
                         }
                         ?>
                     </tbody>
                 </table>
             </div>
         </div>
-
     <?php } ?>
-
-
-</div>
-
-<div class="modal fade" id="kt_modal_export_users" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered mw-450px">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="fw-bold">Export Data</h2>
-                <div class="btn btn-icon btn-sm btn-active-icon-danger" data-bs-dismiss="modal">
-                    <i class="ki-duotone ki-cross fs-1">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                    </i>
-                </div>
-            </div>
-            <div class="modal-body scroll-y">
-                <form id="kt_modal_export_users_form" class="form" action="">
-                    <div class="fv-row mb-10">
-                        <label class="required fs-6 fw-semibold form-label mb-2">Pilih Format:</label>
-                        <select name="format" data-control="select2" data-placeholder="Pilih format export" data-hide-search="true" class="form-select form-select-solid fw-bold">
-                            <option></option>
-                            <option value="excel">Excel</option>
-                            <option value="pdf">PDF</option>
-                        </select>
-                    </div>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-sm btn-light me-3" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-sm btn-primary" data-kt-users-modal-action="submit">
-                            <span class="indicator-label">Export</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>

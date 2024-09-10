@@ -172,24 +172,26 @@
                     <!--end:Menu link-->
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
-                        <!--begin:Menu item-->
+
+
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="?menu=konten&tambah" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <a class="menu-link" href="?menu=konten" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-plus fs-1">
+                                    <i class="ki-duotone ki-graph-3 fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
                                     </i>
                                 </span>
-                                <span class="menu-title">Tambah Konten</span>
+                                <span class="menu-title">Semua Konten</span>
                             </a>
                             <!--end:Menu link-->
                         </div>
-                        <!--end:Menu item-->
 
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="?menu=konten&filter=foto" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <a class="menu-link" href="?menu=konten&filter=Foto" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-instagram fs-1">
                                         <span class="path1"></span>
@@ -205,7 +207,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="?menu=konten&filter=video" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <a class="menu-link" href="?menu=konten&filter=Video" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-youtube fs-1">
                                         <span class="path1"></span>
@@ -221,7 +223,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="?menu=konten&filter=tutorial" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <a class="menu-link" href="?menu=konten&filter=File" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-file-down fs-1">
                                         <span class="path1"></span>
@@ -233,6 +235,22 @@
                             <!--end:Menu link-->
                         </div>
                         <!--end:Menu item-->
+
+
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="?menu=konten&tambah" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                <span class="menu-icon">
+                                    <i class="ki-duotone ki-plus fs-1">
+                                    </i>
+                                </span>
+                                <span class="menu-title">Tambah Konten</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+
 
 
                     </div>
@@ -280,7 +298,7 @@
 
 
                 <!--begin:Menu item-->
-                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && ($_GET['menu'] == "laporan")) {
+                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && ($_GET['menu'] == "role")) {
                                                                                                                                 echo "here";
                                                                                                                             } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
                     <!--begin:Menu link-->
@@ -294,7 +312,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="?menu=pengaturan&sub_menu=role" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <a class="menu-link" href="?menu=role" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-notepad fs-1">
                                         <span class="path1"></span>
