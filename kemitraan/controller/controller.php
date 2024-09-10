@@ -10,9 +10,17 @@ if (isset($_GET['menu'])) {
 		case 'produk':
 			include "pages/produk/index.php";
 			break;
-		
-		case 'role':
+
+		case 'pengaturan-role':
 			include "pages/pengaturan/role.php";
+			break;
+
+		case 'pengaturan-produk-kategori':
+			include "pages/pengaturan/produk_kategori.php";
+			break;
+
+		case 'pengaturan-pembelian':
+			include "pages/pengaturan/pengaturan_pembelian.php";
 			break;
 
 		case 'laporan':

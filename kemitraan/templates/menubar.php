@@ -298,7 +298,7 @@
 
 
                 <!--begin:Menu item-->
-                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && ($_GET['menu'] == "role")) {
+                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && (($_GET['menu'] == "pengaturan-role") or ($_GET['menu'] == "pengaturan-produk-kategori") or ($_GET['menu'] == "pengaturan-pembelian"))) {
                                                                                                                                 echo "here";
                                                                                                                             } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
                     <!--begin:Menu link-->
@@ -309,17 +309,14 @@
                     <!--end:Menu link-->
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
-                        <!--begin:Menu item-->
+
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="?menu=role" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <a class="menu-link" href="?menu=pengaturan-role" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-notepad fs-1">
+                                    <i class="ki-duotone ki-gear fs-1">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
-                                        <span class="path3"></span>
-                                        <span class="path4"></span>
-                                        <span class="path5"></span>
                                     </i>
                                 </span>
                                 <span class="menu-title">Role User</span>
@@ -327,6 +324,42 @@
                             <!--end:Menu link-->
                         </div>
                         <!--end:Menu item-->
+
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="?menu=pengaturan-produk-kategori" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                <span class="menu-icon">
+                                    <i class="ki-duotone ki-filter-tick  fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </span>
+                                <span class="menu-title">Produk Kategori</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+
+
+                         <!--begin:Menu item-->
+                         <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="?menu=pengaturan-pembelian&edit" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                                <span class="menu-icon">
+                                    <i class="ki-duotone ki-dollar  fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                    </i>
+                                </span>
+                                <span class="menu-title">Pengaturan Pembelian</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        <!--end:Menu item-->
+
                     </div>
                     <!--end:Menu sub-->
                 </div>

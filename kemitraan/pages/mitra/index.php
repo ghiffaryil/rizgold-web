@@ -1,4 +1,4 @@
-<?php include "function/crud_mitra.php"; ?>
+<?php include "controller/mitra/function/crud_mitra.php"; ?>
 
 <div class="pt-lg-9">
     <div class="card">

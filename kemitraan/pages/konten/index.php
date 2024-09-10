@@ -1,4 +1,4 @@
-<?php include "function/crud_konten.php"; ?>
+<?php include "controller/konten/function/crud_konten.php"; ?>
 
 <div class="pt-lg-9">
     <div class="card">

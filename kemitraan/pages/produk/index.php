@@ -1,4 +1,4 @@
-<?php include "function/crud_produk.php"; ?>
+<?php include "controller/produk/function/crud_produk.php"; ?>
 
 <div class="pt-lg-9">
     <div class="card">
@@ -394,7 +394,7 @@
                                 <td><?php echo $a_format_angka->rupiah($data['Harga']) ?></td>
                                 <td><?php echo $data['Stock'] ?></td>
                                 <td><?php echo $data['Izin_BPOM'] ?></td>
-                                <td><?php echo $data['Link_Shopee'] ?></td>
+                                <td><a href="<?php echo $data['Link_Shopee'] ?>" target="_blank"><?php echo substr($data['Link_Shopee'], 0, 20); ?>...</a></td>
                                 <td class="text-center">
                                     <?php if ($filter_status == "Terhapus") { ?>
                                         <a href="#" onclick="konfirmasi_restore_data_dari_tong_sampah('<?php echo $encode_id; ?>')"><i class="ki-solid ki-arrow-circle-left text-primary fs-2"> </i></a>
@@ -421,7 +421,7 @@
                     </tbody>
                 </table>
             </div>
-            
+
         <?php } ?>
 
 
