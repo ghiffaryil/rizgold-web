@@ -85,7 +85,7 @@ if (!((isset($_COOKIE['Cookie_1_Kemitraan_Rizgold'])) and (isset($_COOKIE['Cooki
 						<div class="d-flex flex-column flex-column-fluid">
 
 							<!--begin::Content-->
-							<?php include "controller/controller.php" ?>
+							<?php include "routes/routes.php" ?>
 							<!--end::Content-->
 
 						</div>

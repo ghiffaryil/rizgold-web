@@ -260,7 +260,7 @@
 
 
                 <!--begin:Menu item-->
-                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && ($_GET['menu'] == "laporan")) {
+                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && ($_GET['menu'] == "transaksi")) {
                                                                                                                                 echo "here";
                                                                                                                             } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
                     <!--begin:Menu link-->
@@ -274,7 +274,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="?menu=laporan" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <a class="menu-link" href="?menu=transaksi" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-notepad fs-1">
                                         <span class="path1"></span>
@@ -284,7 +284,7 @@
                                         <span class="path5"></span>
                                     </i>
                                 </span>
-                                <span class="menu-title">Laporan Penjualan</span>
+                                <span class="menu-title">Transaksi Penjualan</span>
                             </a>
                             <!--end:Menu link-->
                         </div>
