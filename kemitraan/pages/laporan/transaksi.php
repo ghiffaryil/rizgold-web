@@ -108,6 +108,23 @@
 
     <!-- FORM ADD -->
     <?php if ((isset($_GET["tambah"])) or (isset($_GET["edit"]))) { ?>
+
+        <?php if (isset($_GET['tambah'])) {
+
+            // BACA DATA TERAKHIR
+            $a_result_terbaru = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_transaksi_penjualan", "Id_Transaksi_Penjualan");
+            if ($a_result_terbaru['Status'] == "Sukses") {
+                $Id_Auto_Increment = $a_result_terbaru['Hasil'][0]['Id_Transaksi_Penjualan'] + 1;
+            } else {
+                $Id_Auto_Increment = 1;
+            }
+
+            // Step 2: Concatenate all parts to create the unique 'Nomor_Transaksi_New'
+            // Format Id_Auto_Increment to be 5 digits long, padded with leading zeros
+            $Nomor_Transaksi_New = "T-" . str_pad($Id_Auto_Increment, 5, '0', STR_PAD_LEFT);
+        } ?>
+
+
         <div class="card py-4">
             <div class="card-body">
 
@@ -138,190 +155,282 @@
                             </div>
                         </div>
 
+                        <div class="row">
 
-                        <div class="row mb-7">
-                            <div class="col-lg-4">
-                                <label class="required fw-semibold fs-6 mb-2">Nomor Transaksi</label>
-                                <input name="QTY" type="text" class="form-control mb-3 mb-lg-0" />
-                            </div>
+                            <div class="col-lg-6">
+                                <div class="fv-row mb-7">
+                                    <h3>Identitas Pembeli</h3>
+                                </div>
+                                <div class="fv-row mb-7">
+                                    <label class="required fw-semibold fs-6 mb-2">Nama</label>
+                                    <select name="Id_Pengguna" id="Select-Id-Pengguna" onchange="ubah_status_kemitraan();" class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Pengguna" data-kt-user-table-filter="role" data-allow-clear="true">
+                                        <option value=""></option>
+                                        <?php
+                                        $search_field_where = array("Status");
+                                        $search_criteria_where = array("=");
+                                        $search_value_where = array("Aktif");
+                                        $search_connector_where = array("");
 
-                            <div class="col-lg-4">
-                                <label class="required fw-semibold fs-6 mb-2">Tanggal Transaksi</label>
-                                <input name="QTY" type="text" class="form-control mb-3 mb-lg-0" />
-                            </div>
+                                        $result_mitra = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pengguna", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                                        if ($result_mitra['Status'] == "Sukses") {
 
-                            <div class="col-lg-4">
-                                <label class="required fw-semibold fs-6 mb-2">Status Transaksi</label>
-                                <select name="Metode_Pembelian" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
-
-                                    <option value="Baru">Baru</option>
-                                    <option value="Proses">Proses</option>
-                                    <option value="Selesai">Selesai</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <hr class="mb-7">
-
-                        <div class="row mb-7">
-                            <div class="col-lg-12 my-5">
-                                <h3>Identitas Pembeli</h3>
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="required fw-semibold fs-6 mb-2">Nama</label>
-
-                                <select name="Id_Produk_Kategori" class="form-select fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
-                                    <option value=""></option>
-                                    <?php
-                                    $search_field_where = array("Status");
-                                    $search_criteria_where = array("=");
-                                    $search_value_where = array("Aktif");
-                                    $search_connector_where = array("");
-
-                                    $result_mitra = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pengguna", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
-                                    if ($result_mitra['Status'] == "Sukses") {
-
-                                        print_r($result_mitra);
-                                        $data_hasil_mitra = $result_mitra['Hasil'];
-                                        foreach ($data_hasil_mitra as $data_mitra) {
-                                    ?>
-                                            <option <?php if (isset($_GET['edit'])) {
-                                                        if ($edit['Id_Pengguna'] == $data_mitra['Id_Pengguna']) {
-                                                            echo "selected";
-                                                        }
-                                                    } ?> value="<?php echo $data_mitra['Id_Pengguna'] ?>"><?php echo $data_mitra['Nama_Depan'] ?></option>
-                                    <?php
+                                            $data_hasil_mitra = $result_mitra['Hasil'];
+                                            foreach ($data_hasil_mitra as $data_mitra) {
+                                                $Status_Kemitraan = $data_mitra['Status_Kemitraan'];
+                                        ?>
+                                                <option
+                                                    value="<?php echo $data_mitra['Id_Pengguna']; ?>"
+                                                    data-perusahaan="<?php echo $data_mitra['Nama_Perusahaan'] . " - " . $data_mitra['Organisasi_Kode']; ?>"
+                                                    data-status-kemitraan="<?php echo $data_mitra['Status_Kemitraan']; ?>"
+                                                    data-organisasi-kode="<?php echo $data_mitra['Organisasi_Kode']; ?>"
+                                                    <?php if (isset($_GET['edit']) && $edit['Id_Pengguna'] == $data_mitra['Id_Pengguna']) {
+                                                        echo "selected";
+                                                    } ?>>
+                                                    <?php echo "$data_mitra[Nama_Depan] $data_mitra[Nama_Belakang] - $data_mitra[Nama_Perusahaan] - $data_mitra[Status_Kemitraan] "; ?>
+                                                </option>
+                                        <?php
+                                            }
                                         }
-                                    }
-                                    ?>
-                                </select>
+                                        ?>
+                                    </select>
+                                </div>
 
-                            </div>
+                                <div class="fv-row mb-7">
+                                    <label class="fw-semibold fs-6 mb-2">Perusahaan</label>
+                                    <input readonly name="Nama_Perusahaan" id="Nama_Perusahaan" type="text" class="form-control form-control-solid mb-3 mb-lg-0" />
+                                    <input readonly name="Organisasi_Kode" id="Organisasi_Kode" type="text" class="form-control form-control-solid mb-3 mb-lg-0 d-none" />
+                                </div>
 
-                            <div class="col-lg-4">
-                                <label class="required fw-semibold fs-6 mb-2">Organisasi Kode</label>
-                                <input name="QTY" type="text" class="form-control mb-3 mb-lg-0" />
-                            </div>
-
-                            <div class="col-lg-4">
-                                <label class="required fw-semibold fs-6 mb-2">Nama Perusahaan</label>
-                                <input name="QTY" type="text" class="form-control mb-3 mb-lg-0" />
-                            </div>
-                        </div>
-
-                        <hr class="mb-7">
-
-                        <div class="row mb-7">
-
-                            <div class="col-lg-12 my-5">
-                                <h3>Informasi Produk</h3>
+                                <div class="fv-row mb-7">
+                                    <label class="fw-semibold fs-6 mb-2">Status Kemitraan</label>
+                                    <input readonly name="Status_Kemitraan" id="Status_Kemitraan" type="text" class="form-control form-control-solid mb-3 mb-lg-0" />
+                                </div>
                             </div>
 
                             <div class="col-lg-6">
-                                <label class="required fw-semibold fs-6 mb-2">Produk</label>
+                                <div class="fv-row mb-7">
+                                    <h3>Identitas Transaksi</h3>
+                                </div>
+                                <div class="fv-row mb-7">
+                                    <label class="required fw-semibold fs-6 mb-2">Nomor Transaksi</label>
+                                    <input name="Nomor_Transaksi" type="text" class="form-control form-control-solid mb-3 mb-lg-0" readonly value="<?php
+                                                                                                                                                    if (isset($_GET['edit'])) {
+                                                                                                                                                        echo $edit['Nomor_Transaksi'];
+                                                                                                                                                    } else {
+                                                                                                                                                        echo $Nomor_Transaksi_New; // Default to today's date in 'YYYY-MM-DD' format
+                                                                                                                                                    }
+                                                                                                                                                    ?>" />
+                                </div>
 
-                                <select name="Id_Produk_Kategori" class="form-select fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
-                                    <option value=""></option>
-                                    <?php
-                                    $search_field_where = array("Status");
-                                    $search_criteria_where = array("=");
-                                    $search_value_where = array("Aktif");
-                                    $search_connector_where = array("");
+                                <div class="fv-row mb-7">
+                                    <label class="required fw-semibold fs-6 mb-2">Tanggal Transaksi</label>
+                                    <input name="Tanggal_Transaksi" type="date" class="form-control mb-3 mb-lg-0"
+                                        value="<?php
+                                                if (isset($_GET['edit'])) {
+                                                    echo $edit['Tanggal_Transaksi'];
+                                                } else {
+                                                    echo date('Y-m-d'); // Default to today's date in 'YYYY-MM-DD' format
+                                                }
+                                                ?>" />
+                                </div>
 
-                                    $result_produk = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_produk", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
-                                    if ($result_produk['Status'] == "Sukses") {
+                                <div class="fv-row mb-7">
+                                    <label class="required fw-semibold fs-6 mb-2">Status Transaksi</label>
+                                    <select name="Metode_Pembelian" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Status" data-kt-user-table-filter="role" data-hide-search="true">
 
-                                        print_r($result_produk);
-                                        $data_hasil_produk = $result_produk['Hasil'];
-                                        foreach ($data_hasil_produk as $data_produk) {
-                                    ?>
+                                        <option <?php if (isset($_GET['edit'])) {
+                                                    if ($edit['Status_Transaksi'] == "Baru") {
+                                                        echo "selected";
+                                                    }
+                                                } ?> value="Baru">Baru</option>
+                                        <?php if (isset($_GET['edit'])) { ?>
                                             <option <?php if (isset($_GET['edit'])) {
-                                                        if ($edit['Id_Produk'] == $data_produk['Id_Produk']) {
+                                                        if ($edit['Status_Transaksi'] == "Proses") {
                                                             echo "selected";
                                                         }
-                                                    } ?> value="<?php echo $data_produk['Id_Produk'] ?>"><?php echo $data_produk['Nama_Produk'] ?></option>
-                                    <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
+                                                    } ?> value="Proses">Proses</option>
+                                            <option <?php if (isset($_GET['edit'])) {
+                                                        if ($edit['Status_Transaksi'] == "Selesai") {
+                                                            echo "selected";
+                                                        }
+                                                    } ?> value="Selesai">Selesai</option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
 
+                        </div>
+
+                        <hr class="mb-7">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="fv-row mb-7">
+                                    <h3>Informasi Produk</h3>
+                                </div>
+
+                                <div class="fv-row mb-4">
+                                    <label class="required fw-semibold fs-6 mb-2">Produk</label>
+                                    <select name="Id_Produk" id="Select-Id-Produk" onchange="ambil_harga_by_status_kemitraan(); hitung_total()" class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Produk" data-kt-user-table-filter="role" data-allow-clear="true">
+                                        <option value=""></option>
+                                        <?php
+                                        $search_field_where = array("Status");
+                                        $search_criteria_where = array("=");
+                                        $search_value_where = array("Aktif");
+                                        $search_connector_where = array("");
+
+                                        $result_produk = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_produk", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                                        if ($result_produk['Status'] == "Sukses") {
+                                            $data_hasil_produk = $result_produk['Hasil'];
+                                            foreach ($data_hasil_produk as $data_produk) {
+                                        ?>
+                                                <option
+                                                    value="<?php echo $data_produk['Id_Produk']; ?>"
+                                                    data-harga-distributor="<?php echo $data_produk['Harga_Distributor']; ?>"
+                                                    data-harga-agen="<?php echo $data_produk['Harga_Agen']; ?>"
+                                                    <?php if (isset($_GET['edit']) && $edit['Id_Produk'] == $data_produk['Id_Produk']) {
+                                                        echo "selected";
+                                                    } ?>>
+                                                    <?php echo $data_produk['Nama_Produk']; ?>
+                                                </option>
+                                        <?php
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="fv-row mb-7">
+                                    <label class="required fw-semibold fs-6 mb-2">Harga</label>
+                                    <input name="Harga" id="Harga" type="text" class="form-control mb-3 mb-lg-0 form-control-solid" />
+                                </div>
+
+                                <div class="fv-row mb-7">
+                                    <label class="required fw-semibold fs-6 mb-2">QTY</label>
+                                    <input name="QTY" id="QTY" min="0" mas="100" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" type="text" class="form-control mb-3 mb-lg-0" value="<?php if (isset($_GET['edit'])) {
+                                                                                                                                                                                                                    echo $edit['QTY'];
+                                                                                                                                                                                                                } ?>" onkeyup="hitung_total()" />
+                                </div>
+
+                                <div class="fv-row mb-7">
+                                    <label class="required fw-semibold fs-6 mb-2">Total</label>
+                                    <input name="Total" id="Total" type="text" class="form-control mb-3 mb-lg-0 form-control-solid" value="<?php if (isset($_GET['edit'])) {
+                                                                                                                                                echo $edit['Total'];
+                                                                                                                                            } ?>" />
+                                </div>
                             </div>
 
                             <div class="col-lg-6">
-                                <label class="required fw-semibold fs-6 mb-2">Harga</label>
-                                <input name="QTY" type="text" class="form-control mb-3 mb-lg-0" />
-                            </div>
+                                <div class="fv-row mb-7">
+                                    <h3>Informasi Pembayaran & Barang</h3>
+                                </div>
 
+                                <div class="fv-row mb-7">
+                                    <label class="required fw-semibold fs-6 mb-2">Metode Pembelian</label>
+                                    <select name="Metode_Pembelian" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Metode Pembalian" data-kt-user-table-filter="role" data-hide-search="true">
+                                        <option value=""></option>
+                                        <option <?php if (isset($_GET['edit'])) {
+                                                    if ($edit['Metode_Pembelian'] == "Shopee") {
+                                                        echo "selected";
+                                                    }
+                                                } ?> value="Shopee">Shopee</option>
+                                        <option <?php if (isset($_GET['edit'])) {
+                                                    if ($edit['Metode_Pembelian'] == "Whatsapp") {
+                                                        echo "selected";
+                                                    }
+                                                } ?> value="Whatsapp">Whatsapp</option>
+                                    </select>
+                                </div>
+
+                                <div class="fv-row mb-7">
+                                    <label class="required fw-semibold fs-6 mb-2">Metode Pembayaran</label>
+                                    <select name="Metode_Pembayaran" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Metode Pembayaran" data-kt-user-table-filter="role" data-hide-search="true">
+                                        <option value=""></option>
+                                        <option <?php if (isset($_GET['edit'])) {
+                                                    if ($edit['Metode_Pembayaran'] == "Tunai") {
+                                                        echo "selected";
+                                                    }
+                                                } ?> value="Tunai">Tunai</option>
+                                        <option <?php if (isset($_GET['edit'])) {
+                                                    if ($edit['Metode_Pembayaran'] == "Transfer") {
+                                                        echo "selected";
+                                                    }
+                                                } ?> value="Transfer">Transfer</option>
+                                    </select>
+                                </div>
+
+                                <div class="fv-row mb-7">
+                                    <label class="required fw-semibold fs-6 mb-2">Status Pembayaran</label>
+                                    <select name="Status_Pembayaran" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Status Pembayaran" data-kt-user-table-filter="role" data-hide-search="true">
+                                        <option <?php if (isset($_GET['edit'])) {
+                                                    if ($edit['Status_Pembayaran'] == "Belum Bayar") {
+                                                        echo "selected";
+                                                    }
+                                                } ?> value="Belum Bayar">Belum Bayar</option>
+                                        <?php if (isset($_GET['edit'])) { ?>
+                                            <option <?php if (isset($_GET['edit'])) {
+                                                        if ($edit['Status_Pembayaran'] == "Sudah Bayar") {
+                                                            echo "selected";
+                                                        }
+                                                    } ?> value="Sudah Bayar">Sudah Bayar</option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+
+                                <div class="fv-row mb-7">
+                                    <label class="required fw-semibold fs-6 mb-2">Status Barang</label>
+                                    <select name="Status_Barang" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Status Barang" data-kt-user-table-filter="role" data-hide-search="true">
+                                        <option <?php if (isset($_GET['edit'])) {
+                                                    if ($edit['Status_Barang'] == "Belum Dikirim") {
+                                                        echo "selected";
+                                                    }
+                                                } ?> value="Belum Dikirim">Belum Dikirim</option>
+
+                                        <?php if (isset($_GET['edit'])) { ?>
+                                            <option <?php if (isset($_GET['edit'])) {
+                                                        if ($edit['Status_Barang'] == "Sedang Dikirim") {
+                                                            echo "selected";
+                                                        }
+                                                    } ?> value="Sedang Dikirim">Sedang Dikirim</option>
+                                            <option <?php if (isset($_GET['edit'])) {
+                                                        if ($edit['Status_Barang'] == "Diterima") {
+                                                            echo "selected";
+                                                        }
+                                                    } ?> value="Diterima">Diterima</option>
+                                            <option <?php if (isset($_GET['edit'])) {
+                                                        if ($edit['Status_Barang'] == "Dibatalkan") {
+                                                            echo "selected";
+                                                        }
+                                                    } ?> value="Dibatalkan">Dibatalkan</option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="row mb-7">
 
-                            <div class="col-lg-4">
-                                <label class="required fw-semibold fs-6 mb-2">QTY</label>
-                                <input name="QTY" type="text" class="form-control mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                echo $edit['QTY'];
-                                                                                                                            } ?>" />
-                            </div>
-
-                            <div class="col-lg-4">
-                                <label class="required fw-semibold fs-6 mb-2">Total</label>
-                                <input name="Total" type="text" class="form-control mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                echo $edit['Total'];
-                                                                                                                            } ?>" />
-                            </div>
-
-                            <div class="col-lg-4">
-                                <label class="required fw-semibold fs-6 mb-2">Metode Pembelian</label>
-                                <select name="Metode_Pembelian" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
-
-                                    <option value="Shopee">Shopee</option>
-                                    <option value="Whatsapp">Whatsapp</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row mb-7">
-
-                            <hr class="mb-7">
-
-                            <div class="col-lg-12 my-5">
-                                <h3>Informasi Pembayaran & Barang</h3>
-                            </div>
-
-                            <div class="col-lg-4">
-                                <label class="required fw-semibold fs-6 mb-2">Metode Pembayaran</label>
-                                <select name="Metode_Pembayaran" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
-                                    <option value="Tunai">Tunai</option>
-                                    <option value="Transfer">Transfer</option>
-                                    <option value="Tempo">Tempo</option>
-                                </select>
-                            </div>
-
-                            <div class="col-lg-4">
-                                <label class="required fw-semibold fs-6 mb-2">Status Pembayaran</label>
-                                <select name="Status_Pembayaran" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
-                                    <option value="Sudah Bayar">Sudah Bayar</option>
-                                    <option value="Belum Bayar">Belum Bayar</option>
-                                </select>
-                            </div>
-
-                            <div class="col-lg-4">
-                                <label class="required fw-semibold fs-6 mb-2">Status Barang</label>
-                                <select name="Status_Barang" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
-                                    <option value="Gudang">Gudang</option>
-                                    <option value="Dikirim">Dikirim</option>
-                                    <option value="Diterima">Diterima</option>
-                                </select>
-                            </div>
-                        </div>
 
                         <hr class="mb-7">
 
                         <div class="fv-row mb-7">
+                            <label class="required fw-semibold fs-6 mb-2">Bukti Transaksi</label>
+                            <input name="File_Bukti_Transaksi" type="file" class="form-control" accept=".png, .gif, .jpg, .jpeg, .pdf, .zip, .rar" />
+                            <?php if (isset($_GET['edit'])) {
+                                $folder_konten = "assets/images/bukti_transaksi/";
+                            ?>
+                                <br>
+                                <?php if ($edit['File_Bukti_Transaksi'] != "") { ?>
+                                    <a href="<?php echo $folder_konten . $edit['File_Bukti_Transaksi'] ?>" class="btn btn-light-success btn-sm" target="_blank"><i class="ki-solid ki-eye"></i>Lihat</a>
+                                    <a href="<?php echo $folder_konten . $edit['File_Bukti_Transaksi'] ?>" class="btn btn-light-info btn-sm" download="<?php echo $edit['File_Bukti_Transaksi'] ?>"><i class="ki-solid ki-cloud-download"></i>Download</a>
+                                <?php } else { ?>
+                                    <span class="badge badge-light-danger">Konten ini tidak memiliki File</span>
+                                <?php } ?>
+                            <?php } ?>
+                        </div>
+
+                        <div class="fv-row mb-7">
                             <label class="required fw-semibold fs-6 mb-2">Catatan</label>
                             <textarea name="Catatan" class="form-control mb-3 mb-lg-0" rows="3"><?php if (isset($_GET["edit"])) {
-                                                                                                                        echo $edit['Catatan'];
-                                                                                                                    } ?></textarea>
+                                                                                                    echo $edit['Catatan'];
+                                                                                                } ?></textarea>
                         </div>
 
                         <div class="row mb-7">
@@ -519,7 +628,7 @@
                                     </a>
 
                                 </td>
-                                <td><?php echo $data['Kode_Transaksi'] ?></td>
+                                <td><?php echo $data['Nomor_Transaksi'] ?></td>
                                 <td>
                                     <?php
                                     $result_pengguna = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", $data['Id_Pengguna']);
@@ -592,3 +701,77 @@
         </div>
     <?php } ?>
 </div>
+
+
+
+<script>
+    function ubah_status_kemitraan() {
+        // Get the select element for the user
+        var selectElement = document.getElementById('Select-Id-Pengguna');
+        var selectedOption = selectElement.options[selectElement.selectedIndex];
+
+        // Get the data attributes
+        var statusKemitraan = selectedOption.getAttribute('data-status-kemitraan');
+        var namaPerusahaan = selectedOption.getAttribute('data-perusahaan');
+        var organisasiKode = selectedOption.getAttribute('data-organisasi-kode');
+
+        // Set the values of 'Status_Kemitraan' and 'Nama_Perusahaan' inputs
+        document.getElementById('Status_Kemitraan').value = statusKemitraan || ''; // Empty if no value
+        document.getElementById('Nama_Perusahaan').value = namaPerusahaan || ''; // Empty if no value
+        document.getElementById('Organisasi_Kode').value = organisasiKode || ''; // Empty if no value
+
+        // Clear the product selection using Select2
+        $('#Select-Id-Produk').val(null).trigger('change'); // Clear the Select2 selection
+
+        // Clear the Harga, QTY, and Total fields
+        document.getElementById('QTY').value = "";
+        document.getElementById('Harga').value = "";
+        document.getElementById('Total').value = "";
+    }
+
+    function ambil_harga_by_status_kemitraan() {
+        var statusKemitraan = document.getElementById('Status_Kemitraan').value;
+
+        if (statusKemitraan === "") {
+            alert('Silahkan pilih Nama terlebih dahulu');
+            // $('#Select-Id-Produk').val(null).trigger('change'); // Clear the Select2 selection
+        } else {
+            var selectElement = document.getElementById('Select-Id-Produk');
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+
+            var harga = statusKemitraan === 'Distributor' ?
+                selectedOption.getAttribute('data-harga-distributor') :
+                selectedOption.getAttribute('data-harga-agen');
+
+            document.getElementById('Harga').value = formatRupiah(harga) || ''; // Format as Rupiah
+        }
+    }
+
+    function formatRupiah(value) {
+        if (!value) return '';
+        return 'Rp ' + parseInt(value).toLocaleString('id-ID');
+    }
+
+    function hitung_total() {
+        var hargaProduk = document.getElementById('Harga').value.replace(/\D/g, '');
+        var qtyProduk = document.getElementById('QTY').value;
+
+        if (hargaProduk && qtyProduk) {
+            var totalHargaProduk = hargaProduk * qtyProduk;
+            document.getElementById('Total').value = formatRupiah(totalHargaProduk); // Format total as Rupiah
+        } else {
+            document.getElementById('Total').value = '';
+        }
+    }
+
+    // Trigger event when page loads (for edit cases)
+    document.getElementById('Select-Id-Pengguna').addEventListener('DOMContentLoaded', ubah_status_kemitraan);
+
+    // Using jQuery/Select2 to clear selections
+    $('#Select-Id-Produk').select2({
+        placeholder: 'Pilih Produk',
+        allowClear: true // Enable the 'X' clear button
+    });
+
+    document.getElementById('QTY').addEventListener('keyup', hitung_total);
+</script>

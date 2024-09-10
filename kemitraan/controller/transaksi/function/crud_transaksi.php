@@ -16,25 +16,12 @@ if (isset($_GET['id'])) {
 #FUNGSI SIMPAN DATA (CREATE)
 if (isset($_POST['submit_simpan'])) {
 
-    // Generate a random 3-digit number
-    $randomNumber = rand(100, 999);
-
-    // BACA DATA TERAKHIR
-    $a_result_terbaru = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_transaksi_penjualan", "Id_Transaksi_Penjualan");
-    if ($a_result_terbaru['Status'] == "Sukses") {
-        $Id_Auto_Increment = $a_result_terbaru['Hasil'][0]['Id_Transaksi_Penjualan'] + 1;
-    } else {
-        $Id_Auto_Increment = 1;
-    }
-
-    // Step 2: Concatenate all parts to create the unique 'Organisasi_Kode'
-    $Kode_Transaksi = "T-" . $randomNumber . $Id_Auto_Increment;
-
     $form_field = array(
         "Nomor_Transaksi",
         "Organisasi_Kode",
         "Id_Pengguna",
         "Id_Produk",
+        "Harga",
         "QTY",
         "Total",
         "Catatan",
@@ -49,19 +36,19 @@ if (isset($_POST['submit_simpan'])) {
         "Status"
     );
     $form_value = array(
-        "$Kode_Transaksi",
+        "$_POST[Nomor_Transaksi]",
         "$_POST[Organisasi_Kode]",
         "$_POST[Id_Pengguna]",
         "$_POST[Id_Produk]",
+        "$_POST[Harga]",
         "$_POST[QTY]",
         "$_POST[Total]",
         "$_POST[Catatan]",
-        "$Waktu_Sekarang",
-        "Baru",
+        "$_POST[Tanggal_Transaksi]",
+        "$_POST[Status_Transaksi]",
         "$_POST[Metode_Pembelian]",
-        "$_POST[Metode_Pembayaran]",
-        "Belum Bayar",
-        "Gudang",
+        "$_POST[Status_Pembayaran]",
+        "$_POST[Status_Barang]",
         "$Waktu_Sekarang",
         "$Waktu_Sekarang",
         "$Waktu_Sekarang",
@@ -96,6 +83,7 @@ if (isset($_POST['submit_update'])) {
     $form_field = array(
         "Id_Produk",
         "QTY",
+        "Harga",
         "Total",
         "Tanggal_Transaksi",
         "Status_Transaksi",
@@ -107,6 +95,7 @@ if (isset($_POST['submit_update'])) {
     );
     $form_value = array(
         "$_POST[Id_Produk]",
+        "$_POST[Harga]",
         "$_POST[QTY]",
         "$_POST[Total]",
         "$_POST[Tanggal_Transaksi]",
@@ -126,6 +115,33 @@ if (isset($_POST['submit_update'])) {
     $result = $a_tambah_baca_update_hapus->update_data("tb_transaksi_penjualan", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
 
     if ($result['Status'] == "Sukses") {
+
+        // INSERT FOTO
+        if ($_FILES['File_Bukti_Transaksi']['size'] <> 0 && $_FILES['File_Bukti_Transaksi']['error'] == 0) {
+
+            $post_file_upload = $_FILES['File_Bukti_Transaksi'];
+            $path_file_upload = $_FILES['File_Bukti_Transaksi']['name'];
+            $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
+            $nama_file_upload = $a_hash->hash_nama_file($Get_Id_Primary, "_File_Bukti_Transaksi") . "_" . $Get_Id_Primary . "_File_Bukti_Transaksi";
+            $folder_penyimpanan_file_upload = "assets/images/bukti_transaksi/";
+            $tipe_file_yang_diizikan_file_upload = array("png", "gif", "jpg", "jpeg", "pdf");
+            $maksimum_ukuran_file_upload = 10000000;
+
+            $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
+
+            if ($result_upload_file['Status'] == "Sukses") {
+                $form_field = array("File_Bukti_Transaksi");
+                $form_value = array("$nama_file_upload.$ext_file_upload");
+                $form_field_where = array("Id_Transaksi_Penjualan");
+                $form_criteria_where = array("=");
+                $form_value_where = array("$Get_Id_Primary");
+                $form_connector_where = array("");
+
+                $result = $a_tambah_baca_update_hapus->update_data("tb_transaksi_penjualan", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
+            }
+        }
+
+
         echo "<script>alert('Data Terupdate');document.location.href='$kehalaman'</script>";
     } else {
         echo "<script>alert('Terjadi Kesalahan Saat Mengupdate Data');document.location.href='$kehalaman'</script>";
