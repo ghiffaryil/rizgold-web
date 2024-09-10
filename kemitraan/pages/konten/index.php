@@ -162,7 +162,8 @@
                                     <br>
 
                                     <?php if ($edit['File_Konten'] != "") { ?>
-                                        <a href="<?php echo $folder_konten . $edit['File_Konten'] ?>" class="btn btn-light-info btn-sm" download="<?php echo $edit['File_Konten'] ?>">Download File</a>
+                                        <a href="<?php echo $folder_konten . $edit['File_Konten'] ?>" class="btn btn-light-success btn-sm" target="_blank"><i class="ki-solid ki-eye"></i>Lihat</a>
+                                        <a href="<?php echo $folder_konten . $edit['File_Konten'] ?>" class="btn btn-light-info btn-sm" download="<?php echo $edit['File_Konten'] ?>"><i class="ki-solid ki-cloud-download"></i>Download</a>
                                     <?php } else { ?>
                                         <span class="badge badge-light-danger">Konten ini tidak memiliki File</span>
                                     <?php } ?>
@@ -316,18 +317,18 @@
                                 <td>
                                     <?php
                                     if ($data['Kategori'] == "Foto") {
-                                        $badge_kategori = "badge badge-light-success";
+                                        $badge_kategori = "badge badge-info";
                                     } else if ($data['Kategori'] == "Video") {
-                                        $badge_kategori = "badge badge-light-danger";
+                                        $badge_kategori = "badge badge-danger";
                                     } else {
-                                        $badge_kategori = "badge badge-light-primary";
+                                        $badge_kategori = "badge badge-warning";
                                     }
                                     ?>
 
                                     <span class="<?php echo $badge_kategori ?>"><?php echo $data['Kategori'] ?></span>
                                 </td>
 
-                                <td><?php echo substr($data['Link_Eksternal'], 0, 20) ?>...</td>
+                                <td><a href="<?php echo $data['Link_Eksternal'] ?>" target="_blank" class=""><?php echo substr($data['Link_Eksternal'], 0, 20) ?>...</a></td>
                                 <td>
                                     <?php
                                     if ($data['Kategori'] == "Foto") {
@@ -340,7 +341,8 @@
                                     ?>
 
                                     <?php if ($data['File_Konten'] != "") { ?>
-                                        <a href="<?php echo $folder_konten . $data['File_Konten'] ?>" class="btn btn-light-dark btn-sm" download="<?php echo $edit['File_Konten'] ?>">Download File</a>
+                                        <a href="<?php echo $folder_konten . $data['File_Konten'] ?>" class="btn btn-light-success btn-sm" target="_blank"><i class="ki-solid ki-eye"></i>Lihat</a>
+                                        <a href="<?php echo $folder_konten . $data['File_Konten'] ?>" class="btn btn-light-info btn-sm" download="<?php echo $edit['File_Konten'] ?>"><i class="ki-solid ki-cloud-download"></i>Download</a>
                                     <?php } else { ?>
                                         <span class="badge badge-light">Konten ini tidak memiliki File</span>
                                     <?php } ?>

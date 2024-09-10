@@ -61,61 +61,6 @@
     </div>
 </section>
 
-<section class="section about">
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-
-            <?php
-            $search_field_where = array("Status");
-            $search_criteria_where = array("=");
-            $search_value_where = array("Aktif");
-            $search_connector_where = array("");
-            $result_banner = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_banner", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
-
-            if ($result_banner['Status'] == "Sukses") {
-                $data_banner_hasil = $result_banner['Hasil'];
-
-                $indicatorIndex = 0;
-                foreach ($data_banner_hasil as $data_banner) {
-            ?>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="<?php echo $indicatorIndex; ?>" <?php echo ($indicatorIndex === 0) ? 'class="active"' : ''; ?>></li>
-            <?php
-                    $indicatorIndex++;
-                }
-            }
-            ?>
-
-        </ol>
-        <div class="carousel-inner">
-
-            <?php
-            if ($result_banner['Status'] == "Sukses") {
-                $data_banner_hasil = $result_banner['Hasil'];
-
-                $itemIndex = 0;
-                foreach ($data_banner_hasil as $data_banner) {
-            ?>
-                    <div class="carousel-item <?php echo ($itemIndex === 0) ? 'active' : ''; ?>">
-                        <img class="d-block w-100" src="dashboard/media/banner/<?php echo $data_banner['Foto_Banner'] ?>" alt="Slide <?php echo $itemIndex + 1; ?>">
-                    </div>
-            <?php
-                    $itemIndex++;
-                }
-            }
-            ?>
-
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-</section>
-
 
 <section class="section about">
     <div class="container">
@@ -178,103 +123,12 @@
         </div>
     </div>
 </section>
-<section class="section service gray-bg" style="padding: 150px 0 50px 0;">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-7 text-center">
-                <div class="section-title">
-                    <h2>Khasiat</h2>
-                    <div class="divider mx-auto my-4"></div>
-                    <p>Kami memiliki berbagai produk yang terbaik dan terpercaya, dibuat dari bahan tradisional berkualitas</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="service-item mb-4">
-                    <div class="icon d-flex align-items-center">
-                        <i class="icofont-laboratory text-lg"></i>
-                        <h4 class="mt-3 mb-3">Laboratory services</h4>
-                    </div>
-
-                    <div class="content">
-                        <p class="mb-4">Saepe nulla praesentium eaque omnis perferendis a doloremque.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="service-item mb-4">
-                    <div class="icon d-flex align-items-center">
-                        <i class="icofont-heart-beat-alt text-lg"></i>
-                        <h4 class="mt-3 mb-3">Heart Disease</h4>
-                    </div>
-                    <div class="content">
-                        <p class="mb-4">Saepe nulla praesentium eaque omnis perferendis a doloremque.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="service-item mb-4">
-                    <div class="icon d-flex align-items-center">
-                        <i class="icofont-tooth text-lg"></i>
-                        <h4 class="mt-3 mb-3">Dental Care</h4>
-                    </div>
-                    <div class="content">
-                        <p class="mb-4">Saepe nulla praesentium eaque omnis perferendis a doloremque.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="service-item mb-4">
-                    <div class="icon d-flex align-items-center">
-                        <i class="icofont-crutch text-lg"></i>
-                        <h4 class="mt-3 mb-3">Body Surgery</h4>
-                    </div>
-
-                    <div class="content">
-                        <p class="mb-4">Saepe nulla praesentium eaque omnis perferendis a doloremque.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="service-item mb-4">
-                    <div class="icon d-flex align-items-center">
-                        <i class="icofont-brain-alt text-lg"></i>
-                        <h4 class="mt-3 mb-3">Neurology Sargery</h4>
-                    </div>
-                    <div class="content">
-                        <p class="mb-4">Saepe nulla praesentium eaque omnis perferendis a doloremque.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="service-item mb-4">
-                    <div class="icon d-flex align-items-center">
-                        <i class="icofont-dna-alt-1 text-lg"></i>
-                        <h4 class="mt-3 mb-3">Gynecology</h4>
-                    </div>
-                    <div class="content">
-                        <p class="mb-4">Saepe nulla praesentium eaque omnis perferendis a doloremque.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- SLIDESHOW PRODUK -->
-<section class="section gray-bg" style="padding: 50px 0 50px 0; background:white">
+<section class="section gray-bg">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-7 text-center">
-                <div class="section-title">
+                <div class="section-title mt-4">
                     <h2>Produk Kami</h2>
                     <div class="divider mx-auto my-4"></div>
                     <p>Kami memiliki berbagai produk yang terbaik dan terpercaya, dibuat dari bahan tradisional berkualitas</p>
@@ -283,7 +137,6 @@
         </div>
 
         <div class="row justify-content-center">
-
             <?php
             $search_field_where = array("Status");
             $search_criteria_where = array("=");
@@ -316,10 +169,44 @@
             ?>
         </div>
     </div>
+
+    <div class="container" style="background:white; padding: 20px;">
+    
+        <div class="row portfolio-gallery">
+            <?php
+            $search_field_where = array("Status");
+            $search_criteria_where = array("=");
+            $search_value_where = array("Aktif");
+            $search_connector_where = array("");
+            $nomor = 0;
+            $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_galeri", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+
+            if ($result['Status'] == "Sukses") {
+
+                $data_galeri_hasil = $result['Hasil'];
+                foreach ($data_galeri_hasil as $data_galeri) {
+                    $nomor++;
+            ?>
+
+                    <div class="col-lg-4 col-sm-6 col-md-6 mb-4">
+                        <div class="position-relative doctor-inner-box">
+                            <div class="doctor-profile">
+                                <div class="doctor-img">
+                                    <img src="dashboard/media/galeri/<?php echo $data_galeri['Foto_Galeri'] ?>" style="height: 360px; width:100%; background-size:cover">
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+            <?php
+                }
+            }
+            ?>
+        </div>
+    </div>
 </section>
 
-
-<section class="section testimonial-2 gray-bg">
+<section class="section testimonial-2" style="background:white">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-7">

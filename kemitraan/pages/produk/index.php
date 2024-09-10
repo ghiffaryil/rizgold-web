@@ -225,9 +225,16 @@
                                     </div>
 
                                     <div class="fv-row mb-7">
-                                        <label class="required fw-semibold fs-6 mb-2">Harga</label>
-                                        <input required name="Harga" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                                                                                                echo $edit['Harga'];
+                                        <label class="required fw-semibold fs-6 mb-2">Harga Distributor</label>
+                                        <input required name="Harga_Distributor" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                                                                                                                echo $edit['Harga_Distributor'];
+                                                                                                                                                                                                                            } ?>" />
+                                    </div>
+                                   
+                                    <div class="fv-row mb-7">
+                                        <label class="required fw-semibold fs-6 mb-2">Harga Agen</label>
+                                        <input required name="Harga_Agen" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                                                                                                                echo $edit['Harga_Agen'];
                                                                                                                                                                                                                             } ?>" />
                                     </div>
 
@@ -353,11 +360,12 @@
                     <thead>
                         <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                             <th class="min-w-20px">No</th>
-                            <th class="min-w-10px">Nama Produk</th>
-                            <th class="min-w-60px">Harga</th>
+                            <th class="min-w-50px">Nama Produk</th>
+                            <th class="min-w-30px">Harga Distributor</th>
+                            <th class="min-w-30px">Harga Agen</th>
                             <th class="min-w-20px">Stock</th>
-                            <th class="min-w-50px">BPOM</th>
-                            <th class="min-w-70px">Link Shopee</th>
+                            <th class="min-w-30px">BPOM</th>
+                            <th class="min-w-60px">Link Shopee</th>
                             <th class="text-center">Tindakan</th>
                         </tr>
                     </thead>
@@ -391,7 +399,8 @@
                                         <span><?php echo $data['SKU'] ?></span>
                                     </div>
                                 </td>
-                                <td><?php echo $a_format_angka->rupiah($data['Harga']) ?></td>
+                                <td><?php echo $a_format_angka->rupiah($data['Harga_Distributor']) ?></td>
+                                <td><?php echo $a_format_angka->rupiah($data['Harga_Agen']) ?></td>
                                 <td><?php echo $data['Stock'] ?></td>
                                 <td><?php echo $data['Izin_BPOM'] ?></td>
                                 <td><a href="<?php echo $data['Link_Shopee'] ?>" target="_blank"><?php echo substr($data['Link_Shopee'], 0, 20); ?>...</a></td>
