@@ -203,7 +203,7 @@ class a_tambah_baca_update_hapus extends a_database{
 		$sql = "SELECT * FROM $Nama_Table WHERE ";
 		$sql = $sql.$wherenya;
 
-		echo $sql;
+		// echo $sql;
 
 		#FUNGSI
 		$query = $this->koneksi->query($sql);

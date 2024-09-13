@@ -13,6 +13,19 @@ if (isset($_GET['id'])) {
 }
 
 #-----------------------------------------------------------------------------------
+#FUNGSI EDIT DATA (READ)
+
+if ((isset($_GET['edit'])) or (isset($_GET['view']))) {
+    $result = $a_tambah_baca_update_hapus->baca_data_id("tb_produk", "Id_Produk", $Get_Id_Primary);
+    if ($result['Status'] == "Sukses") {
+        $edit = $result['Hasil'];
+    } else {
+        echo "<script>alert('Terjadi Kesalahan Saat Membaca Data');document.location.href='$kehalaman'</script>";
+    }
+}
+
+
+#-----------------------------------------------------------------------------------
 #FUNGSI SIMPAN DATA (CREATE)
 if (isset($_POST['submit_simpan'])) {
 
@@ -31,7 +44,7 @@ if (isset($_POST['submit_simpan'])) {
     }
 
     // Step 2: Concatenate all parts to create the unique 'Kode_Produk'
-    $Kode_Produk = "P" . $_POST['Id_Produk_Kategori']. $dateTime . $randomNumber . $Id_Auto_Increment;
+    $Kode_Produk = "P" . $_POST['Id_Produk_Kategori'] . $dateTime . $randomNumber . $Id_Auto_Increment;
 
     if ($_POST['Tanggal_Kadaluwarsa'] == "") {
         $_POST['Tanggal_Kadaluwarsa'] = "0000-00-00";
@@ -110,18 +123,6 @@ if (isset($_POST['submit_simpan'])) {
     }
 }
 
-
-#-----------------------------------------------------------------------------------
-#FUNGSI EDIT DATA (READ)
-
-if (isset($_GET['edit'])) {
-    $result = $a_tambah_baca_update_hapus->baca_data_id("tb_produk", "Id_Produk", $Get_Id_Primary);
-    if ($result['Status'] == "Sukses") {
-        $edit = $result['Hasil'];
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Membaca Data');document.location.href='$kehalaman'</script>";
-    }
-}
 #-----------------------------------------------------------------------------------
 #FUNGSI UPDATE DATA (UPDATE)
 if (isset($_POST['submit_update'])) {

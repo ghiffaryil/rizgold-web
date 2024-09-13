@@ -35,10 +35,25 @@ if (isset($_GET['menu'])) {
 			include "pages/mitra/index.php";
 			break;
 
-		case 'konten':
+		case 'admin-konten':
 			include "pages/konten/index.php";
 			break;
 
+
+			// UNTUK KEMITRAAN
+		case 'belanja':
+			include "pages/produk/belanja.php";
+			break;
+
+		case 'konten':
+			include "pages/konten/konten.php";
+			break;
+
+		case 'pembelian':
+			include "pages/laporan/pembelian.php";
+			break;
+
+			// DEFAULT
 		default:
 			include "pages/home/index.php";
 			break;

@@ -13,48 +13,23 @@ if (!((isset($_COOKIE['Cookie_1_Kemitraan_Rizgold'])) and (isset($_COOKIE['Cooki
 	exit();
 } else {
 	//UNTUK CEK COOKIE LOGIN APAKAH BENAR DATA TERSEBUT ADA PADA DATABASE
-	$cek_login_Id_User = $a_hash->decode($_COOKIE['Cookie_1_Kemitraan_Rizgold'], "Id_User");
-	$cek_login_Password = $a_hash->decode($_COOKIE['Cookie_2_Kemitraan_Rizgold'], "Password");
-	$cek_login_Id_Role = $a_hash->decode($_COOKIE['Cookie_3_Kemitraan_Rizgold'], "Id_Role");
+	$cek_login_id_pengguna = $a_hash->decode($_COOKIE['Cookie_1_Kemitraan_Rizgold'], "Id_Pengguna");
+	$cek_login_username = $a_hash->decode($_COOKIE['Cookie_2_Kemitraan_Rizgold'], "Username");
+	$cek_login_password = $a_hash->decode($_COOKIE['Cookie_3_Kemitraan_Rizgold'], "Password");
 
-	$search_field_where = array("Status", "Id_Admin", "Password");
+	$search_field_where = array("Status", "Username", "Password");
 	$search_criteria_where = array("=", "=", "=");
-	$search_value_where = array("Aktif", "$cek_login_Id_User", "$cek_login_Password");
+	$search_value_where = array("Aktif", "$cek_login_username", "$cek_login_password");
 	$search_connector_where = array("AND", "AND", "");
-	$result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_admin", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+	$result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pengguna", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
 
 	if ($result['Status'] == "Sukses") {
 		$u_array_data_user = $result['Hasil'];
-
-		$u_Id_Role = $cek_login_Id_Role;
-		$u_Id_User = $u_array_data_user[0]['Id_Admin'];
+		$u_Id_Pengguna = $u_array_data_user[0]['Id_Pengguna'];
 		$u_Nama_Lengkap = $u_array_data_user[0]['Nama_Depan'] . " " . $u_array_data_user[0]['Nama_Belakang'];
-
-		// CHECK ROLE
-		$search_field_where = array("Status", "Id_Role");
-		$search_criteria_where = array("=", "=");
-		$search_value_where = array("Aktif", "$cek_login_Id_Role");
-		$search_connector_where = array("AND", "");
-		$result_role = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_role", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
-		if ($result_role['Status'] == "Sukses") {
-			$u_array_data_role = $result_role['Hasil'];
-			$u_Nama_Role = $u_array_data_role[0]['Nama_Role'];
-			$u_Role_Tambah = $u_array_data_role[0]['Tambah'];
-			$u_Role_Baca = $u_array_data_role[0]['Baca'];
-			$u_Role_Ubah = $u_array_data_role[0]['Ubah'];
-			$u_Role_Hapus = $u_array_data_role[0]['Hapus'];
-		} else {
-			$u_Nama_Role = "Staff";
-			$u_Role_Tambah = "Tidak";
-			$u_Role_Baca = "Iya";
-			$u_Role_Ubah = "Tidak";
-			$u_Role_Hapus = "Tidak";
-		}
+		$u_Status_Kemitraan = $u_array_data_user[0]['Status_Kemitraan'];
 	} else {
-		echo "<script>
-	alert('Silahkan Login Kembali !!!');
-	document.location.href = 'login.php?redirect=" . $a_hash->encode_link_kembali($Link_Sekarang) . "';
-</script>";
+		echo "<script> alert('Silahkan Login Kembali !!!');document.location.href = 'login.php?redirect=" . $a_hash->encode_link_kembali($Link_Sekarang) . "';</script>";
 		exit();
 	}
 }

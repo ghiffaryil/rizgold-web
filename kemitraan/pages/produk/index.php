@@ -1,3 +1,11 @@
+<?php if (!((isset($_COOKIE['Cookie_1_Admin_Rizgold'])) or (isset($_COOKIE['Cookie_2_Admin_Rizgold'])) or (isset($_COOKIE['Cookie_3_Admin_Rizgold'])))) {
+    echo "<script>
+	alert('Anda tidak berhak mengakses halaman ini !!!');
+	document.location.href = 'dashboard.php';
+</script>";
+    exit();
+} ?>
+
 <?php include "controller/produk/function/crud_produk.php"; ?>
 
 <div class="pt-lg-9">
@@ -227,15 +235,15 @@
                                     <div class="fv-row mb-7">
                                         <label class="required fw-semibold fs-6 mb-2">Harga Distributor</label>
                                         <input required name="Harga_Distributor" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                                                                                                echo $edit['Harga_Distributor'];
-                                                                                                                                                                                                                            } ?>" />
+                                                                                                                                                                                                                                            echo $edit['Harga_Distributor'];
+                                                                                                                                                                                                                                        } ?>" />
                                     </div>
-                                   
+
                                     <div class="fv-row mb-7">
                                         <label class="required fw-semibold fs-6 mb-2">Harga Agen</label>
                                         <input required name="Harga_Agen" type="number" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                                                                                                echo $edit['Harga_Agen'];
-                                                                                                                                                                                                                            } ?>" />
+                                                                                                                                                                                                                                    echo $edit['Harga_Agen'];
+                                                                                                                                                                                                                                } ?>" />
                                     </div>
 
                                     <div class="row mb-7">

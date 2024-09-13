@@ -1,3 +1,12 @@
+<?php if (!((isset($_COOKIE['Cookie_1_Admin_Rizgold'])) or (isset($_COOKIE['Cookie_2_Admin_Rizgold'])) or (isset($_COOKIE['Cookie_3_Admin_Rizgold'])))) {
+    echo "<script>
+	alert('Anda tidak berhak mengakses halaman ini !!!');
+	document.location.href = 'dashboard.php';
+</script>";
+    exit();
+} ?>
+
+
 <?php include "controller/konten/function/crud_konten.php"; ?>
 
 <div class="pt-lg-9">

@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
 #-----------------------------------------------------------------------------------
 #FUNGSI EDIT DATA (READ)
 
-if (isset($_GET['edit'])) {
+if ((isset($_GET['edit'])) OR (isset($_GET['view']))) {
     $result = $a_tambah_baca_update_hapus->baca_data_id("tb_konten", "Id_Konten", $Get_Id_Primary);
     if ($result['Status'] == "Sukses") {
         $edit = $result['Hasil'];

@@ -13,6 +13,18 @@ if (isset($_GET['id'])) {
 }
 
 #-----------------------------------------------------------------------------------
+#FUNGSI EDIT DATA (READ)
+
+if ((isset($_GET['edit'])) OR (isset($_GET['view']))) {
+    $result = $a_tambah_baca_update_hapus->baca_data_id("tb_transaksi_penjualan", "Id_Transaksi_Penjualan", $Get_Id_Primary);
+    if ($result['Status'] == "Sukses") {
+        $edit = $result['Hasil'];
+    } else {
+        echo "<script>alert('Terjadi Kesalahan Saat Membaca Data');document.location.href='$kehalaman'</script>";
+    }
+}
+
+#-----------------------------------------------------------------------------------
 #FUNGSI SIMPAN DATA (CREATE)
 if (isset($_POST['submit_simpan'])) {
 
@@ -71,18 +83,6 @@ if (isset($_POST['submit_simpan'])) {
     }
 }
 
-
-#-----------------------------------------------------------------------------------
-#FUNGSI EDIT DATA (READ)
-
-if (isset($_GET['edit'])) {
-    $result = $a_tambah_baca_update_hapus->baca_data_id("tb_transaksi_penjualan", "Id_Transaksi_Penjualan", $Get_Id_Primary);
-    if ($result['Status'] == "Sukses") {
-        $edit = $result['Hasil'];
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Membaca Data');document.location.href='$kehalaman'</script>";
-    }
-}
 #-----------------------------------------------------------------------------------
 #FUNGSI UPDATE DATA (UPDATE)
 if (isset($_POST['submit_update'])) {
@@ -257,18 +257,24 @@ class Search_Controller
         $filter_status_kemitraan = "",
         $filter_tanggal_dari = "",
         $filter_tanggal_sampai = "",
+        $filter_metode_pembelian = "",
+        $filter_metode_pembayaran = "",
         $filter_status_transaksi = "",
         $filter_status_pembayaran = "",
-        $filter_status_barang = ""
+        $filter_status_barang = "",
+        $filter_id_pengguna = ""
     ) {
         global $a_tambah_baca_update_hapus;
 
         $filter_status_kemitraan == "All" ? $filter_status_kemitraan = "" : $filter_status_kemitraan;
         $filter_tanggal_dari == "All" ? $filter_tanggal_dari = "" : $filter_tanggal_dari;
+        $filter_metode_pembelian == "All" ? $filter_metode_pembelian = "" : $filter_metode_pembelian;
+        $filter_metode_pembayaran == "All" ? $filter_metode_pembayaran = "" : $filter_metode_pembayaran;
         $filter_tanggal_sampai == "All" ? $filter_tanggal_sampai = "" : $filter_tanggal_sampai;
         $filter_status_transaksi == "All" ? $filter_status_transaksi = "" : $filter_status_transaksi;
         $filter_status_pembayaran == "All" ? $filter_status_pembayaran = "" : $filter_status_pembayaran;
         $filter_status_barang == "All" ? $filter_status_barang = "" : $filter_status_barang;
+        $filter_id_pengguna == "" ? $filter_id_pengguna = "" : $filter_id_pengguna;
 
 
         $search_field_where = array();
@@ -277,6 +283,14 @@ class Search_Controller
         $search_connector_where = array();
 
         // Add filters dynamically if they are set
+        if (!empty($filter_id_pengguna)) {
+            $search_field_where[] = "Id_Pengguna";
+            $search_criteria_where[] = "=";
+            $search_value_where[] = "$filter_id_pengguna";
+            $search_connector_where[] = "AND";
+        }
+        
+        
         if (!empty($filter_status_kemitraan)) {
             $search_field_where[] = "Status_Kemitraan";
             $search_criteria_where[] = "LIKE";
@@ -298,6 +312,20 @@ class Search_Controller
             $search_connector_where[] = "AND";
         }
 
+        if (!empty($filter_metode_pembelian)) {
+            $search_field_where[] = "Metode_Pembelian";
+            $search_criteria_where[] = "LIKE";
+            $search_value_where[] = $filter_metode_pembelian;
+            $search_connector_where[] = "AND";
+        }
+        
+        if (!empty($filter_metode_pembayaran)) {
+            $search_field_where[] = "Metode_Pembayaran";
+            $search_criteria_where[] = "LIKE";
+            $search_value_where[] = $filter_metode_pembayaran;
+            $search_connector_where[] = "AND";
+        }
+        
         if (!empty($filter_status_transaksi)) {
             $search_field_where[] = "Status_Transaksi";
             $search_criteria_where[] = "LIKE";

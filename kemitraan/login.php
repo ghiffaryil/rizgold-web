@@ -1,8 +1,6 @@
 <?php
 include "app/config/init/init.php";
 
-// FUNGSI LOGIN
-
 // Set cookies for Kemitraan Rizgold
 setcookie("Cookie_1_Kemitraan_Rizgold", "", time() + (86400 * 365));
 setcookie("Cookie_2_Kemitraan_Rizgold", "", time() + (86400 * 365));
@@ -14,23 +12,27 @@ unset($_COOKIE["Cookie_3_Kemitraan_Rizgold"]);
 
 // Handle login form submission
 if (isset($_POST['Submit_Login'])) {
+	
 	$_Password = $a_hash_password->hash_password($_POST['Password']);
+
 	$search_field_where = array("Status", "Username", "Password");
 	$search_criteria_where = array("=", "=", "=");
 	$search_value_where = array("Aktif", "$_POST[Username]", "$_Password");
 	$search_connector_where = array("AND", "AND", "");
-	$result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_admin", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+	$result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pengguna", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+
 
 	if ($result['Status'] == "Sukses") {
+
 		$data_login = $result['Hasil'];
-		$Id_User = $a_hash->encode($data_login[0]['Id_Admin'], "Id_Admin");
-		$Id_Role = $a_hash->encode($data_login[0]['Id_Admin'], "Id_Role");
+		$Id_Pengguna = $a_hash->encode($data_login[0]['Id_Pengguna'], "Id_Pengguna");
+		$Username = $a_hash->encode($data_login[0]['Username'], "Username");
 		$Password = $a_hash->encode($data_login[0]['Password'], "Password");
 
 		// Set login cookies
-		setcookie("Cookie_1_Kemitraan_Rizgold", $Id_User, time() + (86400 * 365)); // LOGIN ID_PENGGUNA
-		setcookie("Cookie_2_Kemitraan_Rizgold", $Password, time() + (86400 * 365)); // LOGIN PASSWORD
-		setcookie("Cookie_3_Kemitraan_Rizgold", $Id_Role, time() + (86400 * 365)); // LOGIN SEBAGAI
+		setcookie("Cookie_1_Kemitraan_Rizgold", $Id_Pengguna, time() + (86400 * 365)); // LOGIN ID_PENGGUNA
+		setcookie("Cookie_2_Kemitraan_Rizgold", $Username, time() + (86400 * 365)); // LOGIN SEBAGAI
+		setcookie("Cookie_3_Kemitraan_Rizgold", $Password, time() + (86400 * 365)); // LOGIN PASSWORD
 
 		// Redirect to dashboard with success message
 		echo "<script>alert('Login Berhasil');document.location.href='dashboard.php'</script>";
@@ -98,7 +100,7 @@ if (isset($_POST['Submit_Login'])) {
 							<div class="fv-row mb-10">
 								<div class="d-flex flex-stack mb-2">
 									<label class="form-label fw-bold text-dark fs-6 mb-0">Password</label>
-									<a href="#" class="link-primary fs-6 fw-bold">Forgot Password ?</a>
+									<a href="#" class="link-primary fs-6 fw-bold">Lupa Password?</a>
 								</div>
 								<input required class="form-control form-control-lg" placeholder="Masukkan password" type="password" name="Password" id="password" />
 								<div id="passwordError" class="text-danger" style="display:none;">Password tidak boleh kosong</div>
@@ -107,9 +109,7 @@ if (isset($_POST['Submit_Login'])) {
 							<!--begin::Actions-->
 							<div class="text-center">
 								<button type="submit" name="" id="button_login" class="btn btn-lg btn-dark w-100 mb-5">
-									<span class="indicator-label text-white">Continue</span>
-									<span class="indicator-progress text-white">Please wait...
-										<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+									<span class="indicator-label text-white">Masuk</span>
 								</button>
 
 								<input type="submit" value="Login" name="Submit_Login" id="submit_login" class="d-none">
