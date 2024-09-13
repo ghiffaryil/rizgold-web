@@ -106,7 +106,7 @@
         }
     </script>
 
-    <!-- FORM ADD -->
+
     <?php if ((isset($_GET["tambah"])) or (isset($_GET["edit"]))) { ?>
 
         <?php if (isset($_GET['tambah'])) {
@@ -164,7 +164,7 @@
                                 <div class="fv-row mb-7">
                                     <label class="required fw-semibold fs-6 mb-2">Nama</label>
                                     <select name="Id_Pengguna" id="Select-Id-Pengguna" onchange="ubah_status_kemitraan();" class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Pengguna" data-kt-user-table-filter="role" data-allow-clear="true">
-                                        <option value=""></option>
+                                        <option value=""> </option>
                                         <?php
                                         $search_field_where = array("Status");
                                         $search_criteria_where = array("=");
@@ -197,17 +197,33 @@
 
                                 <div class="fv-row mb-7">
                                     <label class="fw-semibold fs-6 mb-2">Perusahaan</label>
-                                    <input readonly name="Nama_Perusahaan" id="Nama_Perusahaan" type="text" class="form-control form-control-solid mb-3 mb-lg-0" />
-                                    <input readonly name="Organisasi_Kode" id="Organisasi_Kode" type="text" class="form-control form-control-solid mb-3 mb-lg-0 d-none" />
+                                    <?php
+                                    if (isset($_GET['edit'])) {
+                                        $read_data_pengguna = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", $edit['Id_Pengguna']);
+                                        if ($read_data_pengguna['Status'] == "Sukses") {
+                                            $nama_perusahaan_pengguna = $read_data_pengguna['Hasil']['Nama_Perusahaan'];
+                                        } else {
+                                            $nama_perusahaan_pengguna = "";
+                                        }
+                                    }
+                                    ?>
+                                    <input readonly placeholder="Nama Perusahaan akan terisi otomatis" name="Nama_Perusahaan" id="Nama_Perusahaan" type="text" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET['edit'])) {
+                                                                                                                                                                                                                                echo $nama_perusahaan_pengguna;
+                                                                                                                                                                                                                            } ?>" />
+                                    <input readonly placeholder="Organisasi Kode akan terisi otomatis" name="Organisasi_Kode" id="Organisasi_Kode" type="text" class="form-control form-control-solid mb-3 mb-lg-0 d-none" value="<?php if (isset($_GET['edit'])) {
+                                                                                                                                                                                                                                        echo $edit['Organisasi_Kode'];
+                                                                                                                                                                                                                                    } ?>" />
                                 </div>
 
                                 <div class="fv-row mb-7">
                                     <label class="fw-semibold fs-6 mb-2">Status Kemitraan</label>
-                                    <input readonly name="Status_Kemitraan" id="Status_Kemitraan" type="text" class="form-control form-control-solid mb-3 mb-lg-0" />
+                                    <input readonly placeholder="Status Kemitraan akan terisi otomatis" name="Status_Kemitraan" id="Status_Kemitraan" type="text" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET['edit'])) {
+                                                                                                                                                                                                                                    echo $edit['Status_Kemitraan'];
+                                                                                                                                                                                                                                } ?>" />
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class=" col-lg-6">
                                 <div class="fv-row mb-7">
                                     <h3>Identitas Transaksi</h3>
                                 </div>
@@ -236,8 +252,7 @@
 
                                 <div class="fv-row mb-7">
                                     <label class="required fw-semibold fs-6 mb-2">Status Transaksi</label>
-                                    <select name="Metode_Pembelian" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Status" data-kt-user-table-filter="role" data-hide-search="true">
-
+                                    <select name="Status_Transaksi" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Status" data-kt-user-table-filter="role" data-hide-search="true">
                                         <option <?php if (isset($_GET['edit'])) {
                                                     if ($edit['Status_Transaksi'] == "Baru") {
                                                         echo "selected";
@@ -270,7 +285,7 @@
 
                                 <div class="fv-row mb-4">
                                     <label class="required fw-semibold fs-6 mb-2">Produk</label>
-                                    <select name="Id_Produk" id="Select-Id-Produk" onchange="ambil_harga_by_status_kemitraan(); hitung_total()" class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Produk" data-kt-user-table-filter="role" data-allow-clear="true">
+                                    <select name="Id_Produk" id="Select-Id-Produk" onchange="function_select_produk(this.value)" class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Produk" data-kt-user-table-filter="role" data-allow-clear="true">
                                         <option value=""></option>
                                         <?php
                                         $search_field_where = array("Status");
@@ -301,10 +316,12 @@
 
                                 <div class="fv-row mb-7">
                                     <label class="required fw-semibold fs-6 mb-2">Harga</label>
-                                    <input name="Harga" id="Harga" type="text" class="form-control mb-3 mb-lg-0 form-control-solid" />
+                                    <input placeholder="Harga akan terisi otomatis" name="Harga" id="Harga" type="text" class="form-control mb-3 mb-lg-0 form-control-solid" value="<?php if (isset($_GET['edit'])) {
+                                                                                                                                                                                        echo $edit['Harga'];
+                                                                                                                                                                                    } ?>" />
                                 </div>
 
-                                <div class="fv-row mb-7">
+                                <div class=" fv-row mb-7">
                                     <label class="required fw-semibold fs-6 mb-2">QTY</label>
                                     <input name="QTY" id="QTY" min="0" mas="100" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" type="text" class="form-control mb-3 mb-lg-0" value="<?php if (isset($_GET['edit'])) {
                                                                                                                                                                                                                     echo $edit['QTY'];
@@ -313,9 +330,9 @@
 
                                 <div class="fv-row mb-7">
                                     <label class="required fw-semibold fs-6 mb-2">Total</label>
-                                    <input name="Total" id="Total" type="text" class="form-control mb-3 mb-lg-0 form-control-solid" value="<?php if (isset($_GET['edit'])) {
-                                                                                                                                                echo $edit['Total'];
-                                                                                                                                            } ?>" />
+                                    <input placeholder="Total akan terisi otomatis" name="Total" id="Total" type="text" class="form-control mb-3 mb-lg-0 form-control-solid" value="<?php if (isset($_GET['edit'])) {
+                                                                                                                                                                                        echo $edit['Total'];
+                                                                                                                                                                                    } ?>" />
                                 </div>
                             </div>
 
@@ -327,7 +344,7 @@
                                 <div class="fv-row mb-7">
                                     <label class="required fw-semibold fs-6 mb-2">Metode Pembelian</label>
                                     <select name="Metode_Pembelian" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Metode Pembalian" data-kt-user-table-filter="role" data-hide-search="true">
-                                        <option value=""></option>
+                                        <option value="All"> Semua </option>
                                         <option <?php if (isset($_GET['edit'])) {
                                                     if ($edit['Metode_Pembelian'] == "Shopee") {
                                                         echo "selected";
@@ -344,7 +361,7 @@
                                 <div class="fv-row mb-7">
                                     <label class="required fw-semibold fs-6 mb-2">Metode Pembayaran</label>
                                     <select name="Metode_Pembayaran" required class="form-select fw-bold" data-kt-select2="true" data-placeholder="Pilih Metode Pembayaran" data-kt-user-table-filter="role" data-hide-search="true">
-                                        <option value=""></option>
+                                        <option value="All"> Semua </option>
                                         <option <?php if (isset($_GET['edit'])) {
                                                     if ($edit['Metode_Pembayaran'] == "Tunai") {
                                                         echo "selected";
@@ -409,33 +426,34 @@
 
 
                         <hr class="mb-7">
-
-                        <div class="fv-row mb-7">
-                            <label class="required fw-semibold fs-6 mb-2">Bukti Transaksi</label>
-                            <input name="File_Bukti_Transaksi" type="file" class="form-control" accept=".png, .gif, .jpg, .jpeg, .pdf, .zip, .rar" />
-                            <?php if (isset($_GET['edit'])) {
-                                $folder_konten = "assets/images/bukti_transaksi/";
-                            ?>
-                                <br>
-                                <?php if ($edit['File_Bukti_Transaksi'] != "") { ?>
-                                    <a href="<?php echo $folder_konten . $edit['File_Bukti_Transaksi'] ?>" class="btn btn-light-success btn-sm" target="_blank"><i class="ki-solid ki-eye"></i>Lihat</a>
-                                    <a href="<?php echo $folder_konten . $edit['File_Bukti_Transaksi'] ?>" class="btn btn-light-info btn-sm" download="<?php echo $edit['File_Bukti_Transaksi'] ?>"><i class="ki-solid ki-cloud-download"></i>Download</a>
-                                <?php } else { ?>
-                                    <span class="badge badge-light-danger">Konten ini tidak memiliki File</span>
+                        <?php if (isset($_GET['edit'])) { ?>
+                            <div class="fv-row mb-7">
+                                <label class="fw-semibold fs-6 mb-2">Bukti Transaksi</label>
+                                <input name="File_Bukti_Transaksi" type="file" class="form-control" accept=".png, .gif, .jpg, .jpeg, .pdf, .zip, .rar" />
+                                <?php if (isset($_GET['edit'])) {
+                                    $folder_konten = "assets/images/bukti_transaksi/";
+                                ?>
+                                    <br>
+                                    <?php if ($edit['File_Bukti_Transaksi'] != "") { ?>
+                                        <a href="<?php echo $folder_konten . $edit['File_Bukti_Transaksi'] ?>" class="btn btn-light-success btn-sm" target="_blank"><i class="ki-solid ki-eye"></i>Lihat</a>
+                                        <a href="<?php echo $folder_konten . $edit['File_Bukti_Transaksi'] ?>" class="btn btn-light-info btn-sm" download="<?php echo $edit['File_Bukti_Transaksi'] ?>"><i class="ki-solid ki-cloud-download"></i>Download</a>
+                                    <?php } else { ?>
+                                        <span class="badge badge-light-danger">Konten ini tidak memiliki File</span>
+                                    <?php } ?>
                                 <?php } ?>
-                            <?php } ?>
-                        </div>
+                            </div>
+                        <?php } ?>
 
                         <div class="fv-row mb-7">
-                            <label class="required fw-semibold fs-6 mb-2">Catatan</label>
+                            <label class="fw-semibold fs-6 mb-2">Catatan</label>
                             <textarea name="Catatan" class="form-control mb-3 mb-lg-0" rows="3"><?php if (isset($_GET["edit"])) {
                                                                                                     echo $edit['Catatan'];
                                                                                                 } ?></textarea>
                         </div>
 
                         <div class="row mb-7">
-                            <div class="pt-5 col-lg-12 text-center">
-                                <a href="<?php echo $kehalaman ?>"><button type="button" class="btn btn-light-danger me-3">Kembali</button></a>
+                            <div class="pt-5 col-lg>
+                                <a href=" <?php echo $kehalaman ?>"><button type="button" class="btn btn-light-danger me-3">Kembali</button></a>
                                 <?php if (isset($_GET['edit'])) {
                                 ?>
                                     <button type="submit" class="btn btn-primary" name="submit_update">
@@ -457,7 +475,7 @@
         </div>
     <?php } ?>
 
-    <!-- FORM DATA TABLE -->
+
     <?php if (!((isset($_GET["tambah"])) or (isset($_GET["edit"])))) { ?>
         <div class="card py-0">
             <div class="card-header pt-4 text-end" style="min-height: 0;">
@@ -478,100 +496,153 @@
             </div>
 
             <div class="card-header border-0 pt-6">
-                <div class="card-title d-none">
-                    <div class="d-flex align-items-center position-relative my-1 mx-1">
-                        <select name="filter" id="filterSelect" class="form-select">
-                            <option <?php if (!(isset($_GET['filter']))) {
-                                        echo "selected";
-                                    } ?> value="All">Status Kemitraan</option>
-                            <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Distributor")) {
-                                        echo "selected";
-                                    } ?> value="Distributor">Distributor</option>
-                            <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Agen")) {
-                                        echo "selected";
-                                    } ?> value="Agen">Agen</option>
-                        </select>
-                    </div>
-
-                    <div class="d-flex align-items-center position-relative my-1 mx-1">
-                        <input type="date" class="form-control" name="" placeholder="Mulai">
-                    </div>
-
-
-                    <div class="d-flex align-items-center position-relative my-1 mx-1">
-                        <select name="filter" id="filterSelect" class="form-select">
-                            <option <?php if (!(isset($_GET['filter']))) {
-                                        echo "selected";
-                                    } ?> value="All">Metode Pembelian</option>
-                            <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Shopee")) {
-                                        echo "selected";
-                                    } ?> value="Shopee">Shopee</option>
-                            <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Whatsapp")) {
-                                        echo "selected";
-                                    } ?> value="Whatsapp">Whatsapp</option>
-                        </select>
-                    </div>
-
-                    <div class="d-flex align-items-center position-relative my-1 mx-1">
-                        <select name="filter" id="filterSelect" class="form-select">
-                            <option <?php if (!(isset($_GET['filter']))) {
-                                        echo "selected";
-                                    } ?> value="All">Status Transaksi</option>
-                            <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Proses")) {
-                                        echo "selected";
-                                    } ?> value="Proses">Proses</option>
-                            <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Selesai")) {
-                                        echo "selected";
-                                    } ?> value="Selesai">Selesai</option>
-                        </select>
-                    </div>
-
-                    <div class="d-flex align-items-center position-relative my-1 mx-1">
-                        <select name="filter" id="filterSelect" class="form-select">
-                            <option <?php if (!(isset($_GET['filter']))) {
-                                        echo "selected";
-                                    } ?> value="All">Status Pembayaran</option>
-                            <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Belum Bayar")) {
-                                        echo "selected";
-                                    } ?> value="Belum Bayar">Belum Bayar</option>
-                            <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Lunas")) {
-                                        echo "selected";
-                                    } ?> value="Lunas">Lunas</option>
-                            <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Tempo")) {
-                                        echo "selected";
-                                    } ?> value="Tempo">Lunas</option>
-                        </select>
-                    </div>
-
-                    <div class="d-flex align-items-center position-relative my-1 mx-1">
-                        <select name="filter" id="filterSelect" class="form-select">
-                            <option <?php if (!(isset($_GET['filter']))) {
-                                        echo "selected";
-                                    } ?> value="All">Status Barang</option>
-                            <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Diterima")) {
-                                        echo "selected";
-                                    } ?> value="Diterima">Diterima</option>
-                            <option <?php if ((isset($_GET['filter']) and $_GET['filter'] == "Dikirim")) {
-                                        echo "selected";
-                                    } ?> value="Dikirim">Dikirim</option>
-                        </select>
-                    </div>
-
-                    &nbsp;
-
-                    <div class="d-flex align-items-center position-relative my-1">
-                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>
-                        <input type="text" data-kt-user-table-filter="search" class="form-control w-250px ps-13" placeholder="Search" />
-                    </div>
-                </div>
+                <div class="card-title"></div>
 
                 <div class="card-toolbar">
                     <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                        <a href="<?php echo $kehalaman ?>&tambah" class="btn btn-sm btn-light-primary">
-                            <i class="ki-duotone ki-plus fs-2"></i>Tambah</a>
+
+                        <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_filter">
+                            <i class="ki-duotone ki-filter fs-2">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>Filter
+                        </button>
+
+                        <!-- MODAL FILTER -->
+                        <div class="modal fade" id="kt_modal_filter" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered mw-650px">
+                                <div class="modal-content">
+                                    <form class="form" action="" id="kt_modal_filter_form" method="POST">
+                                        <!-- MODAL HEADER -->
+                                        <div class="modal-header" id="kt_modal_filter_header">
+                                            <h2 class="fw-bold">Filter Transaksi</h2>
+                                            <div data-bs-dismiss="modal" class="btn btn-icon btn-sm btn-active-icon-primary">
+                                                <i class="ki-duotone ki-cross fs-1">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </div>
+                                        </div>
+                                        <!-- MODAL BODY -->
+                                        <div class="modal-body py-5">
+                                            <div class="scroll-y me-n7 pe-7" id="kt_modal_filter_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_filter_header" data-kt-scroll-wrappers="#kt_modal_filter_scroll" data-kt-scroll-offset="300px">
+
+                                                <div class="mb-3">
+                                                    <label for="filterStatusKemitraan" class="form-label">Status Kemitraan</label>
+                                                    <select name="filter_status_kemitraan" class="form-select form-select-solid" data-allow-clear="true">
+                                                        <option value="All"> Semua </option>
+                                                        <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_kemitraan'] == "Distributor")) {
+                                                                    echo "selected";
+                                                                } ?> value="Distributor">Distributor</option>
+                                                        <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_kemitraan'] == "Agen")) {
+                                                                    echo "selected";
+                                                                } ?> value="Agen">Agen</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="startDate" class="form-label">Dari</label>
+                                                            <input type="date" name="filter_tanggal_dari" class="form-control" id="startDate" name="startDate" placeholder="Mulai" value="<?php if ((isset($_POST['submit_filter']))) {
+                                                                                                                                                                                                echo $_POST['filter_tanggal_dari'];
+                                                                                                                                                                                            } ?>">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="startDate" class="form-label">Sampai</label>
+                                                            <input type="date" name="filter_tanggal_sampai" class="form-control" id="endDate" name="endDate" placeholder="Selesai" value="<?php if ((isset($_POST['submit_filter']))) {
+                                                                                                                                                                                                echo $_POST['filter_tanggal_sampai'];
+                                                                                                                                                                                            } ?>">
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3 row">
+                                                    <div class="col-lg-6">
+
+                                                        <label for="filterMetodePembelian" class="form-label">Metode Pembelian</label>
+                                                        <select name="filter_metode_pembelian" class="form-select form-select-solid" data-allow-clear="true">
+                                                            <option value="All"> Semua </option>
+                                                            <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_metode_pembelian'] == "Shopee")) {
+                                                                        echo "selected";
+                                                                    } ?> value="Shopee">Shopee</option>
+                                                            <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_metode_pembelian'] == "Whatsapp")) {
+                                                                        echo "selected";
+                                                                    } ?> value="Whatsapp">Whatsapp</option>
+                                                        </select>
+
+                                                    </div>
+                                                    <div class="col-lg-6">
+
+                                                        <label for="filterStatusTransaksi" class="form-label">Status Transaksi</label>
+                                                        <select name="filter_status_transaksi" class="form-select form-select-solid" data-allow-clear="true">
+                                                            <option value="All"> Semua </option>
+                                                            <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_transaksi'] == "Proses")) {
+                                                                        echo "selected";
+                                                                    } ?> value="Proses">Proses</option>
+                                                            <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_transaksi'] == "Selesai")) {
+                                                                        echo "selected";
+                                                                    } ?> value="Selesai">Selesai</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-3">
+
+                                                    <div class="col-lg-6">
+
+                                                        <label for="filterStatusPembayaran" class="form-label">Status Pembayaran</label>
+                                                        <select name="filter_status_pembayaran" class="form-select form-select-solid" data-allow-clear="true">
+                                                            <option value="All"> Semua </option>
+                                                            <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_pembayaran'] == "Belum Bayar")) {
+                                                                        echo "selected";
+                                                                    } ?> value="Belum Bayar">Belum Bayar</option>
+                                                            <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_pembayaran'] == "Lunas")) {
+                                                                        echo "selected";
+                                                                    } ?> value="Lunas">Lunas</option>
+                                                            <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_pembayaran'] == "Tempo")) {
+                                                                        echo "selected";
+                                                                    } ?> value="Tempo">Tempo</option>
+                                                        </select>
+
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label for="filterStatusBarang" class="form-label">Status Barang</label>
+                                                        <select name="filter_status_barang" class="form-select form-select-solid" data-allow-clear="true">
+                                                            <option value="All"> Semua </option>
+                                                            <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_barang'] == "Diterima")) {
+                                                                        echo "selected";
+                                                                    } ?> value="Diterima">Diterima</option>
+                                                            <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_barang'] == "Dikirim")) {
+                                                                        echo "selected";
+                                                                    } ?> value="Dikirim">Dikirim</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                        <!-- MODAL FOOTER -->
+                                        <div class="modal-footer flex-center">
+                                            <button type="reset" id="" data-bs-dismiss="modal" class="btn btn-light me-3">Batal</button>
+                                            <button type="submit" name="submit_filter" id="kt_modal_add_customer_submit" class="btn btn-primary">
+                                                <span class="indicator-label">Submit</span>
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- MODAL FILTER -->
+
+                        <a href="<?php echo $kehalaman ?>&tambah" class="btn btn-light-primary">
+                            <i class="ki-duotone ki-plus"></i>Tambah</a>
                     </div>
                     <div class="d-flex justify-content-end align-items-center d-none" data-kt-user-table-toolbar="selected">
                         <div class="fw-bold me-5">
@@ -583,21 +654,21 @@
             </div>
 
             <div class="card-body py-4">
-
-
                 <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
                     <thead>
                         <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                            <th class="">No</th>
-                            <th class="">Tanggal</th>
-                            <th class="">Nomor Transaksi</th>
-                            <th class="">Nama Mitra</th>
-                            <th class="">Produk</th>
-                            <th class="">QTY</th>
-                            <th class="">Pembelian</th>
-                            <th class="">Pembayaran</th>
-                            <th class="">Barang</th>
-                            <th class="text-center">Tindakan</th>
+                            <th class="text-dark">No</th>
+                            <th class="text-dark">Tanggal</th>
+                            <th class="text-dark">Nomor Transaksi</th>
+                            <th class="text-dark">Nama Mitra</th>
+                            <th class="text-dark">Status Kemitraan</th>
+                            <th class="text-dark">Produk</th>
+                            <th class="text-dark">QTY</th>
+                            <th class="text-dark">Total</th>
+                            <th class="text-dark">Metode Beli</th>
+                            <th class="text-dark">Metode Bayar</th>
+                            <th class="text-dark">Status Bayar</th>
+                            <th class="text-dark">Status Barang</th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 fw-semibold">
@@ -605,42 +676,61 @@
 
                         $search_controller = new Search_Controller();
                         $filter_status = isset($_GET['filter_status']) ? $_GET['filter_status'] : "Aktif";
-                        $filter_tanggal_transaksi_dari = isset($_GET['filter_tanggal_transaksi_dari']) ? $_GET['filter_tanggal_transaksi_dari'] : "";
-                        $filter_tanggal_transaksi_sampai = isset($_GET['filter_tanggal_transaksi_sampai']) ? $_GET['filter_tanggal_transaksi_sampai'] : "";
-                        $filter_status_transaksi = isset($_GET['filter_status_transaksi']) ? $_GET['filter_status_transaksi'] : "";
-                        $filter_status_pembayaran = isset($_GET['filter_status_pembayaran']) ? $_GET['filter_status_pembayaran'] : "";
-                        $filter_status_barang = isset($_GET['filter_status_barang']) ? $_GET['filter_status_barang'] : "";
-
-                        $data_hasil = $search_controller->select_search_filter($filter_status, $filter_tanggal_transaksi_dari, $filter_tanggal_transaksi_sampai, $filter_status_transaksi, $filter_status_pembayaran, $filter_status_barang);
+                        $filter_status_kemitraan = isset($_POST['submit_filter']) ? $_POST['filter_status_kemitraan'] : "";
+                        $filter_tanggal_dari = isset($_POST['submit_filter']) ? $_POST['filter_tanggal_dari'] : "";
+                        $filter_tanggal_sampai = isset($_POST['submit_filter']) ? $_POST['filter_tanggal_sampai'] : "";
+                        $filter_status_transaksi = isset($_POST['submit_filter']) ? $_POST['filter_status_transaksi'] : "";
+                        $filter_status_pembayaran = isset($_POST['submit_filter']) ? $_POST['filter_status_pembayaran'] : "";
+                        $filter_status_barang = isset($_POST['submit_filter']) ? $_POST['filter_status_barang'] : "";
+                        // Call the search function
+                        $data_hasil = $search_controller->select_search_filter(
+                            $filter_status,
+                            $filter_status_kemitraan,
+                            $filter_tanggal_dari,
+                            $filter_tanggal_sampai,
+                            $filter_status_transaksi,
+                            $filter_status_pembayaran,
+                            $filter_status_barang
+                        );
                         $nomor = 0;
+
+
+                        // Output the results for debugging
+                        // echo "<pre>";
+                        // var_dump($data_hasil);
+                        // echo "</pre>";
 
                         foreach ($data_hasil as $data) {
                             $nomor++;
-                            $encode_id = $a_hash->encode($data['Id_Transaksi'], $_GET['menu']); ?>
+                            $encode_id = $a_hash->encode($data['Id_Transaksi_Penjualan'], $_GET['menu']); ?>
 
                             <tr>
+                                <td><?php echo $nomor ?></td>
+                                <td><?php echo $data['Tanggal_Transaksi'] ?></td>
                                 <td>
-                                    <?php echo $nomor ?>
-                                </td>
-                                <td class="d-flex align-items-center">
-                                    <a class="text-gray-800 text-hover-primary mb-1" href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>">
-                                        <?php echo $data['Tanggal_Transaksi'] ?>
+                                    <a class="" href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>">
+                                        <?php echo $data['Nomor_Transaksi'] ?>
                                     </a>
-
                                 </td>
-                                <td><?php echo $data['Nomor_Transaksi'] ?></td>
                                 <td>
                                     <?php
                                     $result_pengguna = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", $data['Id_Pengguna']);
                                     if ($result_pengguna['Status'] == "Sukses") {
                                         $data_pengguna = $result_pengguna['Hasil'];
                                     ?>
-                                        <span><?php echo $data_pengguna['Nama_Depan'] . " " . $data_pengguna['Nama_Belakang']; ?></span>
-                                        <span><?php echo $data_pengguna['Status_Kemitraan'] ?></span>
-                                        <span><?php echo $data_pengguna['Nama_Perusahaan'] ?></span>
+                                        <span><?php echo "$data_pengguna[Nama_Depan] $data_pengguna[Nama_Belakang]" ?></span>
+                                        <br>
+                                        <span class="fs-7 text-muted"><?php echo "$data_pengguna[Organisasi_Kode] <br> $data_pengguna[Nama_Perusahaan]" ?></span>
                                     <?php
                                     }
                                     ?>
+                                </td>
+                                <td>
+                                    <span class="badge <?php if ($data['Status_Kemitraan'] == "Agen") {
+                                                            echo 'badge-light-info';
+                                                        } else {
+                                                            echo 'badge-light-primary';
+                                                        } ?>"><?php echo $data['Status_Kemitraan'] ?></span>
                                 </td>
                                 <td>
                                     <?php
@@ -650,44 +740,42 @@
                                         $id_produk_kategori = $result_produk['Hasil']['Id_Produk_Kategori'];
                                     ?>
                                         <span><?php echo $data_produk['Nama_Produk'] ?></span>
-                                        <?php
-                                        $result_produk_kategori = $a_tambah_baca_update_hapus->baca_data_id("tb_produk_kategori", "Id_Produk_Kategori", $data_produk['Id_Produk_Kategori']);
-                                        if ($result_produk_kategori['Status'] == "Sukses") {
-                                            $data_produk_kategori = $result_produk_kategori['Hasil'];
-                                        ?>
-                                            <span><?php echo $data_produk_kategori['Nama_Kategori'] ?></span>
                                     <?php
-                                        }
                                     }
                                     ?>
                                 </td>
-                                <td class="text-center">
-                                    <div class="badge badge-light-info fw-bold"><?php echo $data['Status_Pembelian'] ?></div>
+                                <td><?php echo $data['QTY'] ?></td>
+                                <td><?php echo $data['Total'] ?></td>
+                                <td>
+                                    <div class="badge badge-<?php if ($data['Metode_Pembelian'] == "Whatsapp") {
+                                                                echo 'light-success';
+                                                            } else {
+                                                                echo 'light-warning';
+                                                            } ?> fw-bold"><?php echo $data['Metode_Pembelian'] ?></div>
                                 </td>
-                                <td class="text-center">
+                                <td>
+                                    <div class="badge badge-<?php if ($data['Metode_Pembayaran'] == "Tunai") {
+                                                                echo 'light-success';
+                                                            } else {
+                                                                echo 'light-info';
+                                                            } ?> fw-bold"><?php echo $data['Metode_Pembayaran'] ?></div>
+                                </td>
+                                <td>
                                     <div class="badge badge-<?php if ($data['Status_Pembayaran'] == "Lunas") {
                                                                 echo 'light-success';
                                                             } else {
                                                                 echo 'light-danger';
                                                             } ?> fw-bold"><?php echo $data['Status_Pembayaran'] ?></div>
                                 </td>
-                                <td class="text-center">
-                                    <div class="badge badge-<?php if ($data['Status_Pembayaran'] == "Diterima") {
+                                <td>
+                                    <div class="badge badge-<?php if ($data['Status_Barang'] == "Diterima") {
                                                                 echo 'light-success';
-                                                            } else if ($data['Status_Pembayaran'] == "Dikirim") {
+                                                            } else if ($data['Status_Barang'] == "Dikirim") {
                                                                 echo 'light-primary';
                                                             } else {
                                                                 echo 'light-danger';
-                                                            } ?> fw-bold"><?php echo $data['Status_Pembayaran'] ?></div>
+                                                            } ?> fw-bold"><?php echo $data['Status_Barang'] ?></div>
                                 </td>
-
-                                <td class="text-center">
-                                    <a href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>">
-                                        <i class="ki-solid ki-notepad-edit text-warning fs-2">
-                                        </i>
-                                    </a>
-                                </td>
-
                             </tr>
 
                         <?php
@@ -701,8 +789,6 @@
         </div>
     <?php } ?>
 </div>
-
-
 
 <script>
     function ubah_status_kemitraan() {
@@ -720,17 +806,36 @@
         document.getElementById('Nama_Perusahaan').value = namaPerusahaan || ''; // Empty if no value
         document.getElementById('Organisasi_Kode').value = organisasiKode || ''; // Empty if no value
 
-        // Clear the product selection using Select2
-        $('#Select-Id-Produk').val(null).trigger('change'); // Clear the Select2 selection
 
-        // Clear the Harga, QTY, and Total fields
-        document.getElementById('QTY').value = "";
-        document.getElementById('Harga').value = "";
-        document.getElementById('Total').value = "";
+        // Set custom value before triggering the change event
+        customSelectValue = 'ubah_status_kemitraan';
+
+        // Clear the product selection using Select2
+        $('#Select-Id-Produk').val(null).trigger('change');
+    }
+
+    function function_select_produk(val) {
+
+        // Use the global variable if it's set
+        if (customSelectValue !== '') {
+            val = customSelectValue; // Use the custom value
+            customSelectValue = ''; // Reset the global variable
+        }
+
+        if (val == "ubah_status_kemitraan") {
+            // // Clear the Harga, QTY, and Total fields
+            document.getElementById('QTY').value = "";
+            document.getElementById('Harga').value = "";
+            document.getElementById('Total').value = "";
+        } else {
+            ambil_harga_by_status_kemitraan();
+            hitung_total();
+        }
     }
 
     function ambil_harga_by_status_kemitraan() {
         var statusKemitraan = document.getElementById('Status_Kemitraan').value;
+
 
         if (statusKemitraan === "") {
             alert('Silahkan pilih Nama terlebih dahulu');
@@ -739,11 +844,11 @@
             var selectElement = document.getElementById('Select-Id-Produk');
             var selectedOption = selectElement.options[selectElement.selectedIndex];
 
-            var harga = statusKemitraan === 'Distributor' ?
+            var harga = statusKemitraan == 'Distributor' ?
                 selectedOption.getAttribute('data-harga-distributor') :
                 selectedOption.getAttribute('data-harga-agen');
 
-            document.getElementById('Harga').value = formatRupiah(harga) || ''; // Format as Rupiah
+            document.getElementById('Harga').value = harga || ''; // Format as Rupiah
         }
     }
 

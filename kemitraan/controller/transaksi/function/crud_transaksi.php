@@ -17,9 +17,11 @@ if (isset($_GET['id'])) {
 if (isset($_POST['submit_simpan'])) {
 
     $form_field = array(
+
         "Nomor_Transaksi",
         "Organisasi_Kode",
         "Id_Pengguna",
+        "Status_Kemitraan",
         "Id_Produk",
         "Harga",
         "QTY",
@@ -31,14 +33,18 @@ if (isset($_POST['submit_simpan'])) {
         "Metode_Pembayaran",
         "Status_Pembayaran",
         "Status_Barang",
+
         "Waktu_Simpan_Data",
         "Waktu_Update_Data",
         "Status"
+
     );
     $form_value = array(
+
         "$_POST[Nomor_Transaksi]",
         "$_POST[Organisasi_Kode]",
         "$_POST[Id_Pengguna]",
+        "$_POST[Status_Kemitraan]",
         "$_POST[Id_Produk]",
         "$_POST[Harga]",
         "$_POST[QTY]",
@@ -47,9 +53,10 @@ if (isset($_POST['submit_simpan'])) {
         "$_POST[Tanggal_Transaksi]",
         "$_POST[Status_Transaksi]",
         "$_POST[Metode_Pembelian]",
+        "$_POST[Metode_Pembayaran]",
         "$_POST[Status_Pembayaran]",
         "$_POST[Status_Barang]",
-        "$Waktu_Sekarang",
+
         "$Waktu_Sekarang",
         "$Waktu_Sekarang",
         "Aktif"
@@ -81,10 +88,16 @@ if (isset($_GET['edit'])) {
 if (isset($_POST['submit_update'])) {
 
     $form_field = array(
+
+        "Nomor_Transaksi",
+        "Organisasi_Kode",
+        "Id_Pengguna",
+        "Status_Kemitraan",
         "Id_Produk",
-        "QTY",
         "Harga",
+        "QTY",
         "Total",
+        "Catatan",
         "Tanggal_Transaksi",
         "Status_Transaksi",
         "Metode_Pembelian",
@@ -94,10 +107,16 @@ if (isset($_POST['submit_update'])) {
         "Waktu_Update_Data"
     );
     $form_value = array(
+
+        "$_POST[Nomor_Transaksi]",
+        "$_POST[Organisasi_Kode]",
+        "$_POST[Id_Pengguna]",
+        "$_POST[Status_Kemitraan]",
         "$_POST[Id_Produk]",
         "$_POST[Harga]",
         "$_POST[QTY]",
         "$_POST[Total]",
+        "$_POST[Catatan]",
         "$_POST[Tanggal_Transaksi]",
         "$_POST[Status_Transaksi]",
         "$_POST[Metode_Pembelian]",
@@ -231,20 +250,92 @@ $count_value_where = array("Terhapus", "%$filter%");
 $hitung_Terhapus = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_transaksi_penjualan", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
 $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 #-----------------------------------------------------------------------------------
-
 class Search_Controller
 {
-
-    public function select_search_filter($filter_status = "Aktif", $filter_tanggal_transaksi_dari = "", $filter_tanggal_transaksi_sampai = "", $filter_status_transaksi = "", $filter_status_pembayaran = "", $filter_status_barang = "")
-    {
+    public function select_search_filter(
+        $filter_status = "Aktif",
+        $filter_status_kemitraan = "",
+        $filter_tanggal_dari = "",
+        $filter_tanggal_sampai = "",
+        $filter_status_transaksi = "",
+        $filter_status_pembayaran = "",
+        $filter_status_barang = ""
+    ) {
         global $a_tambah_baca_update_hapus;
 
-        $search_field_where = array("Status", "Tanggal_Transaksi", "Tanggal_Transaksi", "Status_Transaksi", "Status_Pembayaran", "Status_Barang");
-        $search_criteria_where = array("=", ">=", "<=", "LIKE", "LIKE", "LIKE");
-        $search_value_where = array("$filter_status", "$filter_tanggal_transaksi_dari", "$filter_tanggal_transaksi_sampai", "$filter_status_transaksi", "$filter_status_pembayaran", "$filter_status_barang");
-        $search_connector_where = array("AND", "AND", "AND", "AND", "AND", "");
-        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_transaksi_penjualan", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+        $filter_status_kemitraan == "All" ? $filter_status_kemitraan = "" : $filter_status_kemitraan;
+        $filter_tanggal_dari == "All" ? $filter_tanggal_dari = "" : $filter_tanggal_dari;
+        $filter_tanggal_sampai == "All" ? $filter_tanggal_sampai = "" : $filter_tanggal_sampai;
+        $filter_status_transaksi == "All" ? $filter_status_transaksi = "" : $filter_status_transaksi;
+        $filter_status_pembayaran == "All" ? $filter_status_pembayaran = "" : $filter_status_pembayaran;
+        $filter_status_barang == "All" ? $filter_status_barang = "" : $filter_status_barang;
 
+
+        $search_field_where = array();
+        $search_criteria_where = array();
+        $search_value_where = array();
+        $search_connector_where = array();
+
+        // Add filters dynamically if they are set
+        if (!empty($filter_status_kemitraan)) {
+            $search_field_where[] = "Status_Kemitraan";
+            $search_criteria_where[] = "LIKE";
+            $search_value_where[] = "%$filter_status_kemitraan%";
+            $search_connector_where[] = "AND";
+        }
+
+        if (!empty($filter_tanggal_dari)) {
+            $search_field_where[] = "Tanggal_Transaksi";
+            $search_criteria_where[] = ">=";
+            $search_value_where[] = "$filter_tanggal_dari";
+            $search_connector_where[] = "AND";
+        }
+
+        if (!empty($filter_tanggal_sampai)) {
+            $search_field_where[] = "Tanggal_Transaksi";
+            $search_criteria_where[] = "<=";
+            $search_value_where[] = "$filter_tanggal_sampai";
+            $search_connector_where[] = "AND";
+        }
+
+        if (!empty($filter_status_transaksi)) {
+            $search_field_where[] = "Status_Transaksi";
+            $search_criteria_where[] = "LIKE";
+            $search_value_where[] = $filter_status_transaksi;
+            $search_connector_where[] = "AND";
+        }
+
+        if (!empty($filter_status_pembayaran)) {
+            $search_field_where[] = "Status_Pembayaran";
+            $search_criteria_where[] = "LIKE";
+            $search_value_where[] = $filter_status_pembayaran;
+            $search_connector_where[] = "AND";
+        }
+
+        if (!empty($filter_status_barang)) {
+            $search_field_where[] = "Status_Barang";
+            $search_criteria_where[] = "LIKE";
+            $search_value_where[] = $filter_status_barang;
+            $search_connector_where[] = "AND";
+        }
+
+        // Define base search fields and values
+        $search_field_where[] = "Status";
+        $search_criteria_where[] = "=";
+        $search_value_where[] = $filter_status;
+        $search_connector_where[] = "";
+
+        // Call the method to get data
+        // Change the table name to 'tb_transaksi_penjualan' to match your data
+        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter(
+            "tb_transaksi_penjualan",  // Correct table name
+            $search_field_where,
+            $search_criteria_where,
+            $search_value_where,
+            $search_connector_where
+        );
+
+        // Check if the result is successful
         if ($result['Status'] == "Sukses") {
             return $result['Hasil'];
         } else {

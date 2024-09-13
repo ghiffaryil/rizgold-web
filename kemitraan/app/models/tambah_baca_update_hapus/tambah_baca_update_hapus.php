@@ -45,11 +45,6 @@ class a_tambah_baca_update_hapus extends a_database{
 			$Nomor_Auto_Increment = "1";
 		}
 
-
-		#FIELD PRIMARY
-		// $Field_Id_Primary = $Field[0];
-		
-
 		#SQL
 		$sql = "INSERT INTO $Nama_Table (";
 		$sql = $sql.$sql_isi_field;
@@ -208,7 +203,7 @@ class a_tambah_baca_update_hapus extends a_database{
 		$sql = "SELECT * FROM $Nama_Table WHERE ";
 		$sql = $sql.$wherenya;
 
-		// echo $sql;
+		echo $sql;
 
 		#FUNGSI
 		$query = $this->koneksi->query($sql);
