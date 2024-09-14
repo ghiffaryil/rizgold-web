@@ -10,7 +10,7 @@
                         </h1>
                         <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
                             <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
-                                <a href="/oswald-html-pro/index.html" class="text-gray-500 text-hover-primary">
+                                <a href="index.php" class="text-gray-500 text-hover-primary">
                                     <i class="ki-duotone ki-home fs-3 text-gray-500 me-n1"></i>
                                 </a>
                             </li>

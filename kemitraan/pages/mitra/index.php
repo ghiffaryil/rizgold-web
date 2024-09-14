@@ -6,8 +6,6 @@
     exit();
 } ?>
 
-
-
 <?php include "controller/mitra/function/crud_mitra_admin.php"; ?>
 
 <div class="pt-lg-9">
@@ -224,7 +222,7 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <label class="required fw-semibold fs-6 mb-2">Nomor Telepon</label>
-                                        <input name="Nomor_Telepon" type="text" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                        <input name="Nomor_Telepon" type="text" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
                                                                                                                                                 echo $edit['Nomor_Telepon'];
                                                                                                                                             } ?>" />
                                     </div>

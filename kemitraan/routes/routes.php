@@ -19,8 +19,8 @@ if (isset($_GET['menu'])) {
 			include "pages/pengaturan/produk_kategori.php";
 			break;
 
-		case 'pengaturan-pembelian':
-			include "pages/pengaturan/pengaturan_pembelian.php";
+		case 'pengaturan':
+			include "pages/pengaturan/pengaturan.php";
 			break;
 
 		case 'pengaturan-sk-kemitraan':

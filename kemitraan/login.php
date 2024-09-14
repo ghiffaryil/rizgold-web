@@ -11,8 +11,8 @@ unset($_COOKIE["Cookie_2_Kemitraan_Rizgold"]);
 unset($_COOKIE["Cookie_3_Kemitraan_Rizgold"]);
 
 // Handle login form submission
-if (isset($_POST['Submit_Login'])) {
-	
+if (isset($_POST['submit_login'])) {
+
 	$_Password = $a_hash_password->hash_password($_POST['Password']);
 
 	$search_field_where = array("Status", "Username", "Password");
@@ -20,7 +20,6 @@ if (isset($_POST['Submit_Login'])) {
 	$search_value_where = array("Aktif", "$_POST[Username]", "$_Password");
 	$search_connector_where = array("AND", "AND", "");
 	$result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pengguna", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
-
 
 	if ($result['Status'] == "Sukses") {
 
@@ -55,7 +54,7 @@ if (isset($_POST['Submit_Login'])) {
 	<div class="d-flex flex-column flex-root" id="kt_app_root">
 		<!--begin::Authentication - Sign-in -->
 		<div class="d-flex flex-column flex-lg-row flex-column-fluid">
-			<!--begin::Aside-->
+			<!-- !--begin::Aside-->
 			<div class="d-flex flex-column flex-lg-row-auto bg-dark w-xl-600px position-xl-relative">
 				<!--begin::Wrapper-->
 				<div class="d-flex flex-column position-xl-fixed top-0 bottom-0 w-xl-600px scroll-y">
@@ -63,18 +62,21 @@ if (isset($_POST['Submit_Login'])) {
 					<div class="d-flex flex-row-fluid flex-column text-center p-5 p-lg-10 pt-lg-20">
 						<!--begin::Logo-->
 						<div class="py-2 py-lg-15">
-							<img alt="Logo" src="assets/media/logos/default.svg" class="h-30px h-lg-50px" />
+							<img alt="Logo" src="assets/images/logo/logo_square.png" class="h-50px h-lg-100px" />
 						</div>
 						<!--end::Logo-->
-						<h1 class="d-none d-lg-block fw-bold text-white fs-2qx pb-1 pb-md-10">Selamat datang di akun <br> Kemitraan Rizgold</h1>
-						<p class="d-none d-lg-block fw-semibold fs-4 text-white">Sebuah platform yang disediakan Rizgold <br> bagi para Agen dan Distributor</p>
+						<h1 class="d-none d-lg-block fw-bold text-white fs-2qx pb-1 pb-md-10">Selamat datang di halaman <br>
+							<font class="text-warning"> Kemitraan Rizgold </font>
+						</h1>
+						<p class="d-none d-lg-block fw-semibold fs-4 text-white">Sebuah platform yang disediakan <font class="text-warning"> Rizgold </font> <br> bagi para Agen dan Distributor</p>
 					</div>
 					<!--end::Header-->
-					<div class="d-none d-lg-block d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px" style="background-image: url(assets/media/illustrations/sketchy-1/17.png)"></div>
+					<div class="d-none d-lg-block d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-250px" style="background-image: url(assets/media/illustrations/unitedpalms-1/4.png)"></div>
 				</div>
 				<!--end::Wrapper-->
 			</div>
 			<!--end::Aside-->
+			<!-- begin::Authent -->
 			<!--begin::Body-->
 			<div class="d-flex flex-column flex-lg-row-fluid py-10">
 				<!--begin::Content-->
@@ -85,26 +87,50 @@ if (isset($_POST['Submit_Login'])) {
 						<form class="form w-100" novalidate="novalidate" method="POST" id="loginForm">
 							<!--begin::Heading-->
 							<div class="text-center mb-10">
-								<h1 class="text-dark mb-3">Login Kemitraan Rizgold</h1>
-								<div class="text-gray-500 fw-semibold fs-4">Belum punya akun?
-									<a href="" class="link-danger fw-bold">Daftar sekarang</a>
-								</div>
+								<h1 class="text-dark mb-5">Login Kemitraan Rizgold</h1>
 							</div>
 							<!--begin::Input group-->
-							<div class="fv-row mb-10">
-								<label class="form-label fs-6 fw-bold text-dark">Username</label>
+							<div class="fv-row mb-7">
+								<label class="form-label fs-4 fw-bold text-dark">Username</label>
 								<input required class="form-control form-control-lg" placeholder="Masukkan username" type="text" name="Username" id="username" />
 								<div id="usernameError" class="text-danger" style="display:none;">Username tidak boleh kosong</div>
 							</div>
 							<!--begin::Input group-->
-							<div class="fv-row mb-10">
+							<div class="fv-row mb-7">
 								<div class="d-flex flex-stack mb-2">
-									<label class="form-label fw-bold text-dark fs-6 mb-0">Password</label>
-									<a href="#" class="link-primary fs-6 fw-bold">Lupa Password?</a>
+									<label class="form-label fw-bold text-dark fs-4 mb-0">Password</label>
+									<a href="#" class="d-none link-primary fs-4 fw-bold">Lupa Password?</a>
 								</div>
-								<input required class="form-control form-control-lg" placeholder="Masukkan password" type="password" name="Password" id="password" />
+
+								<div class="input-group">
+									<input required class="form-control form-control-lg" placeholder="Masukkan password" type="password" name="Password" id="password" />
+									<button type="button" class="btn btn-light-dark" onclick="togglePasswordVisibility('password', this)">
+										<i class="ki-duotone ki-eye-slash fs-2">
+											<span class="path1"></span>
+											<span class="path2"></span>
+											<span class="path3"></span>
+											<span class="path4"></span>
+										</i>
+									</button>
+								</div>
 								<div id="passwordError" class="text-danger" style="display:none;">Password tidak boleh kosong</div>
 							</div>
+
+							<script>
+								function togglePasswordVisibility(id, button) {
+									var input = document.getElementById(id);
+									var icon = button.querySelector('i');
+									if (input.type === "password") {
+										input.type = "text";
+										icon.classList.remove('ki-eye-slash');
+										icon.classList.add('ki-eye');
+									} else {
+										input.type = "password";
+										icon.classList.remove('ki-eye');
+										icon.classList.add('ki-eye-slash');
+									}
+								}
+							</script>
 
 							<!--begin::Actions-->
 							<div class="text-center">
@@ -112,7 +138,19 @@ if (isset($_POST['Submit_Login'])) {
 									<span class="indicator-label text-white">Masuk</span>
 								</button>
 
-								<input type="submit" value="Login" name="Submit_Login" id="submit_login" class="d-none">
+								<input type="submit" value="Login" name="submit_login" id="submit_login" class="d-none">
+							</div>
+
+							
+							<div class="my-3 fv-row text-center fs-4">
+								<div class="my-4 text-gray-500 fw-semibold fs-4">Belum punya akun?
+									<a href="register.php" class="link-danger fw-bold">Daftar sekarang</a>
+								</div>
+								<?php
+								$result_sk = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan_sk_kemitraan", "Id_Pengaturan_SK_Kemitraan", "1");
+								$data_sk = $result_sk['Hasil'];
+								?>
+								Lihat <a href="<?php echo "assets/konten/syarat_dan_ketentuan/" . $data_sk['File_Syarat_Dan_Ketentuan'] ?>" target="_blank" class="link-parimary fw-bold">Syarat & Ketentuan</a>
 							</div>
 						</form>
 					</div>

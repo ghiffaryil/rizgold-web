@@ -15,7 +15,6 @@ if (isset($_GET['id'])) {
 
 #-----------------------------------------------------------------------------------
 #FUNGSI EDIT DATA (READ)
-
 if (isset($_GET['edit'])) {
     $result = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
     if ($result['Status'] == "Sukses") {
@@ -29,10 +28,6 @@ if (isset($_GET['edit'])) {
 #FUNGSI SIMPAN DATA (CREATE)
 if (isset($_POST['submit_simpan'])) {
 
-    if (!isset($_POST['Profile'])) {
-        $_Profile = "Tidak";
-    } else {
-    }
     $_Profile = "Iya";
     $_Pembelian = "Iya";
     $_Laporan = "Iya";
@@ -107,50 +102,25 @@ if (isset($_POST['submit_simpan'])) {
         "$_POST[Email]",
         "$_POST[No_KTP]",
         "$_POST[No_NPWP]",
-        "$_Profile",
-        "$_Pembelian",
-        "$_Laporan",
-        "$_Konten",
+        "Iya",
+        "Iya",
+        "Iya",
+        "Iya",
         "$Waktu_Sekarang",
         "$Waktu_Sekarang",
         "$Waktu_Sekarang",
         "Aktif"
     );
 
-    $result = $a_tambah_baca_update_hapus->tambah_data("tb_pengguna", $form_field, $form_value);
+    $result = $a_tambah_baca_update_hapus->tambah_data("tb_pengguna", $form_field, $form_value, "Iya");
 
     if ($result['Status'] == "Sukses") {
-
-        // INSERT FOTO
-        if ($_FILES['Foto']['size'] <> 0 && $_FILES['Foto']['error'] == 0) {
-
-            $post_file_upload = $_FILES['Foto'];
-            $path_file_upload = $_FILES['Foto']['name'];
-            $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
-            $nama_file_upload = $a_hash->hash_nama_file($Id_Auto_Increment, "_Foto") . "_" . $Id_Auto_Increment . "_Foto";
-            $folder_penyimpanan_file_upload = "assets/images/kemitraan_foto/";
-            $tipe_file_yang_diizikan_file_upload = array("png", "gif", "jpg", "jpeg");
-            $maksimum_ukuran_file_upload = 10000000;
-
-            $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
-
-            if ($result_upload_file['Status'] == "Sukses") {
-                $form_field = array("Foto");
-                $form_value = array("$nama_file_upload.$ext_file_upload");
-                $form_field_where = array("Id_Pengguna");
-                $form_criteria_where = array("=");
-                $form_value_where = array("$Id_Auto_Increment");
-                $form_connector_where = array("");
-
-                $result = $a_tambah_baca_update_hapus->update_data("tb_pengguna", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
-            }
-        }
-
-        echo "<script>alert('Data Tersimpan');document.location.href='$kehalaman'</script>";
+        echo "<script>alert('Registrasi berhasil, Silahkan login!');document.location.href='index.php'</script>";
     } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Menyimpan Data');document.location.href='$kehalaman'</script>";
+        echo "<script>alert('Terjadi Kesalahan Saat Menyimpan Data');document.location.href='index.php'</script>";
     }
 }
+
 #-----------------------------------------------------------------------------------
 #FUNGSI UPDATE DATA (UPDATE)
 if (isset($_POST['submit_update'])) {
@@ -163,7 +133,6 @@ if (isset($_POST['submit_update'])) {
         "Nama_Depan",
         "Nama_Belakang",
         "Nama_Perusahaan",
-        "Status_Kemitraan",
         "Tempat_Lahir",
         "Tanggal_Lahir",
         "Alamat",
@@ -177,7 +146,6 @@ if (isset($_POST['submit_update'])) {
         "$_POST[Nama_Depan]",
         "$_POST[Nama_Belakang]",
         "$_POST[Nama_Perusahaan]",
-        "$_POST[Status_Kemitraan]",
         "$_POST[Tempat_Lahir]",
         "$_POST[Tanggal_Lahir]",
         "$_POST[Alamat]",
@@ -203,7 +171,8 @@ if (isset($_POST['submit_update'])) {
 }
 
 
-
+#-----------------------------------------------------------------------------------
+#FUNGSI UPDATE FOTO (UPDATE)
 if (isset($_POST['submit_update_foto'])) {
     if ($_FILES['Foto']['size'] <> 0 && $_FILES['Foto']['error'] == 0) {
 
@@ -224,8 +193,46 @@ if (isset($_POST['submit_update_foto'])) {
             $form_criteria_where = array("=");
             $form_value_where = array("$Get_Id_Primary");
             $form_connector_where = array("");
+            $result = $a_tambah_baca_update_hapus->update_data("tb_pengguna", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
+
+            if ($result['Status'] == "Sukses") {
+                echo "<script>alert('Foto berhasil diubah');document.location.href='$kehalaman'</script>";
+            } else {
+                echo "<script>alert('Gagal mengupdate foto, silahkan coba lagi');document.location.href='$kehalaman'</script>";
+            }
+        }
+    }
+}
+
+
+#-----------------------------------------------------------------------------------
+#FUNGSI UPDATE PASSWORD (UPDATE)
+if (isset($_POST['submit_update_password'])) {
+
+    $result = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
+    $data_pengguna = $result['Hasil'];
+
+    $_Password_Lama = $a_hash_password->hash_password($_POST['Password_Lama']);
+    $_Password_Baru = $a_hash_password->hash_password($_POST['Password_Baru']);
+    $_Konfirmasi_Password_Baru = $a_hash_password->hash_password($_POST['Konfirmasi_Password_Baru']);
+
+    if ($data_pengguna['Password'] == $_Password_Lama) {
+
+        if ($_Password_Baru == $_Konfirmasi_Password_Baru) {
+            $form_field = array("Password");
+            $form_value = array("$_Password_Baru");
+
+            $form_field_where = array("Id_Pengguna");
+            $form_criteria_where = array("=");
+            $form_value_where = array("$Get_Id_Primary");
+            $form_connector_where = array("");
 
             $result = $a_tambah_baca_update_hapus->update_data("tb_pengguna", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
+            echo "<script>alert('Berhasil mengubah password, silahkan login kembali');document.location.href='login.php'</script>";
+        } else {
+            echo "<script>alert('Password dan Konfirmasi Password tidak sesuai');document.location.href='$kehalaman'</script>";
         }
+    } else {
+        echo "<script>alert('Password lama tidak sesuai');document.location.href='$kehalaman'</script>";
     }
 }
