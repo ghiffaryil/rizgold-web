@@ -3,14 +3,15 @@
 <div id="kt_app_content" class="app-content pb-0">
 
     <?php if ((isset($_GET["view"]))) { ?>
-        <div class="card">
+
+        <div class="card mb-6">
             <card class="card-header border-0">
                 <div class="card-title">
                     <?php
                     if ($edit['Status_Transaksi'] == "Proses") {
-                        $badge_class = "badge-warning";
+                        $badge_class = "badge-warning text-dark";
                     } else if ($edit['Status_Transaksi'] == "Baru") {
-                        $badge_class = "badge-primary";
+                        $badge_class = "badge-primary text-white";
                     } else {
                         $badge_class = "badge-success";
                     }
@@ -38,173 +39,417 @@
             </card>
         </div>
 
-        <div class="card mt-6">
-            <div class="card-body">
-                <form id="" method="POST" enctype="multipart/form-data">
-                    <div class="d-flex flex-column">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="fv-row mb-4">
-                                    <h3>Identitas Pembeli</h3>
-                                </div>
-                                <div class="fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">Nama</label>
-                                    <?php
-                                    $result_mitra = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", "$edit[Id_Pengguna]");
-                                    $data_mitra = $result_mitra['Hasil'];
-                                    ?>
-                                    <p class="fs-5 fw-semibold text-dark"><?php echo "$data_mitra[Nama_Depan] $data_mitra[Nama_Belakang]"; ?></p>
-                                </div>
-
-                                <div class="fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">Perusahaan</label>
-                                    <p class="fs-5 fw-semibold text-dark"><?php echo "$data_mitra[Nama_Perusahaan] - $data_mitra[Organisasi_Kode]" ?></p>
-                                </div>
-
-                                <div class="fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">Status Kemitraan</label>
-                                    <p class="fs-5 fw-semibold text-dark"><?php echo $data_mitra['Status_Kemitraan']; ?></p>
-                                </div>
-                            </div>
-
-                            <div class=" col-lg-6">
-                                <div class="fv-row mb-4">
-                                    <h3>Identitas Transaksi</h3>
-                                </div>
-                                <div class="fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">Nomor Transaksi</label>
-                                    <p class="fs-5 fw-semibold text-dark"><?php echo $edit['Nomor_Transaksi']; ?></p>
-                                </div>
-
-                                <div class="fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">Tanggal Transaksi</label>
-                                    <p class="fs-5 fw-semibold text-dark"><?php echo $edit['Tanggal_Transaksi']; ?></p>
-                                </div>
-
-                                <div class="fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">Status Transaksi</label>
-                                    <p class="fs-5 fw-semibold text-dark"><?php echo $edit['Status_Transaksi'] ?></p>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <hr class="mb-4">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="fv-row mb-4">
-                                    <h3>Informasi Produk</h3>
-                                </div>
-
-
-                                <div class="fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">Produk</label>
-                                    <?php
-                                    $result_produk = $a_tambah_baca_update_hapus->baca_data_id("tb_produk", "Id_Produk", "$edit[Id_Produk]");
-                                    $data_produk = $result_produk['Hasil'];
-                                    ?>
-                                    <p class="fs-5 fw-semibold text-dark"><?php echo $data_produk['Nama_Produk']; ?></p>
-                                </div>
-
-                                <div class="fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">Harga</label>
-                                    <p class="fs-5 fw-semibold text-dark"><?php echo $edit['Harga']; ?></p>
-                                </div>
-
-                                <div class=" fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">QTY</label>
-                                    <p class="fs-5 fw-semibold text-dark"><?php echo $edit['QTY']; ?></p>
-                                </div>
-
-                                <div class="fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">Total</label>
-                                    <p class="fs-5 fw-semibold text-dark"><?php echo $edit['Total']; ?></p>
-
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="fv-row mb-4">
-                                    <h3>Informasi Pembayaran & Barang</h3>
-                                </div>
-
-                                <div class="fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">Metode Pembelian</label>
-                                    <p class="fs-5 fw-semibold text-dark"><?php echo $edit['Metode_Pembelian']; ?></p>
-                                </div>
-
-                                <div class="fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">Metode Pembayaran</label>
-                                    <p class="fs-5 fw-semibold text-dark"><?php echo $edit['Metode_Pembayaran']; ?></p>
-                                    </select>
-                                </div>
-
-                                <div class="fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">Status Pembayaran</label>
-                                    <p class="fs-5 fw-semibold text-dark">
-                                        <?php echo $edit['Status_Pembayaran']; ?>
-
-                                    </p>
-                                </div>
-
-                                <div class="fv-row mb-4">
-                                    <label class="fs-7 text-gray-700">Status Barang</label>
-                                    <p class="fs-5 fw-semibold text-dark">
-                                        <?php echo $edit['Status_Barang']; ?>
-
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <hr class="mb-4">
-                        <div class="fv-row mb-4">
-                            <label class="required fs-7 text-gray-700">Bukti Transaksi</label>
-                            <?php if ($edit['Status_Transaksi'] == "Baru") { ?>
-                                <input name="File_Bukti_Transaksi" type="file" class="form-control" accept=".png, .jpg, .jpeg" required />
-                            <?php } ?>
-                            <?php if (isset($_GET['view'])) {
-                                $folder_konten = "assets/images/bukti_transaksi/";
-                            ?>
-                                <br>
-                                <?php if ($edit['File_Bukti_Transaksi'] != "") { ?>
-                                    <a href="<?php echo $folder_konten . $edit['File_Bukti_Transaksi'] ?>" target="_blank"><img src="<?php echo $folder_konten . $edit['File_Bukti_Transaksi'] ?>" alt="" style="height: 400px; width:auto"></a>
-                                    <br>
-                                    <br>
-                                    <a href="<?php echo $folder_konten . $edit['File_Bukti_Transaksi'] ?>" class="btn btn-light-success btn-sm" target="_blank"><i class="ki-solid ki-eye"></i>Lihat</a>
-                                    <a href="<?php echo $folder_konten . $edit['File_Bukti_Transaksi'] ?>" class="btn btn-light-info btn-sm" download="<?php echo $edit['File_Bukti_Transaksi'] ?>"><i class="ki-solid ki-cloud-download"></i>Download</a>
-                                <?php } else { ?>
-                                    <span class="badge badge-light-danger">Konten ini tidak memiliki File</span>
-                                <?php } ?>
-                            <?php } ?>
-                        </div>
-
-                        <div class="fv-row mb-4">
-                            <label class="fs-7 text-gray-700">Catatan</label>
-                            <textarea <?php if ($edit['Status_Transaksi'] != "Baru") { ?> disabled <?php } ?> name="Catatan" class="form-control mb-3 mb-lg-0" rows="3"><?php if (isset($_GET['view'])) {
-                                                                                                                                                                            echo $edit['Catatan'];
-                                                                                                                                                                        } ?></textarea>
-                        </div>
-
-                        <div class="row mb-4 text-end">
-                            <div class="pt-5 col-lg">
-                                <?php if ($edit['Status_Transaksi'] == "Baru") { ?>
-                                    <button type="submit" class="btn btn-primary" name="submit_update">
-                                        <span class="indicator-label">Ubah</span>
-                                    </button>
-                                <?php } else if ($edit['Status_Transaksi'] == "Proses") {
-                                    echo "<span class='fs-4 badge badge-light-warning'> Transaksi anda sedang diproses oleh admin </span>";
-                                } else {
-                                    echo "<span class='fs-4 badge badge-light-success'> Transaksi anda sudah selesai </span>";
-                                } ?>
-                            </div>
-                        </div>
+        <!--begin::Order summary-->
+        <div class="d-flex flex-column flex-xl-row gap-7 gap-lg-10">
+            <!--begin::Order details-->
+            <div class="card card-flush py-4 flex-row-fluid">
+                <!--begin::Card header-->
+                <div class="card-header">
+                    <div class="card-title">
+                        <h2>Order Details (#<?php echo $edit['Nomor_Transaksi']; ?>)</h2>
                     </div>
-                </form>
+                </div>
+                <!--end::Card header-->
 
+                <!--begin::Card body-->
+                <div class="card-body pt-0">
+                    <div class="table-responsive">
+                        <!--begin::Table-->
+                        <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
+                            <tbody class="fw-semibold text-gray-600">
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-calendar fs-2 me-2"><span class="path1"></span><span class="path2"></span></i> Tanggal Transaksi
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark">
+                                        <?php echo tanggal_indonesia($edit['Tanggal_Transaksi']); ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-devices fs-2 me-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                            </i>
+                                            Metode Pembelian
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark">
+                                        <?php echo $edit['Metode_Pembelian']; ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-dollar fs-2 me-2 ">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
+                                            Metode Pembayaran
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark">
+                                        <?php echo $edit['Metode_Pembayaran']; ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--end::Table-->
+                    </div>
+                </div>
+                <!--end::Card body-->
             </div>
+            <!--end::Order details-->
 
+            <!--begin::Customer details-->
+            <div class="card card-flush py-4  flex-row-fluid">
+                <!--begin::Card header-->
+                <div class="card-header">
+                    <div class="card-title">
+                        <h2>Identitas Pembeli</h2>
+                    </div>
+                </div>
+                <!--end::Card header-->
+
+                <!--begin::Card body-->
+                <div class="card-body pt-0">
+                    <div class="table-responsive">
+                        <!--begin::Table-->
+                        <?php
+                        $result_mitra = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", "$edit[Id_Pengguna]");
+                        $data_mitra = $result_mitra['Hasil'];
+                        ?>
+                        <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
+
+                            <tbody class="fw-semibold text-gray-600">
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-profile-circle fs-2 me-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i> Pembeli
+                                        </div>
+                                    </td>
+
+                                    <td class="fw-bold text-end text-dark">
+                                        <div class="d-flex align-items-center justify-content-end">
+                                            <?php echo "$data_mitra[Nama_Depan] $data_mitra[Nama_Belakang]"; ?>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-office-bag fs-2 me-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                            </i>
+                                            Perusahaan
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark">
+                                        <?php echo "$data_mitra[Nama_Perusahaan]" ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-profile-user fs-2 me-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                            </i>
+                                            Kemitraan
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark"><?php echo $data_mitra['Status_Kemitraan']; ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--end::Table-->
+                    </div>
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Customer details-->
+            <!--begin::Documents-->
+            <div class="card card-flush py-4  flex-row-fluid">
+                <!--begin::Card header-->
+                <div class="card-header">
+                    <div class="card-title">
+                        <h2>Pembayaran</h2>
+                    </div>
+                </div>
+                <!--end::Card header-->
+
+                <!--begin::Card body-->
+                <div class="card-body pt-0">
+                    <div class="table-responsive">
+                        <!--begin::Table-->
+                        <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
+                            <tbody class="fw-semibold text-gray-600">
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-wallet fs-2 me-2 ">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                            </i>
+                                            Status Pembayaran
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark">
+                                        <?php echo $edit['Status_Pembayaran']; ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-truck fs-2 me-2"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i> Status Barang
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark">
+                                        <?php echo $edit['Status_Barang']; ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-cheque fs-2 me-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                                <span class="path6"></span>
+                                                <span class="path7"></span>
+                                            </i>
+                                            Status Transaksi
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark"><?php echo $edit['Status_Transaksi']; ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--end::Table-->
+                    </div>
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Documents-->
+        </div>
+        <!--end::Order summary-->
+
+        <br>
+
+        <!--begin::Order summary-->
+        <div class="d-flex flex-column flex-xl-row gap-7 gap-lg-10">
+            <!--begin::Order details-->
+            <div class="card card-flush py-4 flex-row-fluid">
+                <!--begin::Card header-->
+                <div class="card-header">
+                    <div class="card-title">
+                        <h2>Informasi Produk</h2>
+                    </div>
+                </div>
+                <!--end::Card header-->
+
+                <!--begin::Card body-->
+                <div class="card-body pt-0">
+                    <div class="table-responsive">
+
+                        <?php
+                        $result_produk = $a_tambah_baca_update_hapus->baca_data_id("tb_produk", "Id_Produk", "$edit[Id_Produk]");
+                        $data_produk = $result_produk['Hasil'];
+                        ?>
+                        <!--begin::Table-->
+                        <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
+                            <tbody class="fw-semibold text-gray-600">
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-profile-user fs-2 me-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                            </i>
+                                            Nama Produk
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark">
+                                        <?php echo $data_produk['Nama_Produk']; ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-tablet-book fs-2 me-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                            SKU
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark">
+                                        <?php echo $data_produk['SKU']; ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-note-2 fs-2 me-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                            </i>
+                                            Kategori
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark">
+                                        <?php
+                                        $result_produk_kategori = $a_tambah_baca_update_hapus->baca_data_id("tb_produk_kategori", "Id_Produk_Kategori", "$data_produk[Id_Produk_Kategori]");
+                                        $data_produk_kategori = $result_produk_kategori['Hasil'];
+                                        ?>
+                                        <?php echo $data_produk_kategori['Nama_Kategori']; ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-dollar fs-2 me-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                            </i>
+                                            Harga
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark">
+                                        <?php echo $edit['Harga']; ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-text-number fs-2 me-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                                <span class="path6"></span>
+                                            </i>
+                                            Qty
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark">
+                                        <?php echo $edit['QTY']; ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ki-duotone ki-dollar fs-2 me-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                            </i>
+                                            Total
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold text-end text-dark">
+                                        <?php echo $edit['Total']; ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!--end::Table-->
+                    </div>
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Order details-->
+
+            <!--begin::Documents-->
+            <div class="card card-flush py-4  flex-row-fluid">
+                <!--begin::Card header-->
+                <div class="card-header">
+                    <div class="card-title">
+                        <h2>Bukti Transaksi</h2>
+                    </div>
+                </div>
+                <!--end::Card header-->
+
+                <!--begin::Card body-->
+                <div class="card-body pt-0">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="table-responsive">
+                            <!--begin::Table-->
+                            <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
+                                <tbody class="fw-semibold text-gray-600">
+                                    <tr>
+                                        <td class="text-muted">
+                                            <?php if ($edit['Status_Transaksi'] == "Baru") { ?>
+                                                <input name="File_Bukti_Transaksi" type="file" class="form-control" accept=".png, .jpg, .jpeg" required />
+                                                
+                                            <?php } ?>
+                                            <?php if (isset($_GET['view'])) {
+                                                $folder_konten = "assets/images/bukti_transaksi/";
+                                            ?>
+                                                <?php if ($edit['File_Bukti_Transaksi'] != "") { ?>
+                                                    <a href="<?php echo $folder_konten . $edit['File_Bukti_Transaksi'] ?>" class="btn btn-light-success btn-sm" target="_blank"><i class="ki-solid ki-eye"></i>Lihat</a>
+                                                    <a href="<?php echo $folder_konten . $edit['File_Bukti_Transaksi'] ?>" class="btn btn-light-primary btn-sm" download="<?php echo $edit['File_Bukti_Transaksi'] ?>"><i class="ki-solid ki-cloud-download"></i>Download</a>
+                                                <?php } else { ?>
+                                                    <span class="fs-7 text-danger">Silahkan upload bukti transaksi jika anda sudah melakukan pembayaran</span>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold fs-1">
+                                            <label for="">Catatan</label>
+                                            <textarea <?php if ($edit['Status_Transaksi'] != "Baru") { ?> disabled <?php } ?> name="Catatan" class="form-control mb-3 mb-lg-0" rows="3"><?php if (isset($_GET['view'])) {
+                                                                                                                                                                                            echo $edit['Catatan'];
+                                                                                                                                                                                        } ?></textarea>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">
+                                            <?php if ($edit['Status_Transaksi'] == "Baru") { ?>
+                                                <button type="submit" class="btn btn-primary" name="submit_update_bukti_transaksi">
+                                                    <span class="text-white">Upload Bukti Transaksi</span>
+                                                </button>
+                                            <?php } else if ($edit['Status_Transaksi'] == "Proses") {
+                                                echo "<span class='fs-4 badge badge-light-warning'> Transaksi anda sedang diproses oleh admin </span>";
+                                            } else {
+                                                echo "<span class='fs-4 badge badge-light-success'> Transaksi anda sudah selesai </span>";
+                                            } ?>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!--end::Table-->
+                        </div>
+                    </form>
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Documents-->
         </div>
     <?php } ?>
 
@@ -231,7 +476,7 @@
                         <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack flex-wrap">
                             <div class="d-flex flex-stack flex-wrap gap-4 w-100">
                                 <div class="page-title d-flex flex-column gap-3 me-3">
-                                    <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Produk</h1>
+                                    <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Transaksi</h1>
                                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
                                         <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
                                             <a href="index.php" class="text-gray-500">
@@ -546,8 +791,6 @@
                                 </select>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
                 <!-- MODAL FOOTER -->
@@ -563,7 +806,6 @@
     </div>
 </div>
 <!-- MODAL FILTER -->
-
 
 <script>
     function ubah_status_kemitraan() {

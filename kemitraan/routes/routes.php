@@ -53,6 +53,10 @@ if (isset($_GET['menu'])) {
 			include "pages/laporan/transaksi.php";
 			break;
 
+		case 'edit-profile':
+			include "pages/mitra/profile.php";
+			break;
+
 			// DEFAULT
 		default:
 			include "pages/home/index.php";

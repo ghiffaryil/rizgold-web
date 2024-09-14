@@ -1,4 +1,14 @@
-<?php include "controller/mitra/function/crud_mitra.php"; ?>
+<?php if (!((isset($_COOKIE['Cookie_1_Admin_Rizgold'])) or (isset($_COOKIE['Cookie_2_Admin_Rizgold'])) or (isset($_COOKIE['Cookie_3_Admin_Rizgold'])))) {
+    echo "<script>
+	alert('Anda tidak berhak mengakses halaman ini !!!');
+	document.location.href = 'dashboard.php';
+</script>";
+    exit();
+} ?>
+
+
+
+<?php include "controller/mitra/function/crud_mitra_admin.php"; ?>
 
 <div class="pt-lg-9">
     <div class="card">

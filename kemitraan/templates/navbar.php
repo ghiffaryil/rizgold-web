@@ -17,6 +17,12 @@
             </div>
 
             <div class="app-navbar">
+
+                <?php
+                $result_pengguna = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", "$u_Id_Pengguna");
+                $data_pengguna = $result_pengguna['Hasil'];
+                ?>
+
                 <div class="app-navbar-item ms-1">
                     <div class="btn btn-icon btn-color-white btn-active-color-primary" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
                         <i class="ki-duotone ki-notification-on fs-1">
@@ -29,8 +35,8 @@
                     </div>
 
                     <div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px" data-kt-menu="true" id="kt_menu_notifications">
-                        <div class="d-flex flex-column bgi-no-repeat bg-dark">
-                            <h3 class="text-white fw-semibold px-9 mt-10 mb-6">Notifications
+                        <div class="d-flex flex-column bgi-no-repeat">
+                            <h3 class="fw-semibold px-9 mt-10 mb-6">Notifications
                                 &nbsp;&nbsp;&nbsp;
                                 <span class="badge bg-warning text-dark py-2 fs-8">25 Notifications</span>
                         </div>
@@ -89,14 +95,14 @@
 
                 <div class="app-navbar-item ms-3 me-6" id="kt_header_user_menu_toggle">
                     <div class="cursor-pointer symbol symbol-35px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                        <img class="symbol symbol-35px" src="assets/media/avatars/300-3.jpg" alt="user" />
+                        <img class="symbol symbol-35px" src="assets/images/kemitraan_foto/<?php echo $data_pengguna['Foto'] ?>" alt="user" />
                     </div>
 
                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
                         <div class="menu-item px-3">
                             <div class="menu-content d-flex align-items-center px-3">
                                 <div class="symbol symbol-50px me-5">
-                                    <img alt="Logo" src="assets/media/avatars/300-3.jpg" />
+                                    <img alt="Logo" src="assets/images/kemitraan_foto/<?php echo $data_pengguna['Foto'] ?>" />
                                 </div>
                                 <div class="d-flex flex-column">
                                     <div class="fw-bold d-flex align-items-center fs-5"><?php echo $u_Nama_Lengkap ?>
@@ -106,11 +112,13 @@
                             </div>
                         </div>
                         <div class="separator my-2"></div>
-
                         <div class="menu-item px-5">
-                            <a href="../dist/account/overview.html" class="menu-link px-5">Profile Saya</a>
+                            <a href="?menu=edit-profile&edit&id=<?php echo $a_hash->encode($u_Id_Pengguna, "$_GET[menu]") ?>" class="menu-link px-5">Profile Saya</a>
                         </div>
-
+                        <div class="separator my-2"></div>
+                        <div class="menu-item px-5">
+                            <a href="?menu=edit-password&edit&id=<?php echo $a_hash->encode($u_Id_Pengguna, "$_GET[menu]") ?>" class="menu-link px-5">Edit Password</a>
+                        </div>
                         <div class="separator my-2"></div>
                         <div class="menu-item px-5" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="left-start" data-kt-menu-offset="-15px, 0">
                             <a href="#" class="menu-link px-5">
@@ -169,7 +177,7 @@
                         </div>
                         <hr>
                         <div class="menu-item px-5">
-                            <a href="logout.php" class="menu-link px-5 text-danger" onclick="return confirm('Anda yakin ingin keluar?')">Sign Out</a>
+                            <a href="logout.php" class="menu-link px-5 btn btn-danger text-white" onclick="return confirm('Anda yakin ingin keluar?')">Sign Out</a>
                         </div>
                     </div>
                 </div>

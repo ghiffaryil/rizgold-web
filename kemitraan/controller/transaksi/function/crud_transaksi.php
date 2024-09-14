@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
 #-----------------------------------------------------------------------------------
 #FUNGSI EDIT DATA (READ)
 
-if ((isset($_GET['edit'])) OR (isset($_GET['view']))) {
+if ((isset($_GET['edit'])) or (isset($_GET['view']))) {
     $result = $a_tambah_baca_update_hapus->baca_data_id("tb_transaksi_penjualan", "Id_Transaksi_Penjualan", $Get_Id_Primary);
     if ($result['Status'] == "Sukses") {
         $edit = $result['Hasil'];
@@ -166,6 +166,62 @@ if (isset($_POST['submit_update'])) {
         echo "<script>alert('Terjadi Kesalahan Saat Mengupdate Data');document.location.href='$kehalaman'</script>";
     }
 }
+
+
+#-----------------------------------------------------------------------------------
+#FUNGSI UPDATE FILE BUKTI TRANSAKSI (UPDATE)
+if (isset($_POST['submit_update_bukti_transaksi'])) {
+
+    $form_field = array(
+        "Catatan",
+        "Waktu_Update_Data"
+    );
+    $form_value = array(
+        "$_POST[Catatan]",
+        "$Waktu_Sekarang"
+    );
+
+    $form_field_where = array("Id_Transaksi_Penjualan");
+    $form_criteria_where = array("=");
+    $form_value_where = array("$Get_Id_Primary");
+    $form_connector_where = array("");
+
+    $result = $a_tambah_baca_update_hapus->update_data("tb_transaksi_penjualan", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
+
+    if ($result['Status'] == "Sukses") {
+
+        // INSERT FOTO
+        if ($_FILES['File_Bukti_Transaksi']['size'] <> 0 && $_FILES['File_Bukti_Transaksi']['error'] == 0) {
+
+            $post_file_upload = $_FILES['File_Bukti_Transaksi'];
+            $path_file_upload = $_FILES['File_Bukti_Transaksi']['name'];
+            $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
+            $nama_file_upload = $a_hash->hash_nama_file($Get_Id_Primary, "_File_Bukti_Transaksi") . "_" . $Get_Id_Primary . "_File_Bukti_Transaksi";
+            $folder_penyimpanan_file_upload = "assets/images/bukti_transaksi/";
+            $tipe_file_yang_diizikan_file_upload = array("png", "gif", "jpg", "jpeg", "pdf");
+            $maksimum_ukuran_file_upload = 10000000;
+
+            $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
+
+            if ($result_upload_file['Status'] == "Sukses") {
+                $form_field = array("File_Bukti_Transaksi");
+                $form_value = array("$nama_file_upload.$ext_file_upload");
+                $form_field_where = array("Id_Transaksi_Penjualan");
+                $form_criteria_where = array("=");
+                $form_value_where = array("$Get_Id_Primary");
+                $form_connector_where = array("");
+
+                $result = $a_tambah_baca_update_hapus->update_data("tb_transaksi_penjualan", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
+            }
+        }
+
+
+        echo "<script>alert('Data Terupdate');document.location.href='$kehalaman'</script>";
+    } else {
+        echo "<script>alert('Terjadi Kesalahan Saat Mengupdate Data');document.location.href='$kehalaman'</script>";
+    }
+}
+
 #-----------------------------------------------------------------------------------
 #FUNGSI DELETE DATA (DELETE)
 if (isset($_GET['hapus_data_ke_tong_sampah'])) {
@@ -289,8 +345,8 @@ class Search_Controller
             $search_value_where[] = "$filter_id_pengguna";
             $search_connector_where[] = "AND";
         }
-        
-        
+
+
         if (!empty($filter_status_kemitraan)) {
             $search_field_where[] = "Status_Kemitraan";
             $search_criteria_where[] = "LIKE";
@@ -318,14 +374,14 @@ class Search_Controller
             $search_value_where[] = $filter_metode_pembelian;
             $search_connector_where[] = "AND";
         }
-        
+
         if (!empty($filter_metode_pembayaran)) {
             $search_field_where[] = "Metode_Pembayaran";
             $search_criteria_where[] = "LIKE";
             $search_value_where[] = $filter_metode_pembayaran;
             $search_connector_where[] = "AND";
         }
-        
+
         if (!empty($filter_status_transaksi)) {
             $search_field_where[] = "Status_Transaksi";
             $search_criteria_where[] = "LIKE";
