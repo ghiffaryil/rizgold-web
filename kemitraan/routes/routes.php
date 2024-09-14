@@ -27,8 +27,8 @@ if (isset($_GET['menu'])) {
 			include "pages/pengaturan/sk_kemitraan.php";
 			break;
 
-		case 'transaksi':
-			include "pages/laporan/transaksi.php";
+		case 'transaksi-admin':
+			include "pages/laporan/transaksi-admin.php";
 			break;
 
 		case 'mitra':
@@ -49,8 +49,8 @@ if (isset($_GET['menu'])) {
 			include "pages/konten/konten.php";
 			break;
 
-		case 'pembelian':
-			include "pages/laporan/pembelian.php";
+		case 'transaksi':
+			include "pages/laporan/transaksi.php";
 			break;
 
 			// DEFAULT

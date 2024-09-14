@@ -263,7 +263,7 @@ class Search_Controller
         $filter_status_pembayaran = "",
         $filter_status_barang = "",
         $filter_id_pengguna = ""
-    ) {
+    ): array|string {
         global $a_tambah_baca_update_hapus;
 
         $filter_status_kemitraan == "All" ? $filter_status_kemitraan = "" : $filter_status_kemitraan;
@@ -351,7 +351,7 @@ class Search_Controller
         $search_field_where[] = "Status";
         $search_criteria_where[] = "=";
         $search_value_where[] = $filter_status;
-        $search_connector_where[] = "";
+        $search_connector_where[] = "ORDER BY Id_Transaksi_Penjualan DESC";
 
         // Call the method to get data
         // Change the table name to 'tb_transaksi_penjualan' to match your data

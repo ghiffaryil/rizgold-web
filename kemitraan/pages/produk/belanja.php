@@ -1,8 +1,7 @@
 <?php include "controller/produk/function/crud_produk.php"; ?>
-
 <div id="" class="app-content">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header border-0">
             <div class="card-title">
                 <div id="kt_app_toolbar" class="app-toolbar py-4">
                     <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack flex-wrap">
@@ -48,22 +47,20 @@
     </div>
     <div class="card mt-4">
         <div class="card-body py-4">
-            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
+            <table class="table align-middle table-row-dashed fs-7 gy-5" id="kt_table_users">
                 <thead>
                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                         <th class="text-dark" style="width: 5%;">No</th>
+                        <th class="text-dark" style="width: 20%;">Foto Produk</th>
                         <th class="text-dark" style="width: 20%;">Nama Produk</th>
+                        <th class="text-dark" style="width: 20%;">SKU</th>
                         <th class="text-dark" style="width: 15%;">Harga</th>
-                        <th class="d-none">pelengkap</th>
                         <th class="text-dark" style="width: 10%;">Stock</th>
-                        <th class="d-none">pelengkap</th>
-                        <th class="d-none">pelengkap</th>
                         <th class="text-dark" style="width: 10%;">BPOM</th>
-                        <th class="text-dark" style="width: 20%;">Link Shopee</th>
                         <th class="text-dark" style="width: 10%;">Tindakan</th>
                     </tr>
                 </thead>
-                <tbody class="text-gray-600 fw-semibold">
+                <tbody class="text-gray">
                     <?php
 
                     $search_controller = new Search_Controller();
@@ -74,46 +71,50 @@
                     foreach ($data_hasil as $data) {
                         $nomor++;
                         $encode_id = $a_hash->encode($data['Id_Produk'], $_GET['menu']);
+                        $encode_id_pengguna = $a_hash->encode($u_Id_Pengguna, $_GET['menu']);
                     ?>
 
                         <tr>
                             <td>
                                 <?php echo $nomor ?>
                             </td>
-                            <td class="d-flex align-items-center">
-                                <div class="symbol symbol-50px overflow-hidden me-3">
-                                    <div class="symbol-label bg-warning">
-                                        <img src="assets/images/produk_foto/<?php echo $data['Foto_Produk'] ?>" class="w-100" />
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-column">
-                                    <a class="text-gray-800 text-hover-primary mb-1" href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>">
-                                        <?php echo $data['Nama_Produk']; ?>
-                                    </a>
-                                    <span><?php echo $data['SKU'] ?></span>
-                                </div>
+                            <td class="text-left">
+                                <img src="assets/images/produk_foto/<?php echo $data['Foto_Produk'] ?>" style=" object-fit: cover; width: 50px; height: 50px;" />
                             </td>
+                            <td>
+                                <a class="" href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>">
+                                    <?php echo $data['Nama_Produk']; ?>
+                                </a>
+                            </td>
+                            <td><span><?php echo $data['SKU'] ?></span></td>
                             <td>
                                 <?php
                                 if ($u_Status_Kemitraan == "Distributor") {
+                                    $Harga_Produk = $data['Harga_Distributor'];
                                     echo $a_format_angka->rupiah($data['Harga_Distributor']);
                                 } else if ($u_Status_Kemitraan == "Agen") {
+                                    $Harga_Produk = $data['Harga_Agen'];
                                     echo $a_format_angka->rupiah($data['Harga_Agen']);
                                 } else {
                                     echo "Anda belum terdaftar sebagai Agen / Distributor";
                                 }
                                 ?>
                             </td>
-                            <td class="d-none">pelengkap</td>
                             <td><?php echo $data['Stock'] ?></td>
-                            <td class="d-none">pelengkap</td>
-                            <td class="d-none">pelengkap</td>
                             <td><?php echo $data['Izin_BPOM'] ?></td>
-                            <td><a class="text-danger" href="<?php echo $data['Link_Shopee'] ?>" target="_blank"><?php echo substr(string: $data['Link_Shopee'], offset: 0, length: 30); ?>...</a></td>
                             <td class="text-center">
-                                <a href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>" class="btn btn-sm btn-light-primary text-hover-dark">
-                                    <span class="fs-6">Beli</span>
-                                </a>
+                                <button
+                                    data-id="<?php echo $encode_id; ?>"
+                                    data-id-pengguna="<?php echo $encode_id_pengguna; ?>"
+                                    data-status-kemitraan="<?php echo $u_Status_Kemitraan; ?>"
+                                    data-nama-produk="<?php echo $data['Nama_Produk']; ?>"
+                                    data-foto-produk="<?php echo $data['Foto_Produk']; ?>"
+                                    data-harga-produk="<?php echo $Harga_Produk; ?>"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#kt_modal_add_user"
+                                    class="btn btn-sm btn-light-primary text-hover-dark">
+                                    <span class="fs-7">Beli</span>
+                                </button>
                             </td>
                         </tr>
                     <?php
@@ -124,3 +125,196 @@
         </div>
     </div>
 </div>
+
+<!-- MODAL BELI -->
+<div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-750px">
+        <div class="modal-content">
+            <div class="modal-header pb-1 pt-5" id="kt_modal_add_user_header">
+                <h2 class="fw-bold">Beli Produk</h2>
+                <div class="btn btn-icon btn-sm btn-active-icon-danger" data-bs-dismiss="modal">
+                    <i class="ki-duotone ki-cross fs-1">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                </div>
+            </div>
+            <form id="kt_modal_add_user_form" class="form" method="POST" action="controller/transaksi/fetch/fetch_pembelian_produk.php">
+                <div class="modal-body scroll-y mx-5 mx-xl-4">
+                    <div class="d-flex flex-column scroll-y me-n7 pe-4" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="245px">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <img class="" style="height: 275px; width: 100%; object-fit:cover" id="modal-form-foto-produk">
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-6 mb-3">
+                                        <input readonly type="hidden" name="Id_Produk" id="modal-form-id-produk">
+                                        <input readonly type="hidden" name="Id_Pengguna" id="modal-form-id-pengguna">
+                                        <label class="required fs-7">Nama Produk</label>
+                                        <input readonly required type="text" name="Nama_Produk" id="modal-form-nama-produk" class="form-control form-control-solid fs-7" />
+                                    </div>
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="required fs-7">Harga</label>
+                                        <input readonly placeholder="Harga akan terisi otomatis" name="Harga" id="modal-form-harga-produk" type="text" class="form-control form-control-solid fs-7" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="required fs-7">QTY</label>
+                                        <input required name="QTY" id="modal-form-qty-produk" min="0" max="100" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" type="number" class="form-control" onchange="hitung_total();" onkeyup="hitung_total()" />
+                                    </div>
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="required fs-7">Total</label>
+                                        <input readonly required placeholder="Total akan terisi otomatis" name="Total" id="modal-form-total-harga-produk" type="text" class="form-control form-control-solid fs-7" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="required fs-7">Metode Pembelian</label>
+                                        <select name="Metode_Pembelian" id="modal-form-metode-pembelian" required class="form-select fs-7" data-kt-select2="true" data-placeholder="Pilih Metode Pembelian" data-allow-clear="true" data-hide-search="true" onchange="ubah_metode_pembelian()">
+                                            <option value=""> </option>
+                                            <option value="Shopee">Shopee</option>
+                                            <option value="Whatsapp">Whatsapp</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="required fs-7">Metode Pembayaran</label>
+                                        <select name="Metode_Pembayaran" id="modal-form-metode-pembayaran" required class="form-select fs-7" data-kt-select2="true" data-placeholder="Pilih Metode Pembayaran" data-allow-clear="true" data-hide-search="true" onchange="ubah_metode_pembayaran()">
+                                            <option value=""> </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12 mb-3">
+                                        <label class="fs-7">Catatan (Opsional)</label>
+                                        <input placeholder="Tulis jika ada informasi tambahan" name="Catatan" id="modal-form-catatan" type="text" class="form-control fs-7" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 mt-3">
+                                <div class="alert bg-light-primary"> <i class="ki-duotone ki-information text-primary fs-5">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i> Silahkan pilih metode pembelian dan klik tombol <b class="text-primary">"Proses"</b>, maka anda akan dilanjutkan ke halaman <b class="text-success">Whatsapp</b> / <b style="color: #EE4D2D;">Link Shopee</b> untuk melanjutkan transaksi </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-sm btn-light-danger me-3" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-sm btn-primary" name="submit_simpan" id="btn-simpan">
+                            <span class="text-white">Proses</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function ubah_metode_pembelian() {
+        var metodePembelian = document.getElementById('modal-form-metode-pembelian').value;
+        var metodePembayaran = document.getElementById('modal-form-metode-pembayaran');
+
+        // Clear existing options in Metode Pembayaran
+        metodePembayaran.innerHTML = "";
+
+        // Create default "choose" option
+        var defaultOption = document.createElement('option');
+        defaultOption.value = "";
+        defaultOption.text = "Pilih Metode Pembayaran";
+        metodePembayaran.appendChild(defaultOption);
+
+        // Check the selected metodePembelian and add relevant options
+        if (metodePembelian === "Shopee") {
+            // Only add Transfer option for Shopee
+            var transferOption = document.createElement('option');
+            transferOption.value = "Transfer";
+            transferOption.text = "Transfer";
+            metodePembayaran.appendChild(transferOption);
+        } else if (metodePembelian === "Whatsapp") {
+            // Add both Tunai and Transfer for Whatsapp
+            var tunaiOption = document.createElement('option');
+            tunaiOption.value = "Tunai";
+            tunaiOption.text = "Tunai";
+            metodePembayaran.appendChild(tunaiOption);
+
+            var transferOption = document.createElement('option');
+            transferOption.value = "Transfer";
+            transferOption.text = "Transfer";
+            metodePembayaran.appendChild(transferOption);
+        }
+    }
+
+    function ubah_metode_pembayaran() {
+        var metodePembelian = document.getElementById('modal-form-metode-pembelian').value;
+        if (metodePembelian === "") {
+            alert('Pilih metode pembelian terlebih dahulu');
+        }
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Reference to the modal form
+        var form = document.getElementById('kt_modal_add_user_form');
+        var formModal = document.getElementById('kt_modal_add_user');
+
+        // Prevent form submission when pressing "Enter"
+        form.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent the default form submission
+            }
+        });
+        formModal.addEventListener('show.bs.modal', function(event) {
+            // Button that triggered the modal
+            var button = event.relatedTarget;
+            var idPengguna = button.getAttribute('data-id-pengguna');
+            var statusKemitraan = button.getAttribute('data-status-kemitraan');
+            var idProduk = button.getAttribute('data-id');
+            var fotoProduk = button.getAttribute('data-foto-produk');
+            var namaProduk = button.getAttribute('data-nama-produk');
+            var hargaProduk = button.getAttribute('data-harga-produk');
+
+            // Fetch the data from the server based on the roleId
+            document.getElementById("modal-form-id-pengguna").value = idPengguna;
+            document.getElementById("modal-form-foto-produk").src = "assets/images/produk_foto/" + fotoProduk;
+            document.getElementById("modal-form-id-produk").value = idProduk;
+            document.getElementById("modal-form-nama-produk").value = namaProduk;
+            document.getElementById("modal-form-harga-produk").value = formatRupiah(hargaProduk);
+        });
+    });
+</script>
+
+
+<script>
+    function formatRupiah(value) {
+        if (!value) return '';
+        return 'Rp ' + parseInt(value).toLocaleString('id-ID');
+    }
+
+    function hitung_total() {
+        var hargaProduk = document.getElementById('modal-form-harga-produk').value.replace(/\D/g, '');
+        var qtyProduk = document.getElementById('modal-form-qty-produk').value;
+
+        if (qtyProduk > 100) {
+            alert('Maksimal pembelian produk adalah 100 pcs');
+            document.getElementById('modal-form-qty-produk').value = 100;
+        } else {
+            if (hargaProduk && qtyProduk) {
+                var totalHargaProduk = hargaProduk * qtyProduk;
+                document.getElementById('modal-form-total-harga-produk').value = formatRupiah(totalHargaProduk); // Format total as Rupiah
+            } else {
+                document.getElementById('modal-form-total-harga-produk').value = '';
+            }
+        }
+    }
+</script>

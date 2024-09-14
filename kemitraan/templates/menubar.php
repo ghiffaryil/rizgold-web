@@ -102,7 +102,7 @@
                 </div>
 
 
-                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && ($_GET['menu'] == "pembelian")) {
+                <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && ($_GET['menu'] == "transaksi")) {
                                                                                                                                 echo "here";
                                                                                                                             } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
                     <span class="menu-link">
@@ -111,7 +111,7 @@
                     </span>
                     <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
                         <div class="menu-item">
-                            <a class="menu-link" href="?menu=pembelian" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+                            <a class="menu-link" href="?menu=transaksi" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                 <span class="menu-icon">
                                     <i class="ki-duotone ki-notepad fs-1">
                                         <span class="path1"></span>
@@ -121,7 +121,7 @@
                                         <span class="path5"></span>
                                     </i>
                                 </span>
-                                <span class="menu-title">Pembelian Saya</span>
+                                <span class="menu-title">Transaksi Saya</span>
                             </a>
                         </div>
                     </div>
