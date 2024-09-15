@@ -21,8 +21,6 @@ if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
 	if (
 		($_POST['Judul_Artikel'] == "")
 	) {
-
-
 		echo "<script>alert('Harap Isi Field Yang Di Butuhkan Dengan Benar')</script>";
 
 		$cek_required = "Gagal";

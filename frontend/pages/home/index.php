@@ -1,9 +1,9 @@
 <!-- Slider Start -->
-<section class="banner custom-home">
+<section class="banner custom-home" style="height : 300px !important;">
     <div class="container bg-custom-home">
         <div class="row">
             <div class="col-lg-6 col-md-12 col-xl-7">
-                <div class="block">
+                <div class="">
                     <div class="divider mb-3"></div>
                     <!-- <span class="text-uppercase text-sm letter-spacing text-white">Total Health care solution</span> -->
                     <h1 style="color: #d6b961;" class="mb-3 mt-3"><?php echo $data_website['Judul_Website'] ?></h1>
@@ -18,7 +18,92 @@
     </div>
 </section>
 
-<section class="features">
+<section class="mt-4 mb-3">
+    <div class="container">
+        <div class="">
+            <div class="">
+                <br>
+                <div class="text-center">
+                    <h3 class="text-white mb-5">Dapatkan Produk Rizgold di Official Store, klik disini</h3>
+                </div>
+            </div>
+
+            <style>
+                .btn-tokopedia {
+                    background-color: white !important;
+                    border: 2px solid #42b549;
+                    display: block;
+                }
+
+                .btn-tokopedia:hover {
+                    color: white;
+                    background-color: #42b549 !important;
+                }
+
+                .btn-shopee {
+                    background-color: white !important;
+                    border: 2px solid #EE4D2D;
+                    display: block;
+                }
+
+                .btn-shopee:hover {
+                    color: white;
+                    background-color: #EE4D2D !important;
+                }
+
+                .btn-tiktok {
+                    background-color: white !important;
+                    border: 2px solid #FE2C55;
+                    display: block;
+                }
+
+                .btn-tiktok:hover {
+                    color: white;
+                    background-color: #FE2C55 !important;
+                }
+
+                .btn-whatsapp {
+                    background-color: white !important;
+                    border: 2px solid #25d366;
+                    display: block;
+                }
+
+                .btn-whatsapp:hover {
+                    color: white;
+                    border: 2px solid #075e54;
+                    background-color: #075e54 !important;
+                }
+            </style>
+
+            <div class="row">
+                <div class="col-lg-3 mb-md-3 md-xs-3 text-center">
+                    <a href="<?php echo $data_website['Url_Tokopedia'] ?>" class="btn btn-tokopedia" target="_blank">
+                        <img src="frontend/images/svg/tokopedia.svg" alt="Tokopedia" style="height: 20px; margin-right: 10px;"> Tokopedia
+                    </a>
+                </div>
+                <div class="col-lg-3 mb-md-3 md-xs-3 text-center">
+                    <a href="<?php echo $data_website['Url_Shopee'] ?>" class="btn btn-shopee" target="_blank">
+                        <img src="frontend/images/svg/shopee.svg" alt="Tokopedia" style="height: 20px; margin-right: 10px;"> Shopee
+                    </a>
+                </div>
+                <div class="col-lg-3 mb-md-3 md-xs-3 text-center">
+                    <a href="<?php echo $data_website['Url_Tiktok'] ?>" class="btn btn-tiktok" target="_blank">
+                        <img src="frontend/images/svg/tiktok.png" alt="Tokopedia" style="height: 20px; margin-right: 10px;"> Tiktok
+                    </a>
+                </div>
+                <div class="col-lg-3 mb-md-3 md-xs-3 text-center">
+                    <a href="<?php echo $data_website['Nomor_CS'] ?>" class="btn btn-whatsapp" target="_blank">
+                        <img src="frontend/images/svg/whatsapp.svg" alt="Tokopedia" style="height: 20px; margin-right: 10px;"> Whatsapp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br>
+
+<section class="">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -124,78 +209,88 @@
     </div>
 </section>
 <!-- SLIDESHOW PRODUK -->
-<section class="section gray-bg">
+<section class="section mb-0 py-0">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-7 text-center">
-                <div class="section-title mt-4">
+        <div class="rowjustify-content-center">
+            <div class="col-lg-12 text-center">
+                <div class="section-title mt-3 mb-0">
                     <h2>Produk Kami</h2>
                     <div class="divider mx-auto my-4"></div>
-                    <p>Kami memiliki berbagai produk yang terbaik dan terpercaya, dibuat dari bahan tradisional berkualitas</p>
+                    <h4 class="text-white">Kami memiliki berbagai produk yang terbaik dan terpercaya, dibuat dari bahan tradisional berkualitas</h4>
+                </div>
+                <br>
+            </div>
+        </div>
+        <div class="row align-items-center mt-0 pt-0">
+            <div class="col-lg-12 testimonial-wrap-2">
+                <?php
+                $search_field_where = array("Status");
+                $search_criteria_where = array("=");
+                $search_value_where = array("Aktif");
+                $search_connector_where = array("");
+                $nomor = 0;
+                $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pelayanan", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                if ($result['Status'] == "Sukses") {
+                    $data_pelayanan_hasil = $result['Hasil'];
+                    foreach ($data_pelayanan_hasil as $data_pelayanan) {
+                        $nomor++;
+                ?>
+                        <div class="testimonial-block style-2 gray-bg">
+                            <div class="client-info text-center">
+                                <div class="card">
+                                    <img style="height: 450px; width:auto; object-fit:cover;" src="dashboard/media/pelayanan/cover/<?php echo $data_pelayanan['Cover_Pelayanan'] ?>">
+                                    <div class="mt-3">
+                                        <h4 style="color:#d6b961"><?php echo $data_pelayanan['Judul_Pelayanan'] ?></h4>
+                                        <p class="text-muted" style="font-size:small"><?php echo substr($data_pelayanan['Deskripsi'], offset: 0, length: 50) ?>...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                <?php
+                    }
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section pt-0">
+    <div class="container">
+        <div class="row justify-content-center mb-0">
+            <div class="col-lg-12 text-center">
+                <div class="mb-5">
+                    <h2 class="text-white">Artikel</h2>
+                    <p class="text-white">Artikel persembahan dari Rizgold untuk pengatahuan anda</p>
                 </div>
             </div>
         </div>
 
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mt-0">
             <?php
             $search_field_where = array("Status");
             $search_criteria_where = array("=");
             $search_value_where = array("Aktif");
-            $search_connector_where = array("");
+            $search_connector_where = array("LIMIT 3");
             $nomor = 0;
-            $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pelayanan", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+            $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_blog_artikel", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
 
             if ($result['Status'] == "Sukses") {
-                $data_pelayanan_hasil = $result['Hasil'];
+                $data_artikel_hasil = $result['Hasil'];
 
-                foreach ($data_pelayanan_hasil as $data_pelayanan) {
+                foreach ($data_artikel_hasil as $data_artikel) {
                     $nomor++;
             ?>
-                    <div class="col-md-4">
-                        <div class="card mb-4 ">
-                            <img class="card-img-top" src="dashboard/media/pelayanan/cover/<?php echo $data_pelayanan['Cover_Pelayanan'] ?>" data-holder-rendered="true">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <img class="card-img-top" src="dashboard/media/artikel/<?php echo $data_artikel['Foto_Artikel'] ?>" style="height: 300px; width:auto; object-fit:cover">
                             <div class="card-body">
                                 <div class="">
-                                    <h4 style="color:#d6b961"><?php echo $data_pelayanan['Judul_Pelayanan'] ?></h4>
+                                    <h4 style="color:#d6b961"><?php echo $data_artikel['Judul_Artikel'] ?></h4>
                                 </div>
 
-                                <p class="text-muted"><?php echo substr($data_pelayanan['Deskripsi'], 0, 100) ?>...</p>
+                                <p class="text-muted"><?php echo substr($data_artikel['Isi_Artikel'], 0, 100) ?>...</p>
                             </div>
-                        </div>
-                    </div>
-            <?php
-                }
-            }
-            ?>
-        </div>
-    </div>
-
-    <div class="container" style="background:white; padding: 20px;">
-    
-        <div class="row portfolio-gallery">
-            <?php
-            $search_field_where = array("Status");
-            $search_criteria_where = array("=");
-            $search_value_where = array("Aktif");
-            $search_connector_where = array("");
-            $nomor = 0;
-            $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_galeri", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
-
-            if ($result['Status'] == "Sukses") {
-
-                $data_galeri_hasil = $result['Hasil'];
-                foreach ($data_galeri_hasil as $data_galeri) {
-                    $nomor++;
-            ?>
-
-                    <div class="col-lg-4 col-sm-6 col-md-6 mb-4">
-                        <div class="position-relative doctor-inner-box">
-                            <div class="doctor-profile">
-                                <div class="doctor-img">
-                                    <img src="dashboard/media/galeri/<?php echo $data_galeri['Foto_Galeri'] ?>" style="height: 360px; width:100%; background-size:cover">
-                                </div>
-                            </div>
-                            
                         </div>
                     </div>
             <?php
@@ -222,7 +317,6 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-12 testimonial-wrap-2">
-
                 <?php
                 $search_field_where = array("Status", "Publish");
                 $search_criteria_where = array("=", "=");
@@ -237,7 +331,6 @@
                     foreach ($data_hasil as $data_testimoni) {
                         $nomor++;
                 ?>
-
                         <div class="testimonial-block style-2 gray-bg">
                             <i class="icofont-quote-right"></i>
                             <div class="client-info text-center">
@@ -250,7 +343,6 @@
                     }
                 }
                 ?>
-
             </div>
         </div>
     </div>

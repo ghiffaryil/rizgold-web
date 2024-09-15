@@ -45,11 +45,14 @@ if (isset($_POST['submit_simpan'])) {
 			"Nama_Instagram",
 			"Url_Instagram",
 
-			"Nama_Twitter",
-			"Url_Twitter",
+			"Nama_Tokopedia",
+			"Url_Tokopedia",
 
-			"Nama_Linkedin",
-			"Url_Linkedin",
+			"Nama_Shopee",
+			"Url_Shopee",
+
+			"Nama_Tiktok",
+			"Url_Tiktok",
 
 			"Nama_Youtube",
 			"Url_Youtube",
@@ -60,11 +63,7 @@ if (isset($_POST['submit_simpan'])) {
 			"Nomor_CS",
 			"Nama_CS",
 			"CS_Sebagai",
-			"Pesan_CS",
-
-			"Judul_Website_Eng",
-			"Deskripsi_Singkat_Eng",
-			"Deskripsi_Lengkap_Eng"
+			"Pesan_CS"
 		);
 
 		$form_value = array(
@@ -85,11 +84,14 @@ if (isset($_POST['submit_simpan'])) {
 			"$_POST[Nama_Instagram]",
 			"$_POST[Url_Instagram]",
 
-			"$_POST[Nama_Twitter]",
-			"$_POST[Url_Twitter]",
+			"$_POST[Nama_Tokopedia]",
+			"$_POST[Url_Tokopedia]",
 
-			"$_POST[Nama_Linkedin]",
-			"$_POST[Url_Linkedin]",
+			"$_POST[Nama_Shopee]",
+			"$_POST[Url_Shopee]",
+
+			"$_POST[Nama_Tiktok]",
+			"$_POST[Url_Tiktok]",
 
 			"$_POST[Nama_Youtube]",
 			"$_POST[Url_Youtube]",
@@ -100,11 +102,7 @@ if (isset($_POST['submit_simpan'])) {
 			"$_POST[Nomor_CS]",
 			"$_POST[Nama_CS]",
 			"$_POST[CS_Sebagai]",
-			"$_POST[Pesan_CS]",
-
-			"$_POST[Judul_Website_Eng]",
-			"$_POST[Deskripsi_Singkat_Eng]",
-			"$_POST[Deskripsi_Lengkap_Eng]"
+			"$_POST[Pesan_CS]"
 		);
 
 		$result = $a_tambah_baca_update_hapus->tambah_data("tb_pengaturan_website", $form_field, $form_value, "Iya");
@@ -135,100 +133,97 @@ if ($result['Status'] == "Sukses") {
 #-----------------------------------------------------------------------------------
 #FUNGSI UPDATE DATA (UPDATE)
 if (isset($_POST['submit_update'])) {
-	if ($cek_required == "Sukses") {
 
-		$form_field = array(
-			"Judul_Website",
-			"Deskripsi_Singkat",
-			"Deskripsi_Lengkap",
-			"Email_Admin",
-			"Email_Customer_Service",
+	$form_field = array(
+		"Judul_Website",
+		"Deskripsi_Singkat",
+		"Deskripsi_Lengkap",
+		"Email_Admin",
+		"Email_Customer_Service",
 
-			"Nomor_Telpon",
-			"Nomor_Handphone",
-			"Alamat_Lengkap",
+		"Nomor_Telpon",
+		"Nomor_Handphone",
+		"Alamat_Lengkap",
 
-			"Nama_Facebook",
-			"Url_Facebook",
+		"Nama_Facebook",
+		"Url_Facebook",
 
-			"Nama_Instagram",
-			"Url_Instagram",
+		"Nama_Instagram",
+		"Url_Instagram",
 
-			"Nama_Twitter",
-			"Url_Twitter",
+		"Nama_Tokopedia",
+		"Url_Tokopedia",
 
-			"Nama_Linkedin",
-			"Url_Linkedin",
+		"Nama_Shopee",
+		"Url_Shopee",
 
-			"Nama_Youtube",
-			"Url_Youtube",
+		"Nama_Tiktok",
+		"Url_Tiktok",
 
-			"Embed_Google_Maps",
-			"Google_Maps_Url",
+		"Nama_Youtube",
+		"Url_Youtube",
 
-			"Nomor_CS",
-			"Nama_CS",
-			"CS_Sebagai",
-			"Pesan_CS",
+		"Embed_Google_Maps",
+		"Google_Maps_Url",
 
-			"Judul_Website_Eng",
-			"Deskripsi_Singkat_Eng",
-			"Deskripsi_Lengkap_Eng"
-		);
+		"Nomor_CS",
+		"Nama_CS",
+		"CS_Sebagai",
+		"Pesan_CS"
+	);
 
-		$form_value = array(
-			"$_POST[Judul_Website]",
-			"$_POST[Deskripsi_Singkat]",
-			"$_POST[Deskripsi_Lengkap]",
-			"$_POST[Email_Admin]",
-			"$_POST[Email_Customer_Service]",
+	$form_value = array(
+		"$_POST[Judul_Website]",
+		"$_POST[Deskripsi_Singkat]",
+		"$_POST[Deskripsi_Lengkap]",
+		"$_POST[Email_Admin]",
+		"$_POST[Email_Customer_Service]",
 
-			"$_POST[Nomor_Telpon]",
-			"$_POST[Nomor_Handphone]",
-			"$_POST[Alamat_Lengkap]",
+		"$_POST[Nomor_Telpon]",
+		"$_POST[Nomor_Handphone]",
+		"$_POST[Alamat_Lengkap]",
 
-			"$_POST[Nama_Facebook]",
-			"$_POST[Url_Facebook]",
+		"$_POST[Nama_Facebook]",
+		"$_POST[Url_Facebook]",
 
-			"$_POST[Nama_Instagram]",
-			"$_POST[Url_Instagram]",
+		"$_POST[Nama_Instagram]",
+		"$_POST[Url_Instagram]",
 
-			"$_POST[Nama_Twitter]",
-			"$_POST[Url_Twitter]",
+		"$_POST[Nama_Tokopedia]",
+		"$_POST[Url_Tokopedia]",
 
-			"$_POST[Nama_Linkedin]",
-			"$_POST[Url_Linkedin]",
+		"$_POST[Nama_Shopee]",
+		"$_POST[Url_Shopee]",
 
-			"$_POST[Nama_Youtube]",
-			"$_POST[Url_Youtube]",
+		"$_POST[Nama_Tiktok]",
+		"$_POST[Url_Tiktok]",
 
-			"$_POST[Embed_Google_Maps]",
-			"$_POST[Google_Maps_Url]",
+		"$_POST[Nama_Youtube]",
+		"$_POST[Url_Youtube]",
 
-			"$_POST[Nomor_CS]",
-			"$_POST[Nama_CS]",
-			"$_POST[CS_Sebagai]",
-			"$_POST[Pesan_CS]",
+		"$_POST[Embed_Google_Maps]",
+		"$_POST[Google_Maps_Url]",
 
-			"$_POST[Judul_Website_Eng]",
-			"$_POST[Deskripsi_Singkat_Eng]",
-			"$_POST[Deskripsi_Lengkap_Eng]"
-		);
+		"$_POST[Nomor_CS]",
+		"$_POST[Nama_CS]",
+		"$_POST[CS_Sebagai]",
+		"$_POST[Pesan_CS]"
+	);
 
-		$form_field_where = array("Id_Pengaturan_Website");
-		$form_criteria_where = array("=");
-		$form_value_where = array("1");
-		$form_connector_where = array("");
+	$form_field_where = array("Id_Pengaturan_Website");
+	$form_criteria_where = array("=");
+	$form_value_where = array("1");
+	$form_connector_where = array("");
 
-		$result = $a_tambah_baca_update_hapus->update_data("tb_pengaturan_website", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where, "Iya");
+	$result = $a_tambah_baca_update_hapus->update_data("tb_pengaturan_website", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where, "Iya");
 
-		if ($result['Status'] == "Sukses") {
-			echo "<script>alert('Data Terupdate');document.location.href='$kehalaman'</script>";
-		} else {
-			echo "<script>alert('Terjadi Kesalahan Saat Mengupdate Data');document.location.href='$kehalaman'</script>";
-		}
+	if ($result['Status'] == "Sukses") {
+		echo "<script>alert('Data Terupdate');document.location.href='$kehalaman'</script>";
+	} else {
+		echo "<script>alert('Terjadi Kesalahan Saat Mengupdate Data');document.location.href='$kehalaman'</script>";
 	}
 }
+
 #-----------------------------------------------------------------------------------
 ?>
 <div class="content-wrapper">
@@ -305,20 +300,20 @@ if (isset($_POST['submit_update'])) {
 													<div class="col-lg-10"><textarea <?php if ($u_Sebagai <> "Super Administrator") {
 																							echo "readonly";
 																						} ?> rows="3" class="form-control" name="Deskripsi_Singkat"><?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
-																																					echo $_POST['Deskripsi_Singkat'];
-																																				} else {
-																																					echo $edit['Deskripsi_Singkat'];
-																																				} ?></textarea>
+																																						echo $_POST['Deskripsi_Singkat'];
+																																					} else {
+																																						echo $edit['Deskripsi_Singkat'];
+																																					} ?></textarea>
 													</div>
 
 													<label class="col-lg-2 control-label d-none">Short Description (en)</label>
 													<div class="col-lg-4 d-none"><textarea <?php if ($u_Sebagai <> "Super Administrator") {
 																								echo "readonly";
 																							} ?> rows="3" class="form-control" name="Deskripsi_Singkat_Eng"><?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
-																																						echo $_POST['Deskripsi_Singkat_Eng'];
-																																					} else {
-																																						echo $edit['Deskripsi_Singkat_Eng'];
-																																					} ?></textarea>
+																																								echo $_POST['Deskripsi_Singkat_Eng'];
+																																							} else {
+																																								echo $edit['Deskripsi_Singkat_Eng'];
+																																							} ?></textarea>
 													</div>
 												</div>
 
@@ -481,64 +476,91 @@ if (isset($_POST['submit_update'])) {
 										<div class="col-lg-6">
 
 											<div class="form-group row">
-												<label class="col-lg-4 control-label">Account Tiktok</label>
+												<label class="col-lg-4 control-label">Account Tokopedia</label>
 												<div class="col-lg-8">
 													<input <?php if ($u_Sebagai <> "Super Administrator") {
 																echo "readonly";
-															} ?> type="text" class="form-control" name="Nama_Twitter" value="<?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
-																																	echo $_POST['Nama_Twitter'];
+															} ?> type="text" class="form-control" name="Nama_Tokopedia" value="<?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
+																																	echo $_POST['Nama_Tokopedia'];
 																																} else {
-																																	echo $edit['Nama_Twitter'];
+																																	echo $edit['Nama_Tokopedia'];
 																																} ?>">
 												</div>
 											</div>
 										</div>
 										<div class="col-lg-6">
 											<div class="form-group row">
-												<label class="col-lg-4 control-label">Link Tiktok</label>
+												<label class="col-lg-4 control-label">Link Tokopedia</label>
 												<div class="col-lg-8">
 													<input <?php if ($u_Sebagai <> "Super Administrator") {
 																echo "readonly";
-															} ?> type="text" class="form-control" name="Url_Twitter" value="<?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
-																																echo $_POST['Url_Twitter'];
+															} ?> type="text" class="form-control" name="Url_Tokopedia" value="<?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
+																																	echo $_POST['Url_Tokopedia'];
+																																} else {
+																																	echo $edit['Url_Tokopedia'];
+																																} ?>">
+												</div>
+											</div>
+										</div>
+
+										<div class="col-lg-6">
+											<div class="form-group row">
+												<label class="col-lg-4 control-label">Account Shopee</label>
+												<div class="col-lg-8">
+													<input <?php if ($u_Sebagai <> "Super Administrator") {
+																echo "readonly";
+															} ?> type="text" class="form-control" name="Nama_Shopee" value="<?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
+																																echo $_POST['Nama_Shopee'];
 																															} else {
-																																echo $edit['Url_Twitter'];
+																																echo $edit['Nama_Shopee'];
 																															} ?>">
 												</div>
 											</div>
-
 										</div>
-										<div class="col-lg-6 d-none">
-
+										<div class="col-lg-6">
 											<div class="form-group row">
-												<label class="col-lg-4 control-label">Account Linked In</label>
+												<label class="col-lg-4 control-label">URL Shopee</label>
 												<div class="col-lg-8">
 													<input <?php if ($u_Sebagai <> "Super Administrator") {
 																echo "readonly";
-															} ?> type="text" class="form-control" name="Nama_Linkedin" value="<?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
-																																	echo $_POST['Nama_Linkedin'];
-																																} else {
-																																	echo $edit['Nama_Linkedin'];
-																																} ?>">
+															} ?> type="text" class="form-control" name="Url_Shopee" value="<?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
+																																echo $_POST['Url_Shopee'];
+																															} else {
+																																echo $edit['Url_Shopee'];
+																															} ?>">
 												</div>
 											</div>
 										</div>
-										<div class="col-lg-6 d-none">
 
+										<div class="col-lg-6">
 											<div class="form-group row">
-												<label class="col-lg-4 control-label">URL Linked In</label>
+												<label class="col-lg-4 control-label">Account Tiktok</label>
 												<div class="col-lg-8">
 													<input <?php if ($u_Sebagai <> "Super Administrator") {
 																echo "readonly";
-															} ?> type="text" class="form-control" name="Url_Linkedin" value="<?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
-																																	echo $_POST['Url_Linkedin'];
-																																} else {
-																																	echo $edit['Url_Linkedin'];
-																																} ?>">
+															} ?> type="text" class="form-control" name="Nama_Tiktok" value="<?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
+																																echo $_POST['Nama_Tiktok'];
+																															} else {
+																																echo $edit['Nama_Tiktok'];
+																															} ?>">
 												</div>
 											</div>
-
 										</div>
+										<div class="col-lg-6">
+											<div class="form-group row">
+												<label class="col-lg-4 control-label">URL Tiktok</label>
+												<div class="col-lg-8">
+													<input <?php if ($u_Sebagai <> "Super Administrator") {
+																echo "readonly";
+															} ?> type="text" class="form-control" name="Url_Tiktok" value="<?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
+																																echo $_POST['Url_Tiktok'];
+																															} else {
+																																echo $edit['Url_Tiktok'];
+																															} ?>">
+												</div>
+											</div>
+										</div>
+
 										<div class="col-lg-6">
 
 											<div class="form-group row">

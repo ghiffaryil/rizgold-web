@@ -34,7 +34,7 @@ $kehalaman = $_GET['menu'];
         <div class="col-lg-4 col-12">
           <div class="box" style="height:500px; overflow-y:scroll;">
             <div class="box-header">
-              <h4 class="box-title">Layanan/Mobil</h4>
+              <h4 class="box-title">Produk</h4>
               <a class="box-controls pull-right d-md-flex d-none" style="cursor: pointer;" href="?menu=kontak">
                 View All
               </a>
@@ -176,7 +176,6 @@ $kehalaman = $_GET['menu'];
                     <tr>
                       <th style="width: 5%;">No</th>
                       <th style="width: 25%;">Email</th>
-                      <th style="width: 25%;">Waktu</th>
                     </tr>
                   </thead>
 
@@ -203,7 +202,6 @@ $kehalaman = $_GET['menu'];
                               <?php echo $data['Email'] ?>
                             </a>
                           </td>
-                          <td><?php echo tanggal_dan_waktu_24_jam_indonesia($data['Waktu_Simpan_Data']) ?></td>
                         </tr>
                       <?php } ?>
                     <?php } ?>

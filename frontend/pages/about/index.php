@@ -94,7 +94,7 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
-      <br><br>
+  <br><br>
   <div class="container">
     <div class="section-title">
       <h2>Informasi Produk</h2>

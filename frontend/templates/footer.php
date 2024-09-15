@@ -70,7 +70,9 @@
                 <div class="col-lg-6">
                     <div class="subscribe-form text-lg-right mt-5 mt-lg-0">
                         <form method="post" class="subscribe">
-                            <input id="Email" class="form-control" placeholder="Email" name="Email" required>
+                            <input id="Email" class="form-control" placeholder="Email" name="Email" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9@._+-]/g, '')"
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                title="Masukkan email yang valid (e.g., example@domain.com)">
                             <button type="button" id="submit_add_newsletter" class="btn btn-main btn-round-full">Subscribe</button>
                         </form>
                     </div>
@@ -95,24 +97,29 @@
 
             var inputEmail = $('#Email').val();
 
-            $.ajax({
-                type: 'POST',
-                url: 'frontend/function/newsletter/add_newsletter.php',
-                data: {
-                    "Email": inputEmail
-                },
-                dataType: 'json',
-                success: function(response) {
-                    alert(response.message);
+            if (inputEmail == "" || !inputEmail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                alert('Harap masukkan alamat email yang benar');
+            } else {
 
-                    if (response.status == "success") {
-                        var inputEmail = $('#Email').val('');
+                $.ajax({
+                    type: 'POST',
+                    url: 'frontend/function/newsletter/add_newsletter.php',
+                    data: {
+                        "Email": inputEmail
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        alert(response.message);
+
+                        if (response.status == "success") {
+                            var inputEmail = $('#Email').val('');
+                        }
+                    },
+                    error: function() {
+                        alert('Maaf, terjadi Kesalahan!');
                     }
-                },
-                error: function() {
-                    alert('Maaf, terjadi Kesalahan!');
-                }
-            });
+                });
+            }
         });
     });
 </script>

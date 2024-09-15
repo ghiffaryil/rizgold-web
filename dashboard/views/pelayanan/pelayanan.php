@@ -79,7 +79,7 @@ if (isset($_POST['submit_simpan'])) {
                 $nama_file_upload_cover = $a_hash->hash_nama_file($Id_Auto_Increment, "_Foto") . "_" . $Id_Auto_Increment . "_Foto";
                 $folder_penyimpanan_file_upload_cover = "media/pelayanan/cover/";
                 $tipe_file_yang_diizikan_file_upload_cover = array("png", "gif", "jpg", "jpeg");
-                $maksimum_ukuran_file_upload = 3000000;
+                $maksimum_ukuran_file_upload = 13000000;
 
                 $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload_cover, $folder_penyimpanan_file_upload_cover, $tipe_file_yang_diizikan_file_upload_cover, $maksimum_ukuran_file_upload);
 
@@ -163,7 +163,7 @@ if (isset($_POST['submit_update'])) {
                 $nama_file_upload_cover = $a_hash->hash_nama_file($Get_Id_Primary, "_Foto") . "_" . $Get_Id_Primary . "_Foto";
                 $folder_penyimpanan_file_upload_cover = "media/pelayanan/cover/";
                 $tipe_file_yang_diizikan_file_upload_cover = array("png", "gif", "jpg", "jpeg");
-                $maksimum_ukuran_file_upload = 3000000;
+                $maksimum_ukuran_file_upload = 13000000;
 
                 $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload_cover, $folder_penyimpanan_file_upload_cover, $tipe_file_yang_diizikan_file_upload_cover, $maksimum_ukuran_file_upload);
 

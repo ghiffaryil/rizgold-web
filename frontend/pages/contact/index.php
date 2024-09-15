@@ -47,29 +47,31 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <input name="Nama" id="Nama" type="text" class="form-control" placeholder="Nama">
+                                        <input name="Nama" id="Nama" type="text" class="form-control" placeholder="Nama" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <input name="Email" id="Email" type="email" class="form-control" placeholder="Email" required>
+                                        <input name="Email" id="Email" type="email" class="form-control" placeholder="Email" pattern="[a-zA-Z0-9- ]*"  oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9@._+-]/g, '')"
+										pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+										title="Masukkan email yang valid (e.g., example@domain.com)">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <input name="Instansi" id="Instansi" type="text" class="form-control" placeholder="Instansi" required>
+                                        <input name="Instansi" id="Instansi" type="text" class="form-control" placeholder="Instansi" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <input name="Nomor_Handphone" id="Nomor_Handphone" type="text" class="form-control" placeholder="Nomor Handphone" required>
+                                        <input name="Nomor_Handphone" id="Nomor_Handphone" type="text" class="form-control" placeholder="Nomor Handphone" pattern="[0-9]*" maxlength="13" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group-2 mb-4">
-                                <textarea name="Pesan" id="Pesan" class="form-control" rows="8" placeholder="Pesan" required></textarea>
+                                <textarea name="Pesan" id="Pesan" class="form-control" rows="8" placeholder="Pesan"></textarea>
                             </div>
 
                             <div>
@@ -102,31 +104,41 @@
             var inputNomor_Handphone = $('#Nomor_Handphone').val();
             var inputPesan = $('#Pesan').val();
 
-            $.ajax({
-                type: 'POST',
-                url: 'frontend/function/messages/send_message.php',
-                data: {
-                    "Nama": inputNama,
-                    "Email": inputEmail,
-                    "Instansi": inputInstansi,
-                    "Nomor_Handphone": inputNomor_Handphone,
-                    "Pesan": inputPesan,
-                },
-                dataType: 'json',
-                success: function(response) {
-                    alert(response.message);
-                    if (response.status == "success") {
-                        var inputNama = $('#Nama').val('');
-                        var inputEmail = $('#Email').val('');
-                        var inputInstansi = $('#Instansi').val('');
-                        var inputNomor_Handphone = $('#Nomor_Handphone').val('');
-                        var inputPesan = $('#Pesan').val('');
+            if (inputNama == "" ||
+                inputEmail == "" || !inputEmail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) ||
+                inputInstansi == "" ||
+                inputNomor_Handphone == "" ||
+                inputPesan == "") {
+                alert('Harap lengkapi data di atas');
+            } else {
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'frontend/function/messages/send_message.php',
+                    data: {
+                        "Nama": inputNama,
+                        "Email": inputEmail,
+                        "Instansi": inputInstansi,
+                        "Nomor_Handphone": inputNomor_Handphone,
+                        "Pesan": inputPesan,
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        alert(response.message);
+                        if (response.status == "success") {
+                            var inputNama = $('#Nama').val('');
+                            var inputEmail = $('#Email').val('');
+                            var inputInstansi = $('#Instansi').val('');
+                            var inputNomor_Handphone = $('#Nomor_Handphone').val('');
+                            var inputPesan = $('#Pesan').val('');
+                        }
+                    },
+                    error: function(e) {
+                        alert('Maaf, terjadi Kesalahan!' + e);
                     }
-                },
-                error: function(e) {
-                    alert('Maaf, terjadi Kesalahan!' + e);
-                }
-            });
+                });
+
+            }
         });
     });
 </script>
