@@ -1,5 +1,7 @@
 <header>
 
+<?php include "app/config/konfigurasi/konfigurasi.php"; ?>
+
     <style>
         .fixed-top {
             position: fixed;
@@ -13,8 +15,8 @@
 
     <nav class="navbar navbar-expand-lg navigation fixed-top" id="navbar" style="padding: 0 10px 0 0; background: #131521;">
         <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="frontend/images/logo/logo_rizgold_h2.png" alt="" class="img-fluid" style="width: 100%; height: 60px;">
+            <a class="navbar-brand" href="index.php">
+                <img src="frontend/images/logo/logo_square.png" alt="" class="img-fluid" style="width: 100%; height: 60px;">
             </a>
 
             <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarmain"
@@ -29,6 +31,7 @@
                     <li class="nav-item <?php if(isset($_GET['view']) AND $_GET['view']=="product"){ echo "active";}?>"><a class="nav-link" href="?view=product">Produk</a></li>
                     <li class="nav-item <?php if(isset($_GET['view']) AND $_GET['view']=="article"){ echo "active";}?>"><a class="nav-link" href="?view=article">Artikel</a></li>
                     <li class="nav-item <?php if(isset($_GET['view']) AND $_GET['view']=="contact"){ echo "active";}?>"><a class="nav-link" href="?view=contact">Kontak</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo $Link_Website;?>/kemitraan">Kemitraan</a></li>
                 </ul>
             </div>
         </div>

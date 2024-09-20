@@ -290,19 +290,38 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 class Search_Controller
 {
 
-    public function select_search_filter($filter_status = "Aktif")
+    public function select_search_filter($filter_status = "Aktif", $Text_Input_Search = ""): array|string
     {
-        global $a_tambah_baca_update_hapus, $a_hash;
+        global $a_tambah_baca_update_hapus;
 
-        $search_field_where = array("Status");
-        $search_criteria_where = array("=");
-        $search_value_where = array("$filter_status");
-        $search_connector_where = array("");
+        $search_field_where = array();
+        $search_criteria_where = array();
+        $search_value_where = array();
+        $search_connector_where = array();
 
-        $nomor = 0;
+        // Add filters dynamically if they are set
+        if (!empty($Text_Input_Search)) {
+            $search_field_where[] = "Nama_Produk";
+            $search_criteria_where[] = "LIKE";
+            $search_value_where[] = "%$Text_Input_Search%";
+            $search_connector_where[] = "AND";
+        }
 
-        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_produk", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+        // Define base search fields and values
+        $search_field_where[] = "Status";
+        $search_criteria_where[] = "=";
+        $search_value_where[] = $filter_status;
+        $search_connector_where[] = "ORDER BY Nama_Produk ASC";
 
+        // Call the method to get data
+        // Change the table name to 'tb_transaksi_penjualan' to match your data
+        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter(
+            "tb_produk",  // Correct table name
+            $search_field_where,
+            $search_criteria_where,
+            $search_value_where,
+            $search_connector_where
+        );
         if ($result['Status'] == "Sukses") {
             return $result['Hasil'];
         } else {

@@ -92,7 +92,7 @@ if (isset($_POST['submit_login'])) {
 							<!--begin::Input group-->
 							<div class="fv-row mb-7">
 								<label class="form-label fs-4 fw-bold text-dark">Username</label>
-								<input required class="form-control form-control-lg" placeholder="Masukkan username" type="text" name="Username" id="username" />
+								<input required class="form-control form-control-lg" placeholder="Masukkan Username" type="text" name="Username" id="username" />
 								<div id="usernameError" class="text-danger" style="display:none;">Username tidak boleh kosong</div>
 							</div>
 							<!--begin::Input group-->
@@ -103,7 +103,7 @@ if (isset($_POST['submit_login'])) {
 								</div>
 
 								<div class="input-group">
-									<input required class="form-control form-control-lg" placeholder="Masukkan password" type="password" name="Password" id="password" />
+									<input required class="form-control form-control-lg" placeholder="Masukkan Password" type="password" name="Password" id="password" />
 									<button type="button" class="btn btn-light-dark" onclick="togglePasswordVisibility('password', this)">
 										<i class="ki-duotone ki-eye-slash fs-2">
 											<span class="path1"></span>
@@ -135,10 +135,9 @@ if (isset($_POST['submit_login'])) {
 							<!--begin::Actions-->
 							<div class="text-center">
 								<button type="submit" name="" id="button_login" class="btn btn-lg btn-dark w-100 mb-5">
-									<span class="indicator-label text-white">Masuk</span>
+									<span class="text-white">Masuk</span>
 								</button>
-
-								<input type="submit" value="Login" name="submit_login" id="submit_login" class="d-none">
+								<input type="submit" value="Login" name="submit_login" id="submit_login" class="d-none btn btn-lg btn-dark w-100 mb-5" value="Masuk">
 							</div>
 
 							

@@ -543,7 +543,9 @@ a:focus {
     line-height: 50px;
   }
   .banner {
-    min-height: 350px;
+    /* min-height: 350px; */
+    min-height: 325px;
+    padding-bottom: 15px;
     background: #fff !important;
   }
 }

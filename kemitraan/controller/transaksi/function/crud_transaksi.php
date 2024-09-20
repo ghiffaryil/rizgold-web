@@ -319,7 +319,9 @@ class Search_Controller
         $filter_status_pembayaran = "",
         $filter_status_barang = "",
         $filter_id_pengguna = ""
+
     ): array|string {
+        
         global $a_tambah_baca_update_hapus;
 
         $filter_status_kemitraan == "All" ? $filter_status_kemitraan = "" : $filter_status_kemitraan;

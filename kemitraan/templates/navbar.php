@@ -4,14 +4,12 @@
             <div class="d-flex flex-grow-1 flex-lg-grow-0">
                 <div class="d-flex align-items-center" id="kt_app_header_logo_wrapper">
                     <button class="d-lg-none btn btn-icon btn-color-white btn-active-color-primary ms-n4 me-sm-2" id="kt_app_header_menu_toggle">
-                        <i class="ki-duotone ki-abstract-13 fs-1">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
+                        <i class="ki-solid ki-burger-menu-6 fs-1 text-white">
                         </i>
                     </button>
                     <a href="index.php" class="d-flex align-items-center mb-1 mb-lg-0 pt-lg-1">
-                        <img alt="Logo" src="assets/media/logos/default-small.svg" class="d-block d-sm-none" />
-                        <img alt="Logo" src="assets/media/logos/default.svg" class="d-none d-sm-block" />
+                        <img alt="Logo" src="assets/images/logo/logo_h2.png" class="d-block d-sm-none" style="height: 45px; width:auto" />
+                        <img alt="Logo" src="assets/images/logo/logo_h2.png" class="d-none d-sm-block" style="height: 45px; width:auto" />
                     </a>
                 </div>
             </div>

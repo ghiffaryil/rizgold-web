@@ -11,12 +11,12 @@
     </div>
   </div>
 </section>
+
 <section class="section bg-white">
   <div class="container">
     <div class="align-items-center">
       <div class="section-title text-center">
         <h2>Informasi Produk</h2>
-        <hr>
         <h3>Kami selalu menciptakan produk dengan kualitas terbaik</h3>
       </div>
     </div>
@@ -36,12 +36,12 @@
         foreach ($data_produk_hasil as $data_produk) {
           $nomor++;
       ?>
-          <div class="col-lg-4 col-md-6 col-sm-6">
+          <div class="col-lg-6 col-md-6 col-sm-6">
             <div class="service-block mb-5">
-              <img src="dashboard/media/pelayanan/cover/<?php echo $data_produk['Cover_Pelayanan'] ?>" alt="" class="img-fluid">
+              <img src="dashboard/media/pelayanan/cover/<?php echo $data_produk['Cover_Pelayanan'] ?>" alt="" class="img-fluid"  style="height: 500px; width:100%; object-fit:cover;" >
               <div class="content">
-                <h4 class="mt-4 mb-2 title-color"><?php echo $data_produk['Judul_Pelayanan'] ?></h4>
-                <p class="mb-4"><?php echo substr($data_produk['Deskripsi'], 0, 100) ?>...</p>
+                <h4 class="mt-4 mb-2 title-color"><a href="?menu=article&id-<?php echo $a_hash->encode($data_produk['Judul_Pelayanan'], "dashboard");?>"><?php echo $data_produk['Judul_Pelayanan'] ?></a></h4>
+                <p class="mb-4"><?php echo substr(string: $data_produk['Deskripsi'], offset: 0, length: 200) ?>...</p>
               </div>
             </div>
           </div>

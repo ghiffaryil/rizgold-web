@@ -45,8 +45,8 @@
                                             <span class="text-muted text-capitalize mr-3"><i class="icofont-user mr-2"></i> Post by Admin</span>
                                             <span class="text-muted text-capitalize mr-3"><i class="icofont-calendar mr-1"></i><?php echo tanggal_dan_waktu_24_jam_indonesia($data_artikel['Waktu_Simpan_Data']) ?></span>
                                         </div>
-                                        <h2 class="mt-3 mb-3"><a href="blog-single.html"><?php echo $data_artikel['Judul_Artikel'] ?></a></h2>
-                                        <p class="mb-4"><?php echo substr($data_artikel['Isi_Artikel'], 0, 100) ?></p>
+                                        <h2 class="mt-3 mb-3"><a href="?menu=article&id-<?php echo $a_hash->encode($data_artikel['Judul_Artikel'], "dashboard");?>"><?php echo $data_artikel['Judul_Artikel'] ?></a></h2>
+                                        <p class="mb-4"><?php echo substr(string: $data_artikel['Isi_Artikel'], offset: 0, length: 100) ?></p>
                                         <a href="blog-single.html" target="_blank" class="btn btn-main btn-icon btn-round-full">Read More <i class="icofont-simple-right ml-2  "></i></a>
                                         <hr>
                                     </div>
@@ -58,7 +58,7 @@
                         }
                     } ?>
 
-                    <div class="col-lg-12 col-md-12">
+                    <div class="col-lg-12 col-md-12 d-none">
                         <nav class="pagination py-2 d-inline-block">
                             <div class="nav-links">
                                 <span aria-current="page" class="page-numbers current">1</span>
@@ -74,9 +74,9 @@
             <!-- RIGHT -->
             <div class="col-lg-4">
                 <div class="sidebar-wrap pl-lg-4 mt-5 mt-lg-0">
-                    <div class="sidebar-widget search  mb-3 ">
+                    <div class="sidebar-widget search  mb-3 d-none">
                         <h5>Search Here</h5>
-                        <form action="#" class="search-form">
+                        <form action="" class="search-form">
                             <input type="text" class="form-control" placeholder="search">
                             <i class="ti-search"></i>
                         </form>
@@ -99,8 +99,8 @@
                         ?>
 
                             <div class="py-2">
-                                <span class="text-sm text-muted">03 Mar 2018</span>
-                                <h6 class="my-2"><a href="#"><?php echo $data_artikel['Judul_Artikel'] ?></a></h6>
+                                <span class="text-sm text-muted"><?php echo tanggal_dan_waktu_24_jam_indonesia($data_artikel['Waktu_Simpan_Data']); ?></span>
+                                <h6 class="my-2"><a href="?menu=article&id-<?php echo $a_hash->encode($data_artikel['Judul_Artikel'], "dashboard");?>"><?php echo $data_artikel['Judul_Artikel'] ?></a></h6>
                             </div>
 
                         <?php } ?>

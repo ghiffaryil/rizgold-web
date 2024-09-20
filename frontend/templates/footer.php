@@ -16,10 +16,12 @@
                     <h4 class="text-capitalize mb-3">Menu</h4>
                     <div class="divider mb-4"></div>
                     <ul class="list-unstyled footer-menu lh-35">
-                        <li><a class="text-white" href="#!">Beranda </a></li>
-                        <li><a class="text-white" href="#!">Tentang</a></li>
-                        <li><a class="text-white" href="#!">Produk</a></li>
-                        <li><a class="text-white" href="#!">Kontak</a></li>
+                        <li><a class="" href="index.php">Beranda </a></li>
+                        <li><a class="" href="?menu=about">Tentang</a></li>
+                        <li><a class="" href="?menu=product">Produk</a></li>
+                        <li><a class="" href="?menu=article">Artikel</a></li>
+                        <li><a class="" href="?menu=contact">Kontak</a></li>
+                        <li><a class="" href="?menu=kemitraan">Kemitraan</a></li>
                     </ul>
                 </div>
             </div>
@@ -30,9 +32,9 @@
                     <div class="divider mb-4"></div>
 
                     <ul class="list-unstyled footer-menu lh-35">
-                        <li><a class="text-white" href="<?php echo $data_website['URL_Facebook'] ?>"><i class="icofont-facebook"> </i> <?php echo $data_website['Nama_Facebook'] ?></a></li>
-                        <li><a class="text-white" href="<?php echo $data_website['URL_Instagram'] ?>"><i class="icofont-instagram"> </i> <?php echo $data_website['Nama_Instagram'] ?></a></li>
-                        <li><a class="text-white" href="<?php echo $data_website['URL_Youtube'] ?>"><i class="icofont-youtube"> </i> <?php echo $data_website['Nama_Youtube'] ?></a></li>
+                        <li><a class="" href="<?php echo $data_website['URL_Facebook'] ?>"><i class="icofont-facebook"> </i> <?php echo $data_website['Nama_Facebook'] ?></a></li>
+                        <li><a class="" href="<?php echo $data_website['URL_Instagram'] ?>"><i class="icofont-instagram"> </i> <?php echo $data_website['Nama_Instagram'] ?></a></li>
+                        <li><a class="" href="<?php echo $data_website['URL_Youtube'] ?>"><i class="icofont-youtube"> </i> <?php echo $data_website['Nama_Youtube'] ?></a></li>
                     </ul>
                 </div>
             </div>
@@ -44,15 +46,13 @@
 
                     <div class="footer-contact-block mb-4">
                         <div class="icon d-flex align-items-center">
-                            <i class="icofont-home mr-3 text-white"></i>
-                            <span class="text-white h6 mb-0"><?php echo $data_website['Nomor_Telpon'] ?></span>
+                            <span class="h6 mb-0"><i class="icofont-home mr-3"></i><?php echo $data_website['Nomor_Telpon'] ?></span>
                         </div>
                     </div>
 
                     <div class="footer-contact-block mb-4">
                         <div class="icon d-flex align-items-center">
-                            <i class="icofont-email mr-3 text-white"></i>
-                            <span class="text-white h6 mb-0"><?php echo $data_website['Email_Customer_Service'] ?></span>
+                            <span class="h6 mb-0"><i class="icofont-email mr-3"></i><?php echo $data_website['Email_Customer_Service'] ?></span>
                         </div>
                     </div>
 
@@ -64,7 +64,7 @@
             <div class="row align-items-center justify-content-between">
                 <div class="col-lg-6">
                     <div class="copyright text-white">
-                        Copyright &copy; 2024, Designed &amp; Developed by <a class="text-warning" href="https://themefisher.com/">Revolter Digital</a>
+                        Copyright &copy; 2024, Developed by <a class="text-warning" href="">Rizgold Official</a>
                     </div>
                 </div>
                 <div class="col-lg-6">

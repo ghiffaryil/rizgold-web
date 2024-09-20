@@ -1,17 +1,15 @@
 <!-- Slider Start -->
-<section class="banner custom-home" style="height : 300px !important;">
+<section class="banner custom-home">
     <div class="container bg-custom-home">
         <div class="row">
             <div class="col-lg-6 col-md-12 col-xl-7">
                 <div class="">
-                    <div class="divider mb-3"></div>
-                    <!-- <span class="text-uppercase text-sm letter-spacing text-white">Total Health care solution</span> -->
                     <h1 style="color: #d6b961;" class="mb-3 mt-3"><?php echo $data_website['Judul_Website'] ?></h1>
-
                     <p class="mb-4 pr-5 text-white"><?php echo $data_website['Deskripsi_Singkat'] ?></p>
                     <div class="btn-container ">
                         <a href="appoinment.html" target="_blank" class="btn btn-danger btn-icon btn-round-full">Get Started<i class="icofont-simple-right ml-2  "></i></a>
                     </div>
+                    <br>
                 </div>
             </div>
         </div>
@@ -19,20 +17,30 @@
 </section>
 
 <section class="mt-4 mb-3">
-    <div class="container">
+    <div class="">
         <div class="">
-            <div class="">
-                <br>
-                <div class="text-center">
-                    <h3 class="text-white mb-5">Dapatkan Produk Rizgold di Official Store, klik disini</h3>
-                </div>
+            <br>
+            <div class="text-center">
+                <h3 class="text-white mb-5">Dapatkan Produk Rizgold di Official Store, klik disini</h3>
             </div>
+        </div>
+
+        <div class="d-flex flex-column align-items-center">
 
             <style>
+                .div-sosmed-atas {
+                    width: 60%;
+                }
+
+                .div-sosmed-bawah {
+                    width: 40%;
+                }
+
                 .btn-tokopedia {
                     background-color: white !important;
                     border: 2px solid #42b549;
                     display: block;
+                    color: black;
                 }
 
                 .btn-tokopedia:hover {
@@ -44,6 +52,7 @@
                     background-color: white !important;
                     border: 2px solid #EE4D2D;
                     display: block;
+                    color: black;
                 }
 
                 .btn-shopee:hover {
@@ -55,6 +64,7 @@
                     background-color: white !important;
                     border: 2px solid #FE2C55;
                     display: block;
+                    color: black;
                 }
 
                 .btn-tiktok:hover {
@@ -66,6 +76,7 @@
                     background-color: white !important;
                     border: 2px solid #25d366;
                     display: block;
+                    color: black;
                 }
 
                 .btn-whatsapp:hover {
@@ -73,28 +84,92 @@
                     border: 2px solid #075e54;
                     background-color: #075e54 !important;
                 }
+
+                .btn-youtube {
+                    background-color: white !important;
+                    border: 2px solid #FF0000;
+                    display: block;
+                    color: black;
+                }
+
+                .btn-youtube:hover {
+                    color: white;
+                    border: 2px solid #FF0000;
+                    background-color: #FF0000 !important;
+                }
+
+                @media (max-width: 768px) {
+
+                    .div-sosmed-atas {
+                        width: 90%;
+                    }
+
+                    .div-sosmed-bawah {
+                        width: 90%;
+                    }
+
+                    .banner {
+                        height: 300px;
+                    }
+
+                    .btn-tokopedia {
+                        margin-bottom: 15px;
+                        border: 2px solid #075e54;
+                    }
+
+                    .btn-shopee {
+                        margin-bottom: 15px;
+                        border: 2px solid #075e54;
+                    }
+
+                    .btn-tiktok {
+                        margin-bottom: 15px;
+                        border: 2px solid #075e54;
+                    }
+
+                    .btn-whatsapp {
+                        margin-bottom: 15px;
+                        border: 2px solid #075e54;
+                    }
+
+                    .btn-youtube {
+                        margin-bottom: 15px;
+                        border: 2px solid #FF0000;
+                    }
+                }
             </style>
 
-            <div class="row">
-                <div class="col-lg-3 mb-md-3 md-xs-3 text-center">
-                    <a href="<?php echo $data_website['Url_Tokopedia'] ?>" class="btn btn-tokopedia" target="_blank">
-                        <img src="frontend/images/svg/tokopedia.svg" alt="Tokopedia" style="height: 20px; margin-right: 10px;"> Tokopedia
-                    </a>
+            <div class="div-sosmed-atas">
+                <div class="row">
+                    <div class="col-lg-4 mb-md-3 md-xs-3 text-center">
+                        <a href="<?php echo $data_website['Url_Tokopedia'] ?>" class="btn btn-tokopedia" target="_blank">
+                            <img src="frontend/images/svg/tokopedia.svg" alt="Tokopedia" style="height: 20px; margin-right: 10px;"> Tokopedia
+                        </a>
+                    </div>
+                    <div class="col-lg-4 mb-md-3 md-xs-3 text-center">
+                        <a href="<?php echo $data_website['Url_Shopee'] ?>" class="btn btn-shopee" target="_blank">
+                            <img src="frontend/images/svg/shopee.svg" alt="Tokopedia" style="height: 20px; margin-right: 10px;"> Shopee
+                        </a>
+                    </div>
+                    <div class="col-lg-4 mb-md-3 md-xs-3 text-center">
+                        <a href="<?php echo $data_website['Url_Tiktok'] ?>" class="btn btn-tiktok" target="_blank">
+                            <img src="frontend/images/svg/tiktok.png" alt="Tokopedia" style="height: 20px; margin-right: 10px;"> Tiktok
+                        </a>
+                    </div>
                 </div>
-                <div class="col-lg-3 mb-md-3 md-xs-3 text-center">
-                    <a href="<?php echo $data_website['Url_Shopee'] ?>" class="btn btn-shopee" target="_blank">
-                        <img src="frontend/images/svg/shopee.svg" alt="Tokopedia" style="height: 20px; margin-right: 10px;"> Shopee
-                    </a>
-                </div>
-                <div class="col-lg-3 mb-md-3 md-xs-3 text-center">
-                    <a href="<?php echo $data_website['Url_Tiktok'] ?>" class="btn btn-tiktok" target="_blank">
-                        <img src="frontend/images/svg/tiktok.png" alt="Tokopedia" style="height: 20px; margin-right: 10px;"> Tiktok
-                    </a>
-                </div>
-                <div class="col-lg-3 mb-md-3 md-xs-3 text-center">
-                    <a href="<?php echo $data_website['Nomor_CS'] ?>" class="btn btn-whatsapp" target="_blank">
-                        <img src="frontend/images/svg/whatsapp.svg" alt="Tokopedia" style="height: 20px; margin-right: 10px;"> Whatsapp
-                    </a>
+            </div>
+            <div class="div-sosmed-bawah">
+                <div class="row">
+                    <div class="col-lg-6 mb-md-3 md-xs-3 text-center">
+                        <a href="<?php echo $data_website['Url_Youtube'] ?>" class="btn btn-youtube" target="_blank">
+                            <img src="frontend/images/svg/youtube.png" alt="Youtube" style="height: 20px; margin-right: 10px;"> Youtube
+                        </a>
+                    </div>
+                    <div class="col-lg-6 mb-md-3 md-xs-3 text-center">
+                        <a href="<?php echo  "https://wa.me/62$data_website[Nomor_CS]?text=Saya%20Tertarik%20dengan%20produk%20Rizgold"; ?>" class="btn btn-whatsapp" target="_blank">
+                            <img src="frontend/images/svg/whatsapp.svg" alt="Tokopedia" style="height: 20px; margin-right: 10px;"> Whatsapp
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -164,15 +239,15 @@
                     <h2 class="title-color"><?php echo $data_tentang_kami['Info_Singkat'] ?></h2>
                     <p class="mt-4 mb-5 text-white"><?php echo $data_tentang_kami['Info_Lengkap'] ?></p>
                     <h4 class="mt-4 mb-5 text-white"><?php echo $data_tentang_kami['Info_Tambahan'] ?></h4>
-
-                    <a href="service.html" class="btn btn-main-2 btn-round-full btn-icon">Pesan Sekarang<i class="icofont-simple-right ml-3"></i></a>
+                    <a href="<?php echo  "https://wa.me/62$data_website[Nomor_CS]?text=Saya%20Tertarik%20dengan%20produk%20Rizgold"; ?>" target="_blank" class="btn btn-main-2 btn-round-full btn-icon">Pesan Sekarang<i class="icofont-simple-right ml-3"></i></a>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<section class="cta-section ">
-    <div class="container">
+
+<section class="cta-section">
+    <div class="container mb-4">
         <div class="cta position-relative">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6">
@@ -208,20 +283,37 @@
         </div>
     </div>
 </section>
+
 <!-- SLIDESHOW PRODUK -->
-<section class="section mb-0 py-0">
-    <div class="container">
-        <div class="rowjustify-content-center">
+<style>
+    .img-produk {
+        height: 450px;
+        width: auto;
+        object-fit: cover;
+    }
+
+
+    @media (max-width: 768px) {
+        .img-produk {
+            height: 300px;
+            width: auto;
+            object-fit: cover;
+        }
+    }
+</style>
+<section class="section mb-0 pb-4 bg-white">
+    <div class="container py-0">
+        <div class="rowjustify-content-center py-0">
             <div class="col-lg-12 text-center">
-                <div class="section-title mt-3 mb-0">
+                <div class="section-title mb-0">
                     <h2>Produk Kami</h2>
-                    <div class="divider mx-auto my-4"></div>
-                    <h4 class="text-white">Kami memiliki berbagai produk yang terbaik dan terpercaya, dibuat dari bahan tradisional berkualitas</h4>
+                    <div class="divider mx-auto mb-3"></div>
+                    <font style="font-size:medium">Kami memiliki berbagai produk yang terbaik dan terpercaya, dibuat dari bahan tradisional berkualitas</font>
                 </div>
                 <br>
             </div>
         </div>
-        <div class="row align-items-center mt-0 pt-0">
+        <div class="row">
             <div class="col-lg-12 testimonial-wrap-2">
                 <?php
                 $search_field_where = array("Status");
@@ -235,10 +327,10 @@
                     foreach ($data_pelayanan_hasil as $data_pelayanan) {
                         $nomor++;
                 ?>
-                        <div class="testimonial-block style-2 gray-bg">
-                            <div class="client-info text-center">
+                        <div class="testimonial-block style-2 gray-bg mb-0">
+                            <div class="client-info text-center mb-0">
                                 <div class="card">
-                                    <img style="height: 450px; width:auto; object-fit:cover;" src="dashboard/media/pelayanan/cover/<?php echo $data_pelayanan['Cover_Pelayanan'] ?>">
+                                    <img class="img-produk" src="dashboard/media/pelayanan/cover/<?php echo $data_pelayanan['Cover_Pelayanan'] ?>">
                                     <div class="mt-3">
                                         <h4 style="color:#d6b961"><?php echo $data_pelayanan['Judul_Pelayanan'] ?></h4>
                                         <p class="text-muted" style="font-size:small"><?php echo substr($data_pelayanan['Deskripsi'], offset: 0, length: 50) ?>...</p>
@@ -255,7 +347,7 @@
     </div>
 </section>
 
-<section class="section pt-0">
+<section class="section">
     <div class="container">
         <div class="row justify-content-center mb-0">
             <div class="col-lg-12 text-center">
