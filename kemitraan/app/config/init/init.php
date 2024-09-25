@@ -1,7 +1,7 @@
-<?php 
+<?php
 //MEMANGGIL CLASS-CLASS//
-error_reporting(error_level: E_ALL);
-ini_set(option: 'display_errors', value: 1);
+// error_reporting(error_level: E_ALL);
+// ini_set(option: 'display_errors', value: 1);
 require_once("app/config/class/class.php");
 
 $Waktu_Sekarang = date(format: "Y-m-d H:i:s");
@@ -28,5 +28,3 @@ $a_format_angka = new a_format_angka();
 
 //PEMANGGILAN CLASS UNTUK KODE REFERAL
 $a_role_permission = new a_role_permission();
-
-?>
