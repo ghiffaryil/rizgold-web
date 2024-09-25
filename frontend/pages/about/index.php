@@ -38,62 +38,8 @@
       </div>
     </div>
     <br><br>
-
   </div>
 
-
-  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-
-      <?php
-      $search_field_where = array("Status");
-      $search_criteria_where = array("=");
-      $search_value_where = array("Aktif");
-      $search_connector_where = array("");
-      $result_banner = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_banner", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
-
-      if ($result_banner['Status'] == "Sukses") {
-        $data_banner_hasil = $result_banner['Hasil'];
-
-        $indicatorIndex = 0;
-        foreach ($data_banner_hasil as $data_banner) {
-      ?>
-          <li data-target="#carouselExampleIndicators" data-slide-to="<?php echo $indicatorIndex; ?>" <?php echo ($indicatorIndex === 0) ? 'class="active"' : ''; ?>></li>
-      <?php
-          $indicatorIndex++;
-        }
-      }
-      ?>
-
-    </ol>
-    <div class="carousel-inner">
-
-      <?php
-      if ($result_banner['Status'] == "Sukses") {
-        $data_banner_hasil = $result_banner['Hasil'];
-
-        $itemIndex = 0;
-        foreach ($data_banner_hasil as $data_banner) {
-      ?>
-          <div class="carousel-item <?php echo ($itemIndex === 0) ? 'active' : ''; ?>">
-            <img class="d-block w-100" src="dashboard/media/banner/<?php echo $data_banner['Foto_Banner'] ?>" alt="Slide <?php echo $itemIndex + 1; ?>">
-          </div>
-      <?php
-          $itemIndex++;
-        }
-      }
-      ?>
-
-    </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
   <br><br>
   <div class="container">
     <div class="section-title">

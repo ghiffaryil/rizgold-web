@@ -1,17 +1,72 @@
 <!-- Slider Start -->
+
+<style>
+    .custom-home {
+        margin-top: 80px;
+    }
+
+    .text-bg-custom-home {
+        padding-top: 20px;
+    }
+
+
+    .img-bg-custom-home {
+        text-align: right;
+    }
+
+    .img-banner-home {
+        width: 65%;
+        height: auto;
+    }
+
+    @media screen and (max-width: 992px) {
+        .bg-custom-home {
+            background: #131521;
+            padding: 10px;
+            margin-top: 0px;
+        }
+
+        .custom-home {
+            margin-top: 0px;
+            padding: 0px;
+        }
+
+        .text-bg-custom-home {
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        .img-bg-custom-home {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .img-banner-home {
+            width: 80%;
+            height: auto;
+        }
+    }
+</style>
+
 <section class="banner custom-home">
     <div class="container bg-custom-home">
         <div class="row">
-            <div class="col-lg-6 col-md-12 col-xl-7">
-                <div class="">
+            <div class="col-lg-6">
+                <div class="text-bg-custom-home">
                     <h1 style="color: #d6b961;" class="mb-3 mt-3"><?php echo $data_website['Judul_Website'] ?></h1>
-                    <p class="mb-4 pr-5 text-white"><?php echo $data_website['Deskripsi_Singkat'] ?></p>
+                    <p class="mb-4 text-white"><?php echo $data_website['Deskripsi_Singkat'] ?></p>
                     <div class="btn-container ">
-                        <a href="appoinment.html" target="_blank" class="btn btn-danger btn-icon btn-round-full">Get Started<i class="icofont-simple-right ml-2  "></i></a>
+                        <a href="<?php echo $data_website['Url_Youtube'] ?>" target="_blank" class="btn btn-danger btn-icon btn-round-full">Get Started<i class="icofont-simple-right ml-2  "></i></a>
                     </div>
                     <br>
                 </div>
             </div>
+            <div class="col-lg-6 d-none">
+                <div class="img-bg-custom-home">
+                    <img src="frontend/images/bg/bg-rizgold-blue.png" class="img-banner-home">
+                </div>
+            </div>
+
         </div>
     </div>
 </section>
@@ -87,7 +142,7 @@
 
                 .btn-youtube {
                     background-color: white !important;
-                    border: 2px solid #FF0000;
+                    border: 2px solid #CC0000;
                     display: block;
                     color: black;
                 }
@@ -166,7 +221,7 @@
                         </a>
                     </div>
                     <div class="col-lg-6 mb-md-3 md-xs-3 text-center">
-                        <a href="<?php echo  "https://wa.me/62$data_website[Nomor_CS]?text=Saya%20Tertarik%20dengan%20produk%20Rizgold"; ?>" class="btn btn-whatsapp" target="_blank">
+                        <a href="<?php echo "https://wa.me/62$data_website[Nomor_CS]?text=Saya%20Tertarik%20dengan%20produk%20Rizgold"; ?>" class="btn btn-whatsapp" target="_blank">
                             <img src="frontend/images/svg/whatsapp.svg" alt="Tokopedia" style="height: 20px; margin-right: 10px;"> Whatsapp
                         </a>
                     </div>

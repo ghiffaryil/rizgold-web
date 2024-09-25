@@ -49,11 +49,13 @@
                 </div>
             </div>
             <div class="card-toolbar">
-                <span class="badge badge-<?php if ((isset($_GET['edit'])) and ($edit['Status'] == "Aktif")) {
-                                                echo "success";
-                                            } else {
-                                                echo "danger";
-                                            } ?> fs-6"><?php echo $edit['Status'] ?></span>
+                <?php if ((isset($_GET['edit']))) { ?>
+                    <span class="badge badge-<?php if ((isset($_GET['edit'])) and ($edit['Status'] == "Aktif")) {
+                                                    echo "success";
+                                                } else {
+                                                    echo "danger";
+                                                } ?> fs-6"><?php echo $edit['Status'] ?></span>
+                <?php } ?>
             </div>
         </div>
     </div>
@@ -221,10 +223,10 @@
                                                     } ?>" />
                                     </div>
                                     <div class="col-lg-6">
-                                        <label class="required fw-semibold fs-6 mb-2">Nomor Telepon</label>
-                                        <input name="Nomor_Telepon" type="text" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                echo $edit['Nomor_Telepon'];
-                                                                                                                                            } ?>" />
+                                        <label class="required fw-semibold fs-6 mb-2">Nomor Handphone</label>
+                                        <input name="No_Handphone" type="text" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
+                                                                                                                                                                                                                            echo $edit['No_Handphone'];
+                                                                                                                                                                                                                        } ?>" />
                                     </div>
                                 </div>
 
@@ -258,27 +260,6 @@
                                     </div>
                                 </div>
 
-                                <div class="row mb-7">
-                                    <div class="col-lg-6">
-
-                                        <label class="required fw-semibold fs-6 mb-2">Nama Perusahaan</label>
-                                        <input required name="Nama_Perusahaan" type="text" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                            echo $edit['Nama_Perusahaan'];
-                                                                                                                                                        } ?>" />
-                                    </div>
-
-                                    <div class="col-lg-6">
-                                        <label class="required fw-semibold fs-6 mb-2">Status Kemitraan</label>
-                                        <select name="Status_Kemitraan" required class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
-                                            <?php if (isset($_GET["edit"])) {
-                                            ?><option value="<?php echo  $edit['Status_Kemitraan']; ?>"><?php echo  $edit['Status_Kemitraan']; ?></option><?php
-                                                                                                                                                        } ?>"
-                                                <option value="Distributor">Distributor</option>
-                                                <option value="Agen">Agen</option>
-                                        </select>
-                                    </div>
-                                </div>
-
                                 <div class="fv-row mb-7">
                                     <label class="required fw-semibold fs-6 mb-2">Alamat</label>
                                     <textarea name="Alamat" class="form-control form-control-solid mb-3 mb-lg-0" rows="3"><?php if (isset($_GET["edit"])) {
@@ -292,7 +273,7 @@
                                     <label class="required fw-semibold fs-6 mb-5">Hak Akses</label>
                                     <div class="d-flex fv-row">
                                         <div class="form-check form-check-custom form-check-solid">
-                                            <input class="form-check-input me-3" name="Profile" type="checkbox" value="Iya" <?php if ((isset($_GET["edit"])) and $edit['Profile'] == "Iya") {
+                                            <input class="form-check-input me-3" name="Akses_Profile" type="checkbox" value="Iya" <?php if ((isset($_GET["edit"])) and $edit['Akses_Profile'] == "Iya") {
                                                                                                                                 echo "checked";
                                                                                                                             } ?> />
                                             <label class="form-check-label">
@@ -304,7 +285,7 @@
                                     <div class='separator separator-dashed my-5'></div>
                                     <div class="d-flex fv-row">
                                         <div class="form-check form-check-custom form-check-solid">
-                                            <input class="form-check-input me-3" name="Pembelian" type="checkbox" value="Iya" <?php if ((isset($_GET["edit"])) and $edit['Pembelian'] == "Iya") {
+                                            <input class="form-check-input me-3" name="Akses_Pembelian" type="checkbox" value="Iya" <?php if ((isset($_GET["edit"])) and $edit['Akses_Pembelian'] == "Iya") {
                                                                                                                                     echo "checked";
                                                                                                                                 } ?> />
                                             <label class="form-check-label">
@@ -316,7 +297,7 @@
                                     <div class='separator separator-dashed my-5'></div>
                                     <div class="d-flex fv-row">
                                         <div class="form-check form-check-custom form-check-solid">
-                                            <input class="form-check-input me-3" name="Laporan" type="checkbox" value="Iya" <?php if ((isset($_GET["edit"])) and $edit['Laporan'] == "Iya") {
+                                            <input class="form-check-input me-3" name="Akses_Laporan" type="checkbox" value="Iya" <?php if ((isset($_GET["edit"])) and $edit['Akses_Laporan'] == "Iya") {
                                                                                                                                 echo "checked";
                                                                                                                             } ?> />
                                             <label class="form-check-label">
@@ -328,7 +309,7 @@
                                     <div class='separator separator-dashed my-5'></div>
                                     <div class="d-flex fv-row">
                                         <div class="form-check form-check-custom form-check-solid">
-                                            <input class="form-check-input me-3" name="Konten" type="checkbox" value="Iya" <?php if ((isset($_GET["edit"])) and $edit['Konten'] == "Iya") {
+                                            <input class="form-check-input me-3" name="Akses_Konten" type="checkbox" value="Iya" <?php if ((isset($_GET["edit"])) and $edit['Akses_Konten'] == "Iya") {
                                                                                                                                 echo "checked";
                                                                                                                             } ?> />
                                             <label class="form-check-label">
@@ -449,14 +430,14 @@
                     <thead>
                         <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                             <th class="">No</th>
-                            <th class="">Nama Agen/Distributor</th>
-                            <th class="">Nomor Telepon</th>
+                            <th class="">Nama</th>
+                            <th class="">Nomor Handphone</th>
                             <th class="">Email</th>
                             <th class="">Kemitraan</th>
-                            <th class="text-center">Profile</th>
-                            <th class="text-center">Pembelian</th>
-                            <th class="text-center">Laporan</th>
-                            <th class="text-center">Konten</th>
+                            <th class="text-center">Akses Profile</th>
+                            <th class="text-center">Akses Pembelian</th>
+                            <th class="text-center">Akses Laporan</th>
+                            <th class="text-center">Akses Konten</th>
                             <th class="text-center">Tindakan</th>
                         </tr>
                     </thead>
@@ -471,8 +452,11 @@
 
                         foreach ($data_hasil as $data) {
                             $nomor++;
-                            $encode_id = $a_hash->encode($data['Id_Pengguna'], $_GET['menu']); ?>
+                            $encode_id = $a_hash->encode($data['Id_Pengguna'], $_GET['menu']);
 
+                            $result_perusahaan = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Organisasi_Kode", "$data[Organisasi_Kode]");
+                            $data_perusahaan = $result_perusahaan['Hasil'];
+                        ?>
                             <tr>
                                 <td>
                                     <?php echo $nomor ?>
@@ -515,47 +499,44 @@
                                             </div>
                                         <?php } ?>
                                     </div>
-                                    <div class="d-flex flex-column">
-                                        <a class="text-gray-800 text-hover-primary mb-1" href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>">
+                                    <div class="">
+                                        <a class="text-gray-800 text-hover-primary" href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>">
                                             <?php echo $data['Nama_Depan'] . " " . $data['Nama_Belakang'] ?>
+                                            <br>
+                                            <span class="text text-muted fs-6" style="font-size:smaller"> <?php echo $data_perusahaan['Nama_Perusahaan'] ?></span>
                                         </a>
-                                        <span><?php echo $data['Nama_Perusahaan'] ?></span>
                                     </div>
                                 </td>
-                                <td><?php echo $data['Nomor_Telepon'] ?></td>
+                                <td><?php echo $data['No_Handphone'] ?></td>
                                 <td><?php echo $data['Email'] ?></td>
-                                <td><span class="badge <?php if ($data['Status_Kemitraan'] == "Agen") {
-                                                            echo 'badge-info';
-                                                        } else {
-                                                            echo 'badge-primary';
-                                                        } ?>"><?php echo $data['Status_Kemitraan'] ?></span></td>
+                                <td><?php echo $data_perusahaan['Status_Kemitraan']; ?></td>
                                 <td class="text-center">
-                                    <div class="badge badge-<?php if ($data['Profile'] == "Iya") {
+                                    <div class="badge badge-<?php if ($data['Akses_Profile'] == "Iya") {
                                                                 echo 'light-success';
                                                             } else {
                                                                 echo 'light-danger';
-                                                            } ?> fw-bold"><?php echo $data['Profile'] ?></div>
+                                                            } ?> fw-bold"><?php echo $data['Akses_Profile'] ?></div>
                                 </td>
                                 <td class="text-center">
-                                    <div class="badge badge-<?php if ($data['Pembelian'] == "Iya") {
+                                    <div class="badge badge-<?php if ($data['Akses_Pembelian'] == "Iya") {
                                                                 echo 'light-success';
                                                             } else {
                                                                 echo 'light-danger';
-                                                            } ?> fw-bold"><?php echo $data['Pembelian'] ?></div>
+                                                            } ?> fw-bold"><?php echo $data['Akses_Pembelian'] ?></div>
                                 </td>
                                 <td class="text-center">
-                                    <div class="badge badge-<?php if ($data['Laporan'] == "Iya") {
+                                    <div class="badge badge-<?php if ($data['Akses_Laporan'] == "Iya") {
                                                                 echo 'light-success';
                                                             } else {
                                                                 echo 'light-danger';
-                                                            } ?> fw-bold"><?php echo $data['Laporan'] ?></div>
+                                                            } ?> fw-bold"><?php echo $data['Akses_Laporan'] ?></div>
                                 </td>
                                 <td class="text-center">
-                                    <div class="badge badge-<?php if ($data['Konten'] == "Iya") {
+                                    <div class="badge badge-<?php if ($data['Akses_Konten'] == "Iya") {
                                                                 echo 'light-success';
                                                             } else {
                                                                 echo 'light-danger';
-                                                            } ?> fw-bold"><?php echo $data['Konten'] ?></div>
+                                                            } ?> fw-bold"><?php echo $data['Akses_Konten'] ?></div>
                                 </td>
 
                                 <td class="text-center">

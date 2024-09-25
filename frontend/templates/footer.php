@@ -16,12 +16,12 @@
                     <h4 class="text-capitalize mb-3">Menu</h4>
                     <div class="divider mb-4"></div>
                     <ul class="list-unstyled footer-menu lh-35">
-                        <li><a class="" href="index.php">Beranda </a></li>
-                        <li><a class="" href="?menu=about">Tentang</a></li>
-                        <li><a class="" href="?menu=product">Produk</a></li>
-                        <li><a class="" href="?menu=article">Artikel</a></li>
-                        <li><a class="" href="?menu=contact">Kontak</a></li>
-                        <li><a class="" href="?menu=kemitraan">Kemitraan</a></li>
+                        <li><a href="index.php">Beranda </a></li>
+                        <li><a href="?view=about">Tentang</a></li>
+                        <li><a href="?view=product">Produk</a></li>
+                        <li><a href="?view=article">Artikel</a></li>
+                        <li><a href="?view=contact">Kontak</a></li>
+                        <li><a href="kemitraan">Kemitraan</a></li>
                     </ul>
                 </div>
             </div>
@@ -32,9 +32,9 @@
                     <div class="divider mb-4"></div>
 
                     <ul class="list-unstyled footer-menu lh-35">
-                        <li><a class="" href="<?php echo $data_website['URL_Facebook'] ?>"><i class="icofont-facebook"> </i> <?php echo $data_website['Nama_Facebook'] ?></a></li>
-                        <li><a class="" href="<?php echo $data_website['URL_Instagram'] ?>"><i class="icofont-instagram"> </i> <?php echo $data_website['Nama_Instagram'] ?></a></li>
-                        <li><a class="" href="<?php echo $data_website['URL_Youtube'] ?>"><i class="icofont-youtube"> </i> <?php echo $data_website['Nama_Youtube'] ?></a></li>
+                        <li><a target="_blank" href="<?php echo $data_website['Url_Facebook'] ?>"><i class="icofont-facebook mr-3"> </i> <?php echo $data_website['Nama_Facebook'] ?></a></li>
+                        <li><a target="_blank" href="<?php echo $data_website['Url_Instagram'] ?>"><i class="icofont-instagram mr-3"> </i> <?php echo $data_website['Nama_Instagram'] ?></a></li>
+                        <li><a target="_blank" href="<?php echo $data_website['Url_Youtube'] ?>"><i class="icofont-youtube mr-3"> </i> <?php echo $data_website['Nama_Youtube'] ?></a></li>
                     </ul>
                 </div>
             </div>
@@ -44,17 +44,10 @@
                     <h4 class="text-capitalize mb-3">Kontak Kami</h4>
                     <div class="divider mb-4"></div>
 
-                    <div class="footer-contact-block mb-4">
-                        <div class="icon d-flex align-items-center">
-                            <span class="h6 mb-0"><i class="icofont-home mr-3"></i><?php echo $data_website['Nomor_Telpon'] ?></span>
-                        </div>
-                    </div>
-
-                    <div class="footer-contact-block mb-4">
-                        <div class="icon d-flex align-items-center">
-                            <span class="h6 mb-0"><i class="icofont-email mr-3"></i><?php echo $data_website['Email_Customer_Service'] ?></span>
-                        </div>
-                    </div>
+                    <ul class="list-unstyled footer-menu lh-35">
+                        <li><a href="<?php echo "https://wa.me/62$data_website[Nomor_CS]?text=Saya%20Tertarik%20dengan%20produk%20Rizgold"; ?>"><i class="icofont-phone mr-3"></i><?php echo $data_website['Nomor_Telpon'] ?></a></li>
+                        <li><a href="mailto: <?php echo $data_website['Email_Customer_Service'] ?>"><i class="icofont-email mr-3"></i><?php echo $data_website['Email_Customer_Service'] ?></a></li>
+                    </ul>
 
                 </div>
             </div>

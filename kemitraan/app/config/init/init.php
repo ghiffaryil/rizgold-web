@@ -1,8 +1,10 @@
 <?php 
 //MEMANGGIL CLASS-CLASS//
+error_reporting(error_level: E_ALL);
+ini_set(option: 'display_errors', value: 1);
 require_once("app/config/class/class.php");
 
-$Waktu_Sekarang = date("Y-m-d H:i:s");
+$Waktu_Sekarang = date(format: "Y-m-d H:i:s");
 
 //PEMANGGILAN CLASS UNTUK HASH ENKRIPSI
 $a_hash = new a_hash();

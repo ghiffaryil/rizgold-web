@@ -1,11 +1,16 @@
 <?php
 include "app/config/init/init.php";
 
-// Set cookies for Kemitraan Rizgold
-setcookie("Cookie_1_Kemitraan_Rizgold", "", time() + (86400 * 365));
-setcookie("Cookie_2_Kemitraan_Rizgold", "", time() + (86400 * 365));
-setcookie("Cookie_3_Kemitraan_Rizgold", "", time() + (86400 * 365));
+setcookie("Cookie_1_Admin_Rizgold", "", time() + (86400 * 365));
+setcookie("Cookie_2_Admin_Rizgold", "", time() + (86400 * 365));
+setcookie("Cookie_3_Admin_Rizgold", "", time() + (86400 * 365));
+setcookie("Cookie_1_Kemitraan_Rizgold", "", time() + 86400);
+setcookie("Cookie_2_Kemitraan_Rizgold", "", time() + 86400);
+setcookie("Cookie_3_Kemitraan_Rizgold", "", time() + 86400);
 
+unset($_COOKIE["Cookie_1_Admin_Rizgold"]);
+unset($_COOKIE["Cookie_2_Admin_Rizgold"]);
+unset($_COOKIE["Cookie_3_Admin_Rizgold"]);
 unset($_COOKIE["Cookie_1_Kemitraan_Rizgold"]);
 unset($_COOKIE["Cookie_2_Kemitraan_Rizgold"]);
 unset($_COOKIE["Cookie_3_Kemitraan_Rizgold"]);
@@ -26,12 +31,12 @@ if (isset($_POST['submit_login'])) {
 		$data_login = $result['Hasil'];
 		$Id_Pengguna = $a_hash->encode($data_login[0]['Id_Pengguna'], "Id_Pengguna");
 		$Username = $a_hash->encode($data_login[0]['Username'], "Username");
-		$Password = $a_hash->encode($data_login[0]['Password'], "Password");
+		$Organisasi_Kode = $a_hash->encode($data_login[0]['Organisasi_Kode'], "Organisasi_Kode");
 
 		// Set login cookies
-		setcookie("Cookie_1_Kemitraan_Rizgold", $Id_Pengguna, time() + (86400 * 365)); // LOGIN ID_PENGGUNA
-		setcookie("Cookie_2_Kemitraan_Rizgold", $Username, time() + (86400 * 365)); // LOGIN SEBAGAI
-		setcookie("Cookie_3_Kemitraan_Rizgold", $Password, time() + (86400 * 365)); // LOGIN PASSWORD
+		setcookie("Cookie_1_Kemitraan_Rizgold", $Id_Pengguna, time() + 86400); // LOGIN ID_PENGGUNA
+		setcookie("Cookie_2_Kemitraan_Rizgold", $Username, time() + 86400); // LOGIN SEBAGAI
+		setcookie("Cookie_3_Kemitraan_Rizgold", $Organisasi_Kode, time() + 86400); // LOGIN PASSWORD
 
 		// Redirect to dashboard with success message
 		echo "<script>alert('Login Berhasil');document.location.href='dashboard.php'</script>";
@@ -140,7 +145,7 @@ if (isset($_POST['submit_login'])) {
 								<input type="submit" value="Login" name="submit_login" id="submit_login" class="d-none btn btn-lg btn-dark w-100 mb-5" value="Masuk">
 							</div>
 
-							
+
 							<div class="my-3 fv-row text-center fs-4">
 								<div class="my-4 text-gray-500 fw-semibold fs-4">Belum punya akun?
 									<a href="register.php" class="link-danger fw-bold">Daftar sekarang</a>

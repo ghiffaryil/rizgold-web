@@ -15,11 +15,11 @@ if (!((isset($_COOKIE['Cookie_1_Kemitraan_Rizgold'])) and (isset($_COOKIE['Cooki
 	//UNTUK CEK COOKIE LOGIN APAKAH BENAR DATA TERSEBUT ADA PADA DATABASE
 	$cek_login_id_pengguna = $a_hash->decode($_COOKIE['Cookie_1_Kemitraan_Rizgold'], "Id_Pengguna");
 	$cek_login_username = $a_hash->decode($_COOKIE['Cookie_2_Kemitraan_Rizgold'], "Username");
-	$cek_login_password = $a_hash->decode($_COOKIE['Cookie_3_Kemitraan_Rizgold'], "Password");
+	$cek_organisasi_kode = $a_hash->decode($_COOKIE['Cookie_3_Kemitraan_Rizgold'], "Organisasi_Kode");
 
-	$search_field_where = array("Status", "Username", "Password");
+	$search_field_where = array("Status", "Username", "Organisasi_Kode");
 	$search_criteria_where = array("=", "=", "=");
-	$search_value_where = array("Aktif", "$cek_login_username", "$cek_login_password");
+	$search_value_where = array("Aktif", "$cek_login_username", "$cek_organisasi_kode");
 	$search_connector_where = array("AND", "AND", "");
 	$result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pengguna", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
 
@@ -27,7 +27,7 @@ if (!((isset($_COOKIE['Cookie_1_Kemitraan_Rizgold'])) and (isset($_COOKIE['Cooki
 		$u_array_data_user = $result['Hasil'];
 		$u_Id_Pengguna = $u_array_data_user[0]['Id_Pengguna'];
 		$u_Nama_Lengkap = $u_array_data_user[0]['Nama_Depan'] . " " . $u_array_data_user[0]['Nama_Belakang'];
-		$u_Status_Kemitraan = $u_array_data_user[0]['Status_Kemitraan'];
+		$u_Organisasi_Kode = $u_array_data_user[0]['Organisasi_Kode'];
 	} else {
 		echo "<script> alert('Silahkan Login Kembali !!!');document.location.href = 'login.php?redirect=" . $a_hash->encode_link_kembali($Link_Sekarang) . "';</script>";
 		exit();
@@ -42,15 +42,10 @@ if (!((isset($_COOKIE['Cookie_1_Kemitraan_Rizgold'])) and (isset($_COOKIE['Cooki
 <body id="kt_body" data-kt-app-header-stacked="true" data-kt-app-header-primary-enabled="true"
     data-kt-app-header-secondary-enabled="true" data-kt-app-toolbar-enabled="true" class="app-default">
 
-	<!--begin::Theme mode setup on page load-->
-	<!-- <script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script> -->
-
 	<div class="d-flex flex-column flex-root app-root" id="kt_app_root">
         <!--begin::Page-->
         <div class="app-page  flex-column flex-column-fluid " id="kt_app_page">
-
 			<?php include "templates/navbar.php" ?>
-
 			<!--begin::Wrapper-->
 			<div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
 				<!--begin::Wrapper container-->
@@ -78,7 +73,7 @@ if (!((isset($_COOKIE['Cookie_1_Kemitraan_Rizgold'])) and (isset($_COOKIE['Cooki
 	</div>
 
 	<!--begin::Footer-->
-	<div class="app-wrapper flex-column flex-row-fluid bg-light mt-10" id="">
+	<div class="app-wrapper flex-column bg-light mt-10" id="">
 		<div class="app-container container-xxl d-flex flex-row flex-column-fluid">
 			<div class="app-main flex-column flex-row-fluid" id="">
 				<div class="d-flex flex-column flex-column-fluid">

@@ -28,11 +28,6 @@ if (isset($_GET['edit'])) {
 #FUNGSI SIMPAN DATA (CREATE)
 if (isset($_POST['submit_simpan'])) {
 
-    $_Profile = "Iya";
-    $_Pembelian = "Iya";
-    $_Laporan = "Iya";
-    $_Konten = "Iya";
-
     // Determine the initial based on the 'Status_Kemitraan'
     if (($_POST['Status_Kemitraan'] == "Agen")) {
         $Initial = "A";
@@ -57,6 +52,12 @@ if (isset($_POST['submit_simpan'])) {
     // Step 2: Concatenate all parts to create the unique 'Organisasi_Kode'
     $Organisasi_Kode = $Initial . $dateTime . $randomNumber . $Id_Auto_Increment;
 
+    // START DATA USER
+    $_Profile = "Iya";
+    $_Pembelian = "Iya";
+    $_Laporan = "Iya";
+    $_Konten = "Iya";
+
     if ($_POST['Tanggal_Lahir'] == "") {
         $_POST['Tanggal_Lahir'] = "0000-00-00";
     }
@@ -69,19 +70,17 @@ if (isset($_POST['submit_simpan'])) {
         "Password",
         "Nama_Depan",
         "Nama_Belakang",
-        "Nama_Perusahaan",
-        "Status_Kemitraan",
         "Tempat_Lahir",
         "Tanggal_Lahir",
         "Alamat",
-        "Nomor_Telepon",
+        "No_Handphone",
         "Email",
         "No_KTP",
         "No_NPWP",
-        "Profile",
-        "Pembelian",
-        "Laporan",
-        "Konten",
+        "Akses_Profile",
+        "Akses_Pembelian",
+        "Akses_Laporan",
+        "Akses_Konten",
         "Tanggal_Registrasi",
         "Waktu_Simpan_Data",
         "Waktu_Update_Data",
@@ -93,12 +92,10 @@ if (isset($_POST['submit_simpan'])) {
         "$_Password",
         "$_POST[Nama_Depan]",
         "$_POST[Nama_Belakang]",
-        "$_POST[Nama_Perusahaan]",
-        "$_POST[Status_Kemitraan]",
         "$_POST[Tempat_Lahir]",
         "$_POST[Tanggal_Lahir]",
         "$_POST[Alamat]",
-        "$_POST[Nomor_Telepon]",
+        "$_POST[No_Handphone]",
         "$_POST[Email]",
         "$_POST[No_KTP]",
         "$_POST[No_NPWP]",
@@ -128,15 +125,13 @@ if (isset($_POST['submit_update'])) {
     if ($_POST['Tanggal_Lahir'] == "") {
         $_POST['Tanggal_Lahir'] = "0000-00-00";
     }
-
     $form_field = array(
         "Nama_Depan",
         "Nama_Belakang",
-        "Nama_Perusahaan",
         "Tempat_Lahir",
         "Tanggal_Lahir",
         "Alamat",
-        "Nomor_Telepon",
+        "No_Handphone",
         "Email",
         "No_KTP",
         "No_NPWP",
@@ -145,11 +140,10 @@ if (isset($_POST['submit_update'])) {
     $form_value = array(
         "$_POST[Nama_Depan]",
         "$_POST[Nama_Belakang]",
-        "$_POST[Nama_Perusahaan]",
         "$_POST[Tempat_Lahir]",
         "$_POST[Tanggal_Lahir]",
         "$_POST[Alamat]",
-        "$_POST[Nomor_Telepon]",
+        "$_POST[No_Handphone]",
         "$_POST[Email]",
         "$_POST[No_KTP]",
         "$_POST[No_NPWP]",
