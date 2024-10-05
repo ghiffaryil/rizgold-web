@@ -1,4 +1,4 @@
-<?php include "controller/konten/function/crud_konten.php"; ?>
+<?php include "controller/konten/function/controller_konten.php"; ?>
 <div id="kt_app_content" class="app-content pb-0">
     <?php if ((isset($_GET["view"]))) { ?>
         <div class="card card-flush">

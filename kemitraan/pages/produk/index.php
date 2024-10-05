@@ -6,7 +6,7 @@
     exit();
 } ?>
 
-<?php include "controller/produk/function/crud_produk.php"; ?>
+<?php include "controller/produk/function/controller_produk.php"; ?>
 
 <div class="pt-lg-9">
     <div class="card">

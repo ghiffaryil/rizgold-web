@@ -2,7 +2,7 @@
 
 <?php
 session_start();
-include "app/config/init/init.php";
+include "config/init/init.php";
 
 //FUNGSI CEK LOGIN
 if (!((isset($_COOKIE['Cookie_1_Admin_Rizgold'])) and (isset($_COOKIE['Cookie_2_Admin_Rizgold'])) and (isset($_COOKIE['Cookie_3_Admin_Rizgold'])))) {

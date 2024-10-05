@@ -376,19 +376,19 @@
                 $search_value_where = array("Aktif");
                 $search_connector_where = array("");
                 $nomor = 0;
-                $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pelayanan", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_produk", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
                 if ($result['Status'] == "Sukses") {
-                    $data_pelayanan_hasil = $result['Hasil'];
-                    foreach ($data_pelayanan_hasil as $data_pelayanan) {
+                    $data_produk_hasil = $result['Hasil'];
+                    foreach ($data_produk_hasil as $data_produk) {
                         $nomor++;
                 ?>
                         <div class="testimonial-block style-2 gray-bg mb-0">
                             <div class="client-info text-center mb-0">
                                 <div class="card">
-                                    <img class="img-produk" src="dashboard/media/pelayanan/cover/<?php echo $data_pelayanan['Cover_Pelayanan'] ?>">
+                                    <img class="img-produk" src="dashboard/media/produk_foto/<?php echo $data_produk['Foto_Produk'] ?>">
                                     <div class="mt-3">
-                                        <h4 style="color:#d6b961"><?php echo $data_pelayanan['Judul_Pelayanan'] ?></h4>
-                                        <p class="text-muted" style="font-size:small"><?php echo substr($data_pelayanan['Deskripsi'], offset: 0, length: 50) ?>...</p>
+                                        <h4 style="color:#d6b961"><?php echo $data_produk['Nama_Produk'] ?></h4>
+                                        <p class="text-muted" style="font-size:small"><?php echo substr($data_produk['Deskripsi'], offset: 0, length: 50) ?>...</p>
                                     </div>
                                 </div>
                             </div>
@@ -428,7 +428,7 @@
                 foreach ($data_artikel_hasil as $data_artikel) {
                     $nomor++;
             ?>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 mb-3">
                         <div class="card">
                             <img class="card-img-top" src="dashboard/media/artikel/<?php echo $data_artikel['Foto_Artikel'] ?>" style="height: 300px; width:auto; object-fit:cover">
                             <div class="card-body">

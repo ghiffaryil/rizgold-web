@@ -4,7 +4,7 @@
 			<span class="icon-Align-left"><span class="path1"></span><span class="path2"></span><span class="path3"></span></span>
 		</a>
 		<!-- Logo -->
-		<a href="dashboard.php" class="logo">
+		<a href="index.php" class="logo">
 			<!-- logo-->
 			<div class="logo-lg">
 				<span class="light-logo" style="color: #9f7a0c;">RIZGOLD ADMIN</span>
@@ -26,8 +26,8 @@
 				</li>
 
 				<li class="user user-menu">
-					<a href="?menu=pelayanan" class="waves-effect waves-light dropdown-toggle" title="User">
-						<i class="mdi mdi-newspaper"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+					<a href="?menu=produk" class="waves-effect waves-light dropdown-toggle" title="User">
+						<i class="mdi mdi-archive"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
 					</a>
 				</li>
 

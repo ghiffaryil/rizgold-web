@@ -6,7 +6,7 @@
     exit();
 } ?>
 
-<?php include "controller/mitra/function/crud_mitra_admin.php"; ?>
+<?php include "controller/mitra/function/controller_mitra_admin.php"; ?>
 
 <div class="pt-lg-9">
     <div class="card">

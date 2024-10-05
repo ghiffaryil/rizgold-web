@@ -1,5 +1,5 @@
 <?php
-include "app/config/init/init.php";
+include "config/init/init.php";
 
 if (isset($_POST['submit_register_akun'])) {
 	// IDENTITAS PERUSAHAAN

@@ -1,6 +1,6 @@
 <?php
-include "app/config/init/init.php";
-// include "controller/mitra/function/crud_mitra.php";
+include "config/init/init.php";
+// include "controller/mitra/function/controller_mitra.php";
 
 $result_sk = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan_sk_kemitraan", "Id_Pengaturan_SK_Kemitraan", "1");
 $data_sk = $result_sk['Hasil'];

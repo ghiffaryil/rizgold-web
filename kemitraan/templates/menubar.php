@@ -8,7 +8,7 @@
                                         } ?> menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
                     <a class="menu-link" href="dashboard.php">
                         <span class="menu-title">Dashboard</span>
-                        <span class="menu-arrow d-lg-none"></span>
+                        <span class="menu-arrow "></span>
                     </a>
                 </div>
 
@@ -23,7 +23,7 @@
                                                                                                                                 } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
                         <span class="menu-link">
                             <span class="menu-title">Produk</span>
-                            <span class="menu-arrow d-lg-none"></span>
+                            <span class="menu-arrow "></span>
                         </span>
                         <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
                             <div class="menu-item">
@@ -48,7 +48,7 @@
                                                                                                                                 } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
                         <span class="menu-link">
                             <span class="menu-title">Konten</span>
-                            <span class="menu-arrow d-lg-none"></span>
+                            <span class="menu-arrow "></span>
                         </span>
                         <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
 
@@ -110,7 +110,7 @@
                                                                                                                                 } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
                         <span class="menu-link">
                             <span class="menu-title">Transaksi</span>
-                            <span class="menu-arrow d-lg-none"></span>
+                            <span class="menu-arrow "></span>
                         </span>
                         <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
                             <div class="menu-item">

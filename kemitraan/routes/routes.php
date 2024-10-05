@@ -39,29 +39,6 @@ if (isset($_GET['menu'])) {
 			include "pages/konten/index.php";
 			break;
 
-
-			// UNTUK KEMITRAAN
-		case 'belanja':
-			include "pages/produk/belanja.php";
-			// include "pages/coming-soon/coming-soon.html";
-			break;
-
-		case 'konten':
-			include "pages/konten/konten.php";
-			// include "pages/coming-soon/coming-soon.html";
-			break;
-
-		case 'transaksi':
-			include "pages/laporan/transaksi.php";
-			// include "pages/coming-soon/coming-soon.html";
-			break;
-
-		case 'edit-profile':
-			include "pages/mitra/profile.php";
-			// include "pages/coming-soon/coming-soon.html";
-			break;
-
-			// DEFAULT
 		default:
 			include "pages/home/index.php";
 			break;

@@ -1,6 +1,6 @@
 <?php
-include "app/config/init/init.php";
-include "controller/mitra/function/crud_mitra.php";
+include "config/init/init.php";
+include "controller/mitra/function/controller_mitra.php";
 ?>
 
 <?php

@@ -1,4 +1,4 @@
-<?php include "controller/pengaturan/function/crud_role.php"; ?>
+<?php include "controller/pengaturan/function/controller_role.php"; ?>
 
 <div class="pt-lg-9">
     <div class="card">

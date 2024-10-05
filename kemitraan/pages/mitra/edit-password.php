@@ -1,4 +1,4 @@
-<?php include "controller/mitra/function/crud_mitra.php"; ?>
+<?php include "controller/mitra/function/controller_mitra.php"; ?>
 
 <!--begin::Main-->
 <div class="app-main flex-column flex-row-fluid " id="kt_app_main">

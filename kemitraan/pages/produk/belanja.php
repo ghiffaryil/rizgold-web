@@ -1,4 +1,4 @@
-<?php include "controller/produk/function/crud_produk.php"; ?>
+<?php include "controller/produk/function/controller_produk.php"; ?>
 <div class="app-content">
     <?php if ((isset($_GET["view"]))) { ?>
         <div id="kt_app_toolbar" class="app-toolbar ">

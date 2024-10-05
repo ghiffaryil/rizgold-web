@@ -1,4 +1,4 @@
-<?php include "controller/transaksi/function/crud_transaksi.php"; ?>
+<?php include "controller/transaksi/function/controller_transaksi.php"; ?>
 
 <div id="kt_app_content" class="app-content pb-0">
 

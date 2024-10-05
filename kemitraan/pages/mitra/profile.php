@@ -1,6 +1,6 @@
 <?php
 
-include "controller/mitra/function/crud_mitra.php";
+include "controller/mitra/function/controller_mitra.php";
 $result_perusahaan = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Organisasi_Kode", "$u_Organisasi_Kode");
 $data_perusahaan = $result_perusahaan['Hasil'];
 ?>

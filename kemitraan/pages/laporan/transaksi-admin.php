@@ -6,7 +6,7 @@
     exit();
 } ?>
 
-<?php include "controller/transaksi/function/crud_transaksi.php"; ?>
+<?php include "controller/transaksi/function/controller_transaksi.php"; ?>
 
 <div class="pt-lg-9">
     <div class="card">

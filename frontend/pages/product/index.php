@@ -20,15 +20,32 @@
         <h3>Kami selalu menciptakan produk dengan kualitas terbaik</h3>
       </div>
     </div>
-    
+
     <div class="row">
+
+      <style>
+        .image-produk {
+          height: 500px;
+          width: 100%;
+          object-fit: cover;
+        }
+
+        @media screen and (max-width: 700px) {
+          .image-produk {
+            height: 100%;
+            width: auto;
+          }
+        }
+      </style>
+
+
       <?php
       $search_field_where = array("Status");
       $search_criteria_where = array("=");
       $search_value_where = array("Aktif");
       $search_connector_where = array("");
       $nomor = 0;
-      $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pelayanan", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+      $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_produk", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
 
       if ($result['Status'] == "Sukses") {
         $data_produk_hasil = $result['Hasil'];
@@ -36,11 +53,11 @@
         foreach ($data_produk_hasil as $data_produk) {
           $nomor++;
       ?>
-          <div class="col-lg-6 col-md-6 col-sm-6">
+          <div class="col-lg-4">
             <div class="service-block mb-5">
-              <img src="dashboard/media/pelayanan/cover/<?php echo $data_produk['Cover_Pelayanan'] ?>" alt="" class="img-fluid"  style="height: 500px; width:100%; object-fit:cover;" >
+              <img src="dashboard/media/produk_foto/<?php echo $data_produk['Foto_Produk'] ?>" class="image-produk" style="height:300px; width:100%; object-fit:cover">
               <div class="content">
-                <h4 class="mt-4 mb-2 title-color"><a href="?menu=article&id-<?php echo $a_hash->encode($data_produk['Judul_Pelayanan'], "dashboard");?>"><?php echo $data_produk['Judul_Pelayanan'] ?></a></h4>
+                <h4 class="mt-4 mb-2 title-color"><a href="?menu=article&id-<?php echo $a_hash->encode($data_produk['Nama_Produk'], "dashboard"); ?>"><?php echo $data_produk['Judul_Pelayanan'] ?></a></h4>
                 <p class="mb-4"><?php echo substr(string: $data_produk['Deskripsi'], offset: 0, length: 200) ?>...</p>
               </div>
             </div>
@@ -76,7 +93,7 @@
       $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_galeri", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
 
       if ($result['Status'] == "Sukses") {
-        
+
         $data_galeri_hasil = $result['Hasil'];
         foreach ($data_galeri_hasil as $data_galeri) {
           $nomor++;

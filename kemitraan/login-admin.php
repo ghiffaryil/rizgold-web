@@ -1,19 +1,13 @@
 <?php
-include "app/config/init/init.php";
+include "config/init/init.php";
 
 setcookie("Cookie_1_Admin_Rizgold", "", time() + (86400 * 365));
 setcookie("Cookie_2_Admin_Rizgold", "", time() + (86400 * 365));
 setcookie("Cookie_3_Admin_Rizgold", "", time() + (86400 * 365));
-setcookie("Cookie_1_Kemitraan_Rizgold", "", time() + 86400);
-setcookie("Cookie_2_Kemitraan_Rizgold", "", time() + 86400);
-setcookie("Cookie_3_Kemitraan_Rizgold", "", time() + 86400);
 
 unset($_COOKIE["Cookie_1_Admin_Rizgold"]);
 unset($_COOKIE["Cookie_2_Admin_Rizgold"]);
 unset($_COOKIE["Cookie_3_Admin_Rizgold"]);
-unset($_COOKIE["Cookie_1_Kemitraan_Rizgold"]);
-unset($_COOKIE["Cookie_2_Kemitraan_Rizgold"]);
-unset($_COOKIE["Cookie_3_Kemitraan_Rizgold"]);
 
 // Handle login form submission
 if (isset($_POST['submit_login'])) {
