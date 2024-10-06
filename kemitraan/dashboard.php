@@ -24,10 +24,18 @@ if (!((isset($_COOKIE['Cookie_1_Kemitraan_Rizgold'])) and (isset($_COOKIE['Cooki
 	$result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pengguna", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
 
 	if ($result['Status'] == "Sukses") {
-		$u_array_data_user = $result['Hasil'];
-		$u_Id_Pengguna = $u_array_data_user[0]['Id_Pengguna'];
-		$u_Nama_Lengkap = $u_array_data_user[0]['Nama_Depan'] . " " . $u_array_data_user[0]['Nama_Belakang'];
-		$u_Organisasi_Kode = $u_array_data_user[0]['Organisasi_Kode'];
+
+		$u_data_pengguna = $result['Hasil'];
+
+		$u_Id_Pengguna = $u_data_pengguna[0]['Id_Pengguna'];
+		$u_Nama_Lengkap = $u_data_pengguna[0]['Nama_Depan'] . " " . $u_data_pengguna[0]['Nama_Belakang'];
+		$u_Organisasi_Kode = $u_data_pengguna[0]['Organisasi_Kode'];
+
+		$read_organisasi = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Organisasi_Kode", "$u_Organisasi_Kode");
+		$u_data_organisasi = $read_organisasi['Hasil'];
+
+		$u_Status_Kemitraan = $u_data_organisasi['Status_Kemitraan'];
+
 	} else {
 		echo "<script> alert('Silahkan Login Kembali !!!');document.location.href = 'login.php?redirect=" . $a_hash->encode_link_kembali($Link_Sekarang) . "';</script>";
 		exit();

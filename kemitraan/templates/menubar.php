@@ -6,18 +6,20 @@
                 <div class="menu-item <?php if (!(isset($_GET['menu']))) {
                                             echo "here";
                                         } ?> menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
-                    <a class="menu-link" href="dashboard.php">
-                        <span class="menu-title">Dashboard</span>
-                        <span class="menu-arrow "></span>
-                    </a>
+                    <a class="menu-link" href="dashboard.php"><span class="menu-title">Dashboard</span></a>
                 </div>
 
                 <?php
-                $result_perusahaan = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Organisasi_Kode", "$u_Organisasi_Kode");
-                $data_perusahaan = $result_perusahaan['Hasil'];
-                if ($data_perusahaan['Is_Active'] != 0) {
+                $read_pengguna = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", "$u_Id_Pengguna");
+                $u_data_pengguna = $read_pengguna['Hasil'];
+
+                $Akses_Profile = $u_data_pengguna['Akses_Profile'];
+                $Akses_Pembelian = $u_data_pengguna['Akses_Pembelian'];
+                $Akses_Laporan = $u_data_pengguna['Akses_Laporan'];
+                $Akses_Konten = $u_data_pengguna['Akses_Konten'];
                 ?>
 
+                <?php if ($Akses_Pembelian == "Iya") { ?>
                     <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && ($_GET['menu'] == "belanja")) {
                                                                                                                                     echo "here";
                                                                                                                                 } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
@@ -42,7 +44,9 @@
                             </div>
                         </div>
                     </div>
+                <?php } ?>
 
+                <?php if ($Akses_Laporan == "Iya") { ?>
                     <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && ($_GET['menu'] == "konten")) {
                                                                                                                                     echo "here";
                                                                                                                                 } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
@@ -51,8 +55,6 @@
                             <span class="menu-arrow "></span>
                         </span>
                         <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
-
-
                             <div class="menu-item">
                                 <a class="menu-link" href="?menu=konten" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
                                     <span class="menu-icon">
@@ -103,8 +105,9 @@
 
                         </div>
                     </div>
+                <?php } ?>
 
-
+                <?php if ($Akses_Konten == "Iya") { ?>
                     <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && ($_GET['menu'] == "transaksi")) {
                                                                                                                                     echo "here";
                                                                                                                                 } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
@@ -129,7 +132,6 @@
                             </div>
                         </div>
                     </div>
-
                 <?php } ?>
 
             </div>

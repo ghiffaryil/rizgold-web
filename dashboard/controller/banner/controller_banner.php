@@ -32,8 +32,8 @@ if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
 if (isset($_POST['submit_simpan'])) {
 	if ($cek_required == "Sukses") {
 
-		$form_field = array("Judul", "Deskripsi", "Judul_Eng", "Deskripsi_Eng", "Link", "Kategori", "Waktu_Simpan_Data", "Status");
-		$form_value = array("$_POST[Judul]", "$_POST[Deskripsi]", "$_POST[Judul_Eng]", "$_POST[Deskripsi_Eng]", "$_POST[Link]", "$_POST[Kategori]", "$Waktu_Sekarang", "Aktif");
+		$form_field = array("Judul", "Deskripsi", "Link", "Kategori", "Waktu_Simpan_Data", "Status");
+		$form_value = array("$_POST[Judul]", "$_POST[Deskripsi]", "$_POST[Link]", "$_POST[Kategori]", "$Waktu_Sekarang", "Aktif");
 		$result = $a_tambah_baca_update_hapus->tambah_data("tb_banner", $form_field, $form_value);
 
 		if ($result['Status'] == "Sukses") {
@@ -99,8 +99,8 @@ if (isset($_GET['edit'])) {
 #FUNGSI UPDATE DATA (UPDATE)
 if (isset($_POST['submit_update'])) {
 	if ($cek_required == "Sukses") {
-		$form_field = array("Judul", "Deskripsi", "Judul_Eng", "Deskripsi_Eng", "Link", "Kategori");
-		$form_value = array("$_POST[Judul]", "$_POST[Deskripsi]", "$_POST[Judul_Eng]", "$_POST[Deskripsi_Eng]", "$_POST[Link]", "$_POST[Kategori]");
+		$form_field = array("Judul", "Deskripsi", "Link", "Kategori");
+		$form_value = array("$_POST[Judul]", "$_POST[Deskripsi]", "$_POST[Link]", "$_POST[Kategori]");
 
 		$form_field_where = array("Id_Banner");
 		$form_criteria_where = array("=");

@@ -167,7 +167,6 @@ if (isset($_POST['submit_update'])) {
     }
 }
 
-
 #-----------------------------------------------------------------------------------
 #FUNGSI UPDATE FILE BUKTI TRANSAKSI (UPDATE)
 if (isset($_POST['submit_update_bukti_transaksi'])) {
@@ -223,61 +222,7 @@ if (isset($_POST['submit_update_bukti_transaksi'])) {
 }
 
 #-----------------------------------------------------------------------------------
-#FUNGSI DELETE DATA (DELETE)
-if (isset($_GET['hapus_data_ke_tong_sampah'])) {
-
-    $result = $a_tambah_baca_update_hapus->hapus_data_ke_tong_sampah("tb_transaksi_penjualan", "Id_Transaksi_Penjualan", $Get_Id_Primary);
-
-    if ($result['Status'] == "Sukses") {
-        echo "<script>document.location.href='$kehalaman'</script>";
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Menghapus Data');document.location.href='$kehalaman'</script>";
-    }
-}
-
-#-----------------------------------------------------------------------------------
-#FUNGSI ARCHIVE DATA (ARCHIVE)
-if (isset($_GET['arsip_data'])) {
-
-    $result = $a_tambah_baca_update_hapus->arsip_data("tb_transaksi_penjualan", "Id_Transaksi_Penjualan", $Get_Id_Primary);
-
-    if ($result['Status'] == "Sukses") {
-        echo "<script>document.location.href='$kehalaman'</script>";
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Memindahkan Data Ke Arsip');document.location.href='$kehalaman'</script>";
-    }
-}
-
-
-#-----------------------------------------------------------------------------------
-#FUNGSI DELETE DATA (DELETE)
-if (isset($_GET['restore_data_dari_tong_sampah'])) {
-
-    $result = $a_tambah_baca_update_hapus->restore_data_dari_tong_sampah("tb_transaksi_penjualan", "Id_Transaksi_Penjualan", $Get_Id_Primary);
-
-    if ($result['Status'] == "Sukses") {
-        echo "<script>document.location.href='$kehalaman'</script>";
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Restore Data Dari Tong Sampah');document.location.href='$kehalaman'</script>";
-    }
-}
-
-#-----------------------------------------------------------------------------------
-#FUNGSI DELETE PREMANENT DATA (DELETE PREMANENT)
-if (isset($_GET['hapus_data_permanen'])) {
-
-    $result = $a_tambah_baca_update_hapus->hapus_data_permanen("tb_transaksi_penjualan", "Id_Transaksi_Penjualan", $Get_Id_Primary);
-    if ($result['Status'] == "Sukses") {
-        echo "<script>document.location.href='$kehalaman'</script>";
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Menghapus Data');document.location.href='$kehalaman'</script>";
-    }
-}
-
-#-----------------------------------------------------------------------------------
 #FUNGSI HITUNG DATA (COUNT)
-
-
 if (isset($_GET['filter'])) {
     $filter = $_GET['filter'];
 } else {
@@ -290,30 +235,29 @@ $count_connector_where = array("");
 
 #-----------------------------------------------------------------------------------
 #HITUNG AKTIF
-$count_value_where = array("Aktif", "%$filter%");
+$count_value_where = array("Aktif");
 $hitung_Aktif = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_transaksi_penjualan", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
 $hitung_Aktif = $hitung_Aktif['Hasil'];
 
 #-----------------------------------------------------------------------------------
 #HITUNG TERARSIP
-$count_value_where = array("Terarsip", "%$filter%");
+$count_value_where = array("Terarsip");
 $hitung_Terarsip = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_transaksi_penjualan", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
 $hitung_Terarsip = $hitung_Terarsip['Hasil'];
 
 #-----------------------------------------------------------------------------------
 #HITUNG TERHAPUS
-$count_value_where = array("Terhapus", "%$filter%");
+$count_value_where = array("Terhapus");
 $hitung_Terhapus = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_transaksi_penjualan", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
 $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 #-----------------------------------------------------------------------------------
-class Search_Controller
+class Search_Controller_Transaksi
 {
     public function select_search_filter(
         $filter_status = "Aktif",
         $filter_status_kemitraan = "",
         $filter_tanggal_dari = "",
         $filter_tanggal_sampai = "",
-        $filter_metode_pembelian = "",
         $filter_metode_pembayaran = "",
         $filter_status_transaksi = "",
         $filter_status_pembayaran = "",
@@ -321,19 +265,16 @@ class Search_Controller
         $filter_id_pengguna = ""
 
     ): array|string {
-        
+
         global $a_tambah_baca_update_hapus;
 
         $filter_status_kemitraan == "All" ? $filter_status_kemitraan = "" : $filter_status_kemitraan;
         $filter_tanggal_dari == "All" ? $filter_tanggal_dari = "" : $filter_tanggal_dari;
-        $filter_metode_pembelian == "All" ? $filter_metode_pembelian = "" : $filter_metode_pembelian;
         $filter_metode_pembayaran == "All" ? $filter_metode_pembayaran = "" : $filter_metode_pembayaran;
         $filter_tanggal_sampai == "All" ? $filter_tanggal_sampai = "" : $filter_tanggal_sampai;
         $filter_status_transaksi == "All" ? $filter_status_transaksi = "" : $filter_status_transaksi;
         $filter_status_pembayaran == "All" ? $filter_status_pembayaran = "" : $filter_status_pembayaran;
         $filter_status_barang == "All" ? $filter_status_barang = "" : $filter_status_barang;
-        $filter_id_pengguna == "" ? $filter_id_pengguna = "" : $filter_id_pengguna;
-
 
         $search_field_where = array();
         $search_criteria_where = array();
@@ -341,14 +282,6 @@ class Search_Controller
         $search_connector_where = array();
 
         // Add filters dynamically if they are set
-        if (!empty($filter_id_pengguna)) {
-            $search_field_where[] = "Id_Pengguna";
-            $search_criteria_where[] = "=";
-            $search_value_where[] = "$filter_id_pengguna";
-            $search_connector_where[] = "AND";
-        }
-
-
         if (!empty($filter_status_kemitraan)) {
             $search_field_where[] = "Status_Kemitraan";
             $search_criteria_where[] = "LIKE";
@@ -367,13 +300,6 @@ class Search_Controller
             $search_field_where[] = "Tanggal_Transaksi";
             $search_criteria_where[] = "<=";
             $search_value_where[] = "$filter_tanggal_sampai";
-            $search_connector_where[] = "AND";
-        }
-
-        if (!empty($filter_metode_pembelian)) {
-            $search_field_where[] = "Metode_Pembelian";
-            $search_criteria_where[] = "LIKE";
-            $search_value_where[] = $filter_metode_pembelian;
             $search_connector_where[] = "AND";
         }
 
@@ -405,6 +331,12 @@ class Search_Controller
             $search_connector_where[] = "AND";
         }
 
+
+        $search_field_where[] = "Id_Pengguna";
+        $search_criteria_where[] = "=";
+        $search_value_where[] = "$filter_id_pengguna";
+        $search_connector_where[] = "AND";
+
         // Define base search fields and values
         $search_field_where[] = "Status";
         $search_criteria_where[] = "=";
@@ -414,7 +346,7 @@ class Search_Controller
         // Call the method to get data
         // Change the table name to 'tb_transaksi_penjualan' to match your data
         $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter(
-            "tb_transaksi_penjualan",  // Correct table name
+            "tb_transaksi_penjualan",
             $search_field_where,
             $search_criteria_where,
             $search_value_where,

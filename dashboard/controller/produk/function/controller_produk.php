@@ -297,7 +297,7 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 
 class Search_Controller_Produk{
 
-    public function select_search_filter($filter_status = "Aktif", $Text_Input_Search = ""): array|string
+    public function select_search_filter($filter_status = "Aktif", $Text_Input_Search = "", $limit = "999999", $orderby = "Id_Produk", $sortby ="DESC" ): array|string
     {
         global $a_tambah_baca_update_hapus;
 
@@ -318,7 +318,7 @@ class Search_Controller_Produk{
         $search_field_where[] = "Status";
         $search_criteria_where[] = "=";
         $search_value_where[] = $filter_status;
-        $search_connector_where[] = "ORDER BY Nama_Produk ASC";
+        $search_connector_where = array("ORDER BY $orderby $sortby LIMIT $limit");
 
         // Call the method to get data
         // Change the table name to 'tb_transaksi_penjualan' to match your data

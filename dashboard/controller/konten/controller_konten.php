@@ -310,15 +310,14 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 #-----------------------------------------------------------------------------------
 class Search_Controller_Konten{
 
-    public function select_search_filter($filter_status = "Aktif", $filter = "")
+    public function select_search_filter($filter_status = "Aktif", $filter_kategori="", $limit = "999999", $orderby = "Id_Konten", $sortby ="DESC")
     {
         global $a_tambah_baca_update_hapus;
 
         $search_field_where = array("Status", "Kategori");
         $search_criteria_where = array("=", "LIKE");
-        $search_value_where = array("$filter_status", "%$filter%");
-        $search_connector_where = array("AND", "");
-        $nomor = 0;
+        $search_value_where = array("$filter_status", "%$filter_kategori%");
+        $search_connector_where = array("AND", "ORDER BY $orderby $sortby LIMIT $limit");
 
         $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_konten", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
 

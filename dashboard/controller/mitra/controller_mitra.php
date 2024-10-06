@@ -22,7 +22,11 @@ if (isset($_GET['id'])) {
 if (isset($_GET['edit'])) {
     $result = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
     if ($result['Status'] == "Sukses") {
+        
         $edit = $result['Hasil'];
+        $result_perusahaan = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Organisasi_Kode", $edit['Organisasi_Kode']);
+        $edit_perusahaan = $result_perusahaan['Hasil'];
+
     } else {
         echo "<script>alert('Terjadi Kesalahan Saat Membaca Data');document.location.href='$kehalaman'</script>";
     }
@@ -54,6 +58,12 @@ if (isset($_POST['submit_simpan'])) {
         $_Konten = "Tidak";
     } else {
         $_Konten = "Iya";
+    }
+
+    if($_POST['Tanggal_Lahir'] == ""){
+        $Tanggal_Lahir = "0000-00-00";
+    }else{
+        $Tanggal_Lahir = $_POST['Tanggal_Lahir'];
     }
 
     $_Password = $a_hash_password->hash_password($_POST['Password']);
@@ -98,7 +108,7 @@ if (isset($_POST['submit_simpan'])) {
         "$_POST[Nama_Belakang]",
 
         "$_POST[Tempat_Lahir]",
-        "$_POST[Tanggal_Lahir]",
+        "$Tanggal_Lahir",
 
         "$_POST[Alamat]",
         "$_POST[No_Handphone]",
@@ -179,6 +189,12 @@ if (isset($_POST['submit_update'])) {
         $_Konten = "Iya";
     }
 
+    if($_POST['Tanggal_Lahir'] == ""){
+        $Tanggal_Lahir = "0000-00-00";
+    }else{
+        $Tanggal_Lahir = $_POST['Tanggal_Lahir'];
+    }
+
     $_Password = $a_hash_password->hash_password($_POST['Password']);
 
     $form_field = array(
@@ -217,7 +233,7 @@ if (isset($_POST['submit_update'])) {
         "$_POST[Nama_Belakang]",
 
         "$_POST[Tempat_Lahir]",
-        "$_POST[Tanggal_Lahir]",
+        "$Tanggal_Lahir",
 
         "$_POST[Alamat]",
         "$_POST[No_Handphone]",
@@ -361,16 +377,14 @@ $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 
 class Search_Controller_Mitra{
 
-    public function select_search_filter($filter_status = "Aktif", $filter = "")
+    public function select_search_filter($filter_status = "Aktif", $limit = "999999", $orderby = "Id_Pengguna", $sortby ="DESC")
     {
         global $a_tambah_baca_update_hapus;
 
         $search_field_where = array("Status");
         $search_criteria_where = array("=");
         $search_value_where = array("$filter_status");
-        $search_connector_where = array("");
-
-        $nomor = 0;
+        $search_connector_where = array("ORDER BY $orderby $sortby LIMIT $limit");
 
         $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pengguna", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
 

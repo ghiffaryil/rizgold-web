@@ -23,7 +23,7 @@
                             if ($data_pengguna['Foto'] == "") { ?>
                                 <img class="symbol symbol-35px" src="assets/media/avatars/blank.png" alt="">
                             <?php } else { ?>
-                                <img class="symbol symbol-35px" src="assets/images/kemitraan_foto/<?php echo $data_pengguna['Foto'] ?>" alt="user" />
+                                <img class="symbol symbol-35px" src="../dashboard/media/kemitraan_foto/<?php echo $data_pengguna['Foto'] ?>" alt="user" />
                             <?php } ?>
                         <?php } else { ?>
                             <img class="symbol symbol-35px" src="assets/media/avatars/blank.png" alt="">
@@ -38,7 +38,7 @@
                                         <?php if ($data_pengguna['Foto'] == "") { ?>
                                             <img src="assets/media/avatars/blank.png" alt="">
                                         <?php } else { ?>
-                                            <img alt="Logo" src="assets/images/kemitraan_foto/<?php echo $data_pengguna['Foto'] ?>" />
+                                            <img alt="Logo" src="../dashboard/media/kemitraan_foto/<?php echo $data_pengguna['Foto'] ?>" />
                                         <?php } ?>
                                     </div>
                                     <div class="d-flex flex-column">
@@ -65,71 +65,16 @@
                         if (((isset($_COOKIE['Cookie_1_Kemitraan_Rizgold'])) or (isset($_COOKIE['Cookie_2_Kemitraan_Rizgold'])) or (isset($_COOKIE['Cookie_3_Kemitraan_Rizgold'])))) {
                             $result_perusahaan = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Organisasi_Kode", "$u_Organisasi_Kode");
                             $data_perusahaan = $result_perusahaan['Hasil'];
-                            if ($data_perusahaan['Is_Active'] != 0) {
-                        ?>
-                                <div class="menu-item px-5">
-                                    <a href="?menu=edit-profile&edit&id=<?php echo $a_hash->encode($u_Id_Pengguna, "Dashboard") ?>" class="menu-link px-5">
-                                        Profile Saya
-                                    </a>
-                                </div>
-                        <?php }
-                        } ?>
 
-                        <div class="menu-item px-5" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="left-start" data-kt-menu-offset="-15px, 0">
-                            <a href="#" class="menu-link px-5">
-                                <span class="menu-title position-relative">Mode
-                                    <span class="ms-5 position-absolute translate-middle-y top-50 end-0">
-                                        <i class="ki-duotone ki-night-day theme-light-show fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                            <span class="path3"></span>
-                                            <span class="path4"></span>
-                                            <span class="path5"></span>
-                                            <span class="path6"></span>
-                                            <span class="path7"></span>
-                                            <span class="path8"></span>
-                                            <span class="path9"></span>
-                                            <span class="path10"></span>
-                                        </i>
-                                        <i class="ki-duotone ki-moon theme-dark-show fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                    </span></span>
-                            </a>
-                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-title-gray-700 menu-icon-gray-500 menu-active-bg menu-state-color fw-semibold py-4 fs-base w-150px" data-kt-menu="true" data-kt-element="theme-mode-menu">
-                                <div class="menu-item px-3 my-0">
-                                    <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="light">
-                                        <span class="menu-icon" data-kt-element="icon">
-                                            <i class="ki-duotone ki-night-day fs-2">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                                <span class="path3"></span>
-                                                <span class="path4"></span>
-                                                <span class="path5"></span>
-                                                <span class="path6"></span>
-                                                <span class="path7"></span>
-                                                <span class="path8"></span>
-                                                <span class="path9"></span>
-                                                <span class="path10"></span>
-                                            </i>
-                                        </span>
-                                        <span class="menu-title">Light</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item px-3 my-0">
-                                    <a href="#" class="menu-link px-3 py-2" data-kt-element="mode" data-kt-value="dark">
-                                        <span class="menu-icon" data-kt-element="icon">
-                                            <i class="ki-duotone ki-moon fs-2">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                        </span>
-                                        <span class="menu-title">Dark</span>
-                                    </a>
-                                </div>
+                        ?>
+                            <div class="menu-item px-5">
+                                <a href="?menu=edit-profile&edit&id=<?php echo $a_hash->encode($u_Id_Pengguna, "Dashboard") ?>" class="menu-link px-5">
+                                    Profile Saya
+                                </a>
                             </div>
-                        </div>
+                        <?php
+                        }
+                        ?>
                         <hr>
                         <div class="menu-item px-5">
                             <a href="logout.php" class="menu-link px-5 btn btn-danger text-white" onclick="return confirm('Anda yakin ingin keluar?')">Sign Out</a>

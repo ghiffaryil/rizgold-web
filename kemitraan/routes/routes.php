@@ -7,36 +7,16 @@ if (isset($_GET['menu'])) {
 			include "pages/home/index.php";
 			break;
 
-		case 'produk':
-			include "pages/produk/index.php";
+		case 'belanja':
+			include "pages/belanja/index.php";
 			break;
 
-		case 'pengaturan-role':
-			include "pages/pengaturan/role.php";
-			break;
-
-		case 'pengaturan-produk-kategori':
-			include "pages/pengaturan/produk_kategori.php";
-			break;
-
-		case 'pengaturan':
-			include "pages/pengaturan/pengaturan.php";
-			break;
-
-		case 'pengaturan-sk-kemitraan':
-			include "pages/pengaturan/sk_kemitraan.php";
-			break;
-
-		case 'transaksi-admin':
-			include "pages/laporan/transaksi-admin.php";
-			break;
-
-		case 'mitra':
-			include "pages/mitra/index.php";
-			break;
-
-		case 'admin-konten':
+		case 'konten':
 			include "pages/konten/index.php";
+			break;
+
+		case 'transaksi':
+			include "pages/transaksi/index.php";
 			break;
 
 		default:

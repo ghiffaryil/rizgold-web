@@ -70,23 +70,6 @@
                                 <tr>
                                     <td class="text-muted">
                                         <div class="d-flex align-items-center">
-                                            <i class="ki-duotone ki-devices fs-2 me-2">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                                <span class="path3"></span>
-                                                <span class="path4"></span>
-                                                <span class="path5"></span>
-                                            </i>
-                                            Metode Pembelian
-                                        </div>
-                                    </td>
-                                    <td class="fw-bold text-end text-dark">
-                                        <?php echo $edit['Metode_Pembelian']; ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-muted">
-                                        <div class="d-flex align-items-center">
                                             <i class="ki-duotone ki-dollar fs-2 me-2 ">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
@@ -125,6 +108,9 @@
                         <?php
                         $result_mitra = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", "$edit[Id_Pengguna]");
                         $data_mitra = $result_mitra['Hasil'];
+                        
+                        $result_perusahaan = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Organisasi_Kode", "$data_mitra[Organisasi_Kode]");
+                        $data_perusahaan = $result_perusahaan['Hasil'];
                         ?>
                         <table class="table align-middle table-row-bordered mb-0 fs-6 gy-5 min-w-300px">
 
@@ -155,7 +141,8 @@
                                         </div>
                                     </td>
                                     <td class="fw-bold text-end text-dark">
-                                        <?php echo "$data_mitra[Nama_Perusahaan]" ?>
+                                        
+                                        <?php echo "$data_perusahaan[Nama_Perusahaan]" ?>
                                     </td>
                                 </tr>
                                 <tr>
@@ -170,7 +157,7 @@
                                             Kemitraan
                                         </div>
                                     </td>
-                                    <td class="fw-bold text-end text-dark"><?php echo $data_mitra['Status_Kemitraan']; ?></td>
+                                    <td class="fw-bold text-end text-dark"><?php echo $data_perusahaan['Status_Kemitraan']; ?></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -405,10 +392,10 @@
                                         <td class="text-muted">
                                             <?php if ($edit['Status_Transaksi'] == "Baru") { ?>
                                                 <input name="File_Bukti_Transaksi" type="file" class="form-control" accept=".png, .jpg, .jpeg" required />
-                                                
+
                                             <?php } ?>
                                             <?php if (isset($_GET['view'])) {
-                                                $folder_konten = "assets/images/bukti_transaksi/";
+                                                $folder_konten = "../dashboard/media/bukti_transaksi/";
                                             ?>
                                                 <?php if ($edit['File_Bukti_Transaksi'] != "") { ?>
                                                     <a href="<?php echo $folder_konten . $edit['File_Bukti_Transaksi'] ?>" class="btn btn-light-success btn-sm" target="_blank"><i class="ki-solid ki-eye"></i>Lihat</a>
@@ -459,12 +446,11 @@
             <div class="card-header border-0">
 
                 <?php
-                $search_controller = new Search_Controller();
+                $search_controller = new Search_Controller_Transaksi();
                 $filter_status = isset($_GET['filter_status']) ? $_GET['filter_status'] : "Aktif";
                 $filter_status_kemitraan = isset($_POST['submit_filter']) ? $_POST['filter_status_kemitraan'] : "";
                 $filter_tanggal_dari = isset($_POST['submit_filter']) ? $_POST['filter_tanggal_dari'] : "";
                 $filter_tanggal_sampai = isset($_POST['submit_filter']) ? $_POST['filter_tanggal_sampai'] : "";
-                $filter_metode_pembelian = isset($_POST['submit_filter']) ? $_POST['filter_metode_pembelian'] : "";
                 $filter_metode_pembayaran = isset($_POST['submit_filter']) ? $_POST['filter_metode_pembayaran'] : "";
                 $filter_status_transaksi = isset($_POST['submit_filter']) ? $_POST['filter_status_transaksi'] : "";
                 $filter_status_pembayaran = isset($_POST['submit_filter']) ? $_POST['filter_status_pembayaran'] : "";
@@ -504,9 +490,6 @@
                                                     }
                                                     if ($filter_status_transaksi != "All") {
                                                         echo "<span class='badge badge-light mx-1'> Status Transaksi : $filter_status_transaksi </span>";
-                                                    }
-                                                    if ($filter_metode_pembelian != "All") {
-                                                        echo "<span class='badge badge-light mx-1'> Pembelian : $filter_metode_pembelian </span>";
                                                     }
                                                     if ($filter_metode_pembayaran != "All") {
                                                         echo "<span class='badge badge-light mx-1'> Pembayaran : $filter_metode_pembayaran </span>";
@@ -576,7 +559,6 @@
                             <th style="width:15%; vertical-align: top;" class="text-dark">Produk</th>
                             <th style="width:5%; vertical-align: top;" class="text-dark">QTY</th>
                             <th style="width:10%; vertical-align: top;" class="text-dark">Total</th>
-                            <th style="width:10%; vertical-align: top;" class="text-dark">Pembelian</th>
                             <th style="width:10%; vertical-align: top;" class="text-dark">Pembayaran</th>
                             <th style="width:5%; vertical-align: top;" class="text-dark">Status</th>
                             <th style="width:5%; vertical-align: top;" class="text-dark">Barang</th>
@@ -591,7 +573,6 @@
                             filter_status_kemitraan: $filter_status_kemitraan,
                             filter_tanggal_dari: $filter_tanggal_dari,
                             filter_tanggal_sampai: $filter_tanggal_sampai,
-                            filter_metode_pembelian: $filter_metode_pembelian,
                             filter_metode_pembayaran: $filter_metode_pembayaran,
                             filter_status_transaksi: $filter_status_transaksi,
                             filter_status_pembayaran: $filter_status_pembayaran,
@@ -630,7 +611,6 @@
                                 </td>
                                 <td class=""><?php echo $data['QTY'] ?></td>
                                 <td><?php echo $data['Total'] ?>,-</td>
-                                <td><?php echo $data['Metode_Pembelian'] ?></td>
                                 <td><?php echo $data['Metode_Pembayaran'] ?></td>
                                 <td>
                                     <div class="badge badge-<?php if ($data['Status_Pembayaran'] == "Sudah Bayar") {
@@ -692,22 +672,6 @@
                 <div class="modal-body py-5">
                     <div class="scroll-y me-n7 pe-7" id="kt_modal_filter_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_filter_header" data-kt-scroll-wrappers="#kt_modal_filter_scroll" data-kt-scroll-offset="300px">
 
-                        <div class="mb-3">
-                            <label for="filterStatusTransaksi" class="form-label">Status Transaksi</label>
-                            <select name="filter_status_transaksi" class="form-select form-select-solid" data-allow-clear="true">
-                                <option value="All"> Semua </option>
-                                <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_transaksi'] == "Baru")) {
-                                            echo "selected";
-                                        } ?> value="Baru">Baru</option>
-                                <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_transaksi'] == "Proses")) {
-                                            echo "selected";
-                                        } ?> value="Proses">Proses</option>
-                                <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_transaksi'] == "Selesai")) {
-                                            echo "selected";
-                                        } ?> value="Selesai">Selesai</option>
-                            </select>
-                        </div>
-
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
@@ -731,20 +695,6 @@
 
                         <div class="mb-3 row">
                             <div class="col-lg-6">
-
-                                <label for="filterMetodePembelian" class="form-label">Metode Pembelian</label>
-                                <select name="filter_metode_pembelian" class="form-select form-select-solid" data-allow-clear="true">
-                                    <option value="All"> Semua </option>
-                                    <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_metode_pembelian'] == "Shopee")) {
-                                                echo "selected";
-                                            } ?> value="Shopee">Shopee</option>
-                                    <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_metode_pembelian'] == "Whatsapp")) {
-                                                echo "selected";
-                                            } ?> value="Whatsapp">Whatsapp</option>
-                                </select>
-
-                            </div>
-                            <div class="col-lg-6">
                                 <label for="filterMetodepembayaran" class="form-label">Metode Pembayaran</label>
                                 <select name="filter_metode_pembayaran" class="form-select form-select-solid" data-allow-clear="true">
                                     <option value="All"> Semua </option>
@@ -757,9 +707,7 @@
                                 </select>
 
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
                             <div class="col-lg-6">
                                 <label for="filterStatusPembayaran" class="form-label">Status Pembayaran</label>
                                 <select name="filter_status_pembayaran" class="form-select form-select-solid" data-allow-clear="true">
@@ -772,6 +720,25 @@
                                             } ?> value="Sudah Bayar">Sudah Bayar</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="mb-3 row">
+
+                            <div class="col-lg-6">
+                                <label for="filterStatusTransaksi" class="form-label">Status Transaksi</label>
+                                <select name="filter_status_transaksi" class="form-select form-select-solid" data-allow-clear="true">
+                                    <option value="All"> Semua </option>
+                                    <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_transaksi'] == "Baru")) {
+                                                echo "selected";
+                                            } ?> value="Baru">Baru</option>
+                                    <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_transaksi'] == "Proses")) {
+                                                echo "selected";
+                                            } ?> value="Proses">Proses</option>
+                                    <option <?php if ((isset($_POST['submit_filter']) && $_POST['filter_status_transaksi'] == "Selesai")) {
+                                                echo "selected";
+                                            } ?> value="Selesai">Selesai</option>
+                                </select>
+                            </div>
+
                             <div class="col-lg-6">
                                 <label for="filterStatusBarang" class="form-label">Status Barang</label>
                                 <select name="filter_status_barang" class="form-select form-select-solid" data-allow-clear="true">

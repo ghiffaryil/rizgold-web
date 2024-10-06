@@ -23,9 +23,9 @@
       <!--  PRODUK -->
       <div class="row">
         <div class="col-lg-12">
-          <div class="box" style="height:500px; overflow-y:scroll;">
+          <div class="box">
             <div class="box-header">
-              <h4 class="box-title">Produk</h4>
+              <h4 class="box-title">Produk (Last 10 Data)</h4>
               <a class="box-controls pull-right d-md-flex d-none" style="cursor: pointer;" href="?menu=produk">
                 View All
               </a>
@@ -33,7 +33,7 @@
 
             <div class="box-body">
               <div class="table-responsive">
-                <table class="table table-borderless table-hover">
+                <table class="table table-borderless table-hover" id="example1">
                   <thead>
                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                       <th class="min-w-20px">No</th>
@@ -51,7 +51,7 @@
                     include "controller/produk/function/controller_produk.php";
                     $search_controller = new Search_Controller_Produk();
                     $filter_status = "Aktif";
-                    $data_hasil = $search_controller->select_search_filter($filter_status);
+                    $data_hasil = $search_controller->select_search_filter(filter_status: $filter_status, limit: 10,);
                     $nomor = 0;
 
                     foreach ($data_hasil as $data) {
@@ -102,7 +102,7 @@
             </div>
             <div class="box-body">
               <div class="table-responsive">
-                <table class="table table-borderless table-hover">
+                <table class="table table-borderless table-hover" id="example1">
                   <thead>
                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                       <th class="">No</th>
@@ -118,8 +118,7 @@
                     include "controller/mitra/controller_mitra.php";
                     $search_controller = new Search_Controller_Mitra();
                     $filter_status = isset($_GET['filter_status']) ? $_GET['filter_status'] : "Aktif";
-                    $filter = isset($_GET['filter']) ? $_GET['filter'] : "";
-                    $data_hasil = $search_controller->select_search_filter($filter_status, $filter);
+                    $data_hasil = $search_controller->select_search_filter(filter_status: $filter_status, limit: 10);
                     $nomor = 0;
 
                     foreach ($data_hasil as $data) {
@@ -166,7 +165,7 @@
               </div>
               <div class="box-body">
                 <div class="table-responsive">
-                  <table class="table table-borderless table-hover">
+                  <table class="table table-borderless table-hover" id="example1">
                     <thead>
                       <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                         <th class="min-w-20px">No</th>
@@ -180,8 +179,7 @@
                       include "controller/konten/controller_konten.php";
                       $search_controller = new Search_Controller_Konten();
                       $filter_status = isset($_GET['filter_status']) ? $_GET['filter_status'] : "Aktif";
-                      $filter = isset($_GET['filter']) ? $_GET['filter'] : "";
-                      $data_hasil = $search_controller->select_search_filter($filter_status, $filter);
+                      $data_hasil = $search_controller->select_search_filter(filter_status: $filter_status, limit: 10);
                       $nomor = 0;
 
                       foreach ($data_hasil as $data) {

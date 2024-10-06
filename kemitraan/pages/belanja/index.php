@@ -38,7 +38,7 @@
                 <div class="d-flex">
                     <div class="row">
                         <div class="col-lg-4">
-                            <img src="assets/images/produk_foto/<?php echo $edit['Foto_Produk'] ?>" class="w-100" />
+                            <img src="../dashboard/media/produk_foto/<?php echo $edit['Foto_Produk'] ?>" class="w-100" />
                         </div>
 
                         <div class="col-lg-8">
@@ -87,7 +87,7 @@
                                             data-foto-produk="<?php echo $edit['Foto_Produk']; ?>"
                                             data-harga-produk="<?php echo $Harga_Produk; ?>"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#kt_modal_add_user"
+                                            data-bs-target="#modal-pilih-produk"
                                             class="btn btn-primary">
                                             <i class="ki-duotone ki-handcart fs-3 text-white"></i>
                                         </button>
@@ -217,7 +217,7 @@
                 </div>
             </div>
             <div class="card mt-4">
-                <div class="card-body py-4">
+                <div class="card-body px-4">
                     <div class="row">
                         <?php
                         if (isset($_POST['submit_button_search'])) {
@@ -226,7 +226,7 @@
                             $Text_Input_Search = "";
                         }
 
-                        $search_controller = new Search_Controller();
+                        $search_controller = new Search_Controller_Produk();
                         $filter_status = "Aktif";
                         $data_hasil = $search_controller->select_search_filter($filter_status, $Text_Input_Search);
 
@@ -237,11 +237,11 @@
                         ?>
                             <div class="col-lg-4 mb-4 d-flex">
                                 <div class="card flex-fill" style="border:1px solid #ccc;">
-                                    <img src="assets/images/produk_foto/<?php echo $data['Foto_Produk'] ?>" class="card-img-top" style="object-fit: cover; height: 350px;" alt="<?php echo $data['Nama_Produk']; ?>">
+                                    <img src="../dashboard/media/produk_foto/<?php echo $data['Foto_Produk'] ?>" class="card-img-top" style="object-fit: cover; height: 350px;" alt="<?php echo $data['Nama_Produk']; ?>">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <h2 class="card-title"><?php echo $data['Nama_Produk']; ?></h2>
+                                                <h3 class="card-title"><?php echo $data['Nama_Produk']; ?></h3>
                                             </div>
                                         </div>
                                         <div class="row mb-4">
@@ -253,11 +253,11 @@
                                                 <p class="my-1 fs-6 text-muted">Kategori : <?php echo $data_kategori['Nama_Kategori']; ?></p>
                                                 <p class="my-1 fs-6">Izin BPOM : <?php echo $data['Izin_BPOM']; ?></p>
                                             </div>
-                                        </div>
-                                        <div class="row mt-4">
-                                            <div class="col-lg-8">
-                                                <label class="text-muted" for=""> Harga </label>
-                                                <h4 class="card-text">
+                                        
+
+                                            <div class="col-lg-12 mb-4">
+                                                <h4 class="card-text my-1 fs-6">
+                                                    <small class="text-muted">Harga</small> &nbsp; 
                                                     <?php
                                                     if ($u_Status_Kemitraan == "Distributor") {
                                                         echo $a_format_angka->rupiah($data['Harga_Distributor']);
@@ -269,7 +269,8 @@
                                                     ?>
                                                 </h4>
                                             </div>
-                                            <div class="col-lg-4 text-end">
+
+                                            <div class="d-flex row mt-4 text-center" style="width:100%">
                                                 <button
                                                     data-id="<?php echo $encode_id; ?>"
                                                     data-id-pengguna="<?php echo $encode_id_pengguna; ?>"
@@ -278,10 +279,9 @@
                                                     data-foto-produk="<?php echo $data['Foto_Produk']; ?>"
                                                     data-harga-produk="<?php echo $Harga_Produk; ?>"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#kt_modal_add_user"
-                                                    class="btn btn-primary text-white">
-
-                                                    <span class="fs-5 fw-bold">Beli </span>
+                                                    data-bs-target="#modal-pilih-produk"
+                                                    class="btn btn-primary bgn-block text-white">
+                                                    <span class="">Tambahkan ke Keranjang</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -297,10 +297,10 @@
         <?php } ?>
 
         </div>
-        <div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="modal-pilih-produk" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered mw-750px">
                 <div class="modal-content">
-                    <div class="modal-header pb-1 pt-5" id="kt_modal_add_user_header">
+                    <div class="modal-header pb-1 pt-5" id="modal-pilih-produk_header">
                         <h2 class="fw-bold">Beli Produk</h2>
                         <div class="btn btn-icon btn-sm btn-active-icon-danger" data-bs-dismiss="modal">
                             <i class="ki-duotone ki-cross fs-1">
@@ -309,9 +309,9 @@
                             </i>
                         </div>
                     </div>
-                    <form id="kt_modal_add_user_form" class="form" method="POST" action="controller/transaksi/fetch/fetch_pembelian_produk.php">
+                    <form id="modal-pilih-produk_form" class="form" method="POST" action="controller/transaksi/fetch/fetch_pembelian_produk.php">
                         <div class="modal-body scroll-y mx-5 mx-xl-4">
-                            <div class="d-flex flex-column scroll-y me-n7 pe-4" id="kt_modal_add_user_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_user_header" data-kt-scroll-wrappers="#kt_modal_add_user_scroll" data-kt-scroll-offset="245px">
+                            <div class="d-flex flex-column scroll-y me-n7 pe-4" id="modal-pilih-produk_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modal-pilih-produk_header" data-kt-scroll-wrappers="#modal-pilih-produk_scroll" data-kt-scroll-offset="245px">
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <img class="" style="height: 275px; width: 100%; object-fit:cover" id="modal-form-foto-produk">
@@ -435,8 +435,8 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Reference to the modal form
-                var form = document.getElementById('kt_modal_add_user_form');
-                var formModal = document.getElementById('kt_modal_add_user');
+                var form = document.getElementById('modal-pilih-produk_form');
+                var formModal = document.getElementById('modal-pilih-produk');
 
                 // Prevent form submission when pressing "Enter"
                 form.addEventListener('keydown', function(event) {
@@ -456,7 +456,7 @@
 
                     // Fetch the data from the server based on the roleId
                     document.getElementById("modal-form-id-pengguna").value = idPengguna;
-                    document.getElementById("modal-form-foto-produk").src = "assets/images/produk_foto/" + fotoProduk;
+                    document.getElementById("modal-form-foto-produk").src = "../dashboard/media/produk_foto/" + fotoProduk;
                     document.getElementById("modal-form-id-produk").value = idProduk;
                     document.getElementById("modal-form-nama-produk").value = namaProduk;
                     document.getElementById("modal-form-harga-produk").value = formatRupiah(hargaProduk);
