@@ -96,14 +96,14 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                 <div class="flex-lg-row-fluid ms-lg-15">
                     <div class="card pt-4 mb-xl-9">
                         <div class="card-header border-0">
-                            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-8">
+                            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-1 fs-4 fw-semibold">
                                 <li class="nav-item">
                                     <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#tab_profile">Edit Profile</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true" data-bs-toggle="tab" href="#tab_edit_password">Edit Password</a>
                                 </li>
-                                <li class="nav-item d-none">
+                                <li class="nav-item">
                                     <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true" data-bs-toggle="tab" href="#tab_saldo">Saldo</a>
                                 </li>
                             </ul>
@@ -112,7 +112,7 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                     <div class="card pt-4 mb-6 mb-xl-9">
                         <div class="tab-content" id="myTabContent">
 
-                        <!-- Tab Profile -->
+                            <!-- Tab Profile -->
                             <div class="tab-pane fade show active" id="tab_profile" role="tabpanel">
                                 <div class="card mb-xl-9">
                                     <div class="card-header border-0">
@@ -278,11 +278,10 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                             </div>
 
                             <!-- Tab Saldo -->
-                            <div class="tab-pane fade d-none" id="tab_saldo" role="tabpanel">
+                            <div class="tab-pane fade" id="tab_saldo" role="tabpanel">
                                 <div class="card-header border-0">
                                     <div class="card-title">
-                                        <h2>Saldo Anda : <font class="text-danger">Rp 0,-</font>
-                                        </h2>
+                                        <h2 class="text-muted">Saldo Anda : Rp 0,-</h2>
                                     </div>
                                     <div class="card-toolbar">
                                         <?php
@@ -301,14 +300,15 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                         // Create the WhatsApp link
                                         $Link_Whatsapp_Top_Up = "https://wa.me/$Nomor_Admin_Pembelian?text=$Pesan_Otomatis_Pembelian";
                                         ?>
-                                        <a href="<?php echo $Link_Whatsapp_Top_Up?>" target="_blank" class="btn btn-danger"> Top Up Saldo</a>
+                                        <!-- <a href="< ?php echo $Link_Whatsapp_Top_Up?>" target="_blank" class="btn btn-light" disabled> Top Up Saldo</a> -->
+                                        <button class="btn btn-light" disabled> Top Up Saldo</button>
                                     </div>
                                 </div>
 
                                 <div class="card-body pt-0 pb-5">
                                     <hr>
-                                    <div class="mb-7">
-                                        <h4>History Saldo</h4>
+                                    <div class="mb-7 text-center">
+                                        <h4>Fitur ini akan segera hadir</h4>
                                     </div>
                                 </div>
                             </div>
