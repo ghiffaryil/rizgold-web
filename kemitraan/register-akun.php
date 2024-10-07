@@ -5,9 +5,14 @@ if (isset($_POST['submit_register_akun'])) {
 	// IDENTITAS PERUSAHAAN
 	$Status_Kemitraan = $_POST['Inputan_Status_Kemitraan'];
 	$Provinsi = $_POST['Inputan_Provinsi'];
+	$Id_Provinsi = $_POST['Inputan_Id_Provinsi'];
 	$Kabupaten_Kota = $_POST['Inputan_Kabupaten_Kota'];
+	$Id_Kabupaten_Kota = $_POST['Inputan_Id_Kabupaten_Kota'];
 	$Kecamatan = $_POST['Inputan_Kecamatan'];
+	$Id_Kecamatan = $_POST['Inputan_Id_Kecamatan'];
 	$Kelurahan = $_POST['Inputan_Kelurahan'];
+	$Id_Kelurahan = $_POST['Inputan_Id_Kelurahan'];
+
 	$Nama_Perusahaan = $_POST['Inputan_Nama_Perusahaan'];
 	$No_Telepon_Perusahaan = $_POST['Inputan_No_Telepon_Perusahaan'];
 	$Email_Perusahaan = $_POST['Inputan_Email_Perusahaan'];
@@ -42,24 +47,38 @@ if (isset($_POST['submit_register_akun'])) {
 	$randomNumber = rand(100, 999);
 
 	// BACA DATA TERAKHIR
-	$a_result_terbaru = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_organisasi", "Id_Organisasi");
-	if ($a_result_terbaru['Status'] == "Sukses") {
-		$Id_Auto_Increment = $a_result_terbaru['Hasil'][0]['Id_Organisasi'] + 1;
+	$a_result_organisasi_terbaru = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_organisasi", "Id_Organisasi");
+	if ($a_result_organisasi_terbaru['Status'] == "Sukses") {
+		$Id_Auto_Increment_Organisasi = $a_result_organisasi_terbaru['Hasil'][0]['Id_Organisasi'] + 1;
 	} else {
-		$Id_Auto_Increment = 1;
+		$Id_Auto_Increment_Organisasi = 1;
+	}
+	
+	$a_result_pengguna_terbaru = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_pengguna", "Id_Pengguna");
+	if ($a_result_pengguna_terbaru['Status'] == "Sukses") {
+		$Id_Auto_Increment_Pengguna = $a_result_pengguna_terbaru['Hasil'][0]['Id_Pengguna'] + 1;
+	} else {
+		$Id_Auto_Increment_Pengguna = 1;
 	}
 
-	$Organisasi_Kode = $Initial . $dateTime . $randomNumber . $Id_Auto_Increment;
+	$Organisasi_Kode = $Initial . $dateTime . $randomNumber . $Id_Auto_Increment_Organisasi;
 
 	$form_field = array(
 		"Organisasi_Kode",
+		"Id_Pengguna",
 		"Nama_Perusahaan",
 		"No_Telepon_Perusahaan",
 		"Email_Perusahaan",
+		
 		"Provinsi",
+		"Id_Provinsi",
 		"Kabupaten_Kota",
+		"Id_Kabupaten_Kota",
 		"Kecamatan",
+		"Id_Kecamatan",
 		"Kelurahan",
+		"Id_Kelurahan",
+
 		"Alamat_Perusahaan",
 		"Status_Kemitraan",
 		"Waktu_Simpan_Data",
@@ -68,13 +87,20 @@ if (isset($_POST['submit_register_akun'])) {
 	);
 	$form_value = array(
 		"$Organisasi_Kode",
+		"$Id_Auto_Increment_Pengguna",
 		"$Nama_Perusahaan",
 		"$No_Telepon_Perusahaan",
 		"$Email_Perusahaan",
+
 		"$Provinsi",
+		"$Id_Provinsi",
 		"$Kabupaten_Kota",
+		"$Id_Kabupaten_Kota",
 		"$Kecamatan",
+		"$Id_Kecamatan",
 		"$Kelurahan",
+		"$Id_Kelurahan",
+
 		"$Alamat_Perusahaan",
 		"$Status_Kemitraan",
 		"$Waktu_Sekarang",
@@ -89,6 +115,7 @@ if (isset($_POST['submit_register_akun'])) {
 		$_Password = $a_hash_password->hash_password($_POST['Password']);
 
 		$form_field = array(
+			"Id_Pengguna",
 			"Organisasi_Kode",
 			"Email",
 			"Username",
@@ -107,6 +134,7 @@ if (isset($_POST['submit_register_akun'])) {
 			"Status"
 		);
 		$form_value = array(
+			"$Id_Auto_Increment_Pengguna",
 			"$Organisasi_Kode",
 			"$Email",
 			"$_POST[Username]",
@@ -215,9 +243,13 @@ if (isset($_POST['submit_register_akun'])) {
 								<div>
 									<input type="text" name="Inputan_Status_Kemitraan" value="<?php echo $_POST['Status_Kemitraan']; ?>" readonly required style="display:none">
 									<input type="text" name="Inputan_Provinsi" value="<?php echo $_POST['Provinsi']; ?>" readonly required style="display:none">
+									<input type="text" name="Inputan_Id_Provinsi" value="<?php echo $_POST['Id_Provinsi']; ?>" readonly required style="display:none">
 									<input type="text" name="Inputan_Kabupaten_Kota" value="<?php echo $_POST['Kabupaten_Kota']; ?>" readonly required style="display:none">
+									<input type="text" name="Inputan_Id_Kabupaten_Kota" value="<?php echo $_POST['Id_Kabupaten_Kota']; ?>" readonly required style="display:none">
 									<input type="text" name="Inputan_Kecamatan" value="<?php echo $_POST['Kecamatan']; ?>" readonly required style="display:none">
+									<input type="text" name="Inputan_Id_Kecamatan" value="<?php echo $_POST['Id_Kecamatan']; ?>" readonly required style="display:none">
 									<input type="text" name="Inputan_Kelurahan" value="<?php echo $_POST['Kelurahan']; ?>" readonly required style="display:none">
+									<input type="text" name="Inputan_Id_Kelurahan" value="<?php echo $_POST['Id_Kelurahan']; ?>" readonly required style="display:none">
 									<input type="text" name="Inputan_Nama_Perusahaan" value="<?php echo $_POST['Nama_Perusahaan']; ?>" readonly required style="display:none">
 									<input type="text" name="Inputan_No_Telepon_Perusahaan" value="<?php echo $_POST['No_Telepon_Perusahaan']; ?>" readonly required style="display:none">
 									<input type="text" name="Inputan_Email_Perusahaan" value="<?php echo $_POST['Email_Perusahaan']; ?>" readonly required style="display:none">

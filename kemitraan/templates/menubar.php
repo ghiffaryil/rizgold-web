@@ -24,7 +24,7 @@
                                                                                                                                     echo "here";
                                                                                                                                 } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
                         <span class="menu-link">
-                            <span class="menu-title">Produk</span>
+                            <span class="menu-title">Belanja</span>
                             <span class="menu-arrow "></span>
                         </span>
                         <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown px-lg-2 py-lg-4 w-lg-200px">
@@ -39,14 +39,14 @@
                                             <span class="path5"></span>
                                         </i>
                                     </span>
-                                    <span class="menu-title">Data Produk</span>
+                                    <span class="menu-title">Daftar Produk</span>
                                 </a>
                             </div>
                         </div>
                     </div>
                 <?php } ?>
 
-                <?php if ($Akses_Laporan == "Iya") { ?>
+                <?php if ($Akses_Konten == "Iya") { ?>
                     <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && ($_GET['menu'] == "konten")) {
                                                                                                                                     echo "here";
                                                                                                                                 } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
@@ -107,7 +107,7 @@
                     </div>
                 <?php } ?>
 
-                <?php if ($Akses_Konten == "Iya") { ?>
+                <?php if ($Akses_Laporan == "Iya") { ?>
                     <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="<?php if ((isset($_GET['menu'])) && ($_GET['menu'] == "transaksi")) {
                                                                                                                                     echo "here";
                                                                                                                                 } ?> menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">

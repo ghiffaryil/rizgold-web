@@ -116,40 +116,136 @@
 
                                 <form id="" method="POST" enctype="multipart/form-data">
                                     <div class="box-body">
-                                        <div class="d-flex row">
+                                        <hr>
+                                        <div class="">
+                                            <div class="form-group row">
+                                                <div class="col-lg-9">
+                                                    <h3>Data Perusahaan</h3>
+                                                </div>
+                                                <div class="col-lg-3 text-right">
+                                                    <a class="btn btn-warning btn-sm" href="?menu=perusahaan&edit&id=<?php echo $a_hash->encode($edit['Organisasi_Kode'], "perusahaan"); ?>"> <i class="fa fa-edit"></i> Edit Data Perusahaan</a>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-12">
+                                                <div class="form-group row">
+                                                    <div class="col-lg-6">
+                                                        <label class="fw-semibold fs-6 mb-2">Nama Perusahaan</label>
+                                                        <div class=""><?php echo $edit_perusahaan['Nama_Perusahaan']; ?></div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label class="fw-semibold fs-6 mb-2">Organisasi Kode</label>
+                                                        <div class=""><?php echo $edit_perusahaan['Organisasi_Kode']; ?></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <div class="col-lg-6">
+                                                        <label class="fw-semibold fs-6 mb-2">Nomor Telepon Perusahaan</label>
+                                                        <div class=""><?php echo $edit_perusahaan['No_Telepon_Perusahaan']; ?></div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <label class="fw-semibold fs-6 mb-2">Email Perusahaan</label>
+                                                        <div class=""><?php echo $edit_perusahaan['Email_Perusahaan']; ?></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <div class="col-lg-6">
+                                                        <label class="fw-semibold fs-6 mb-2">Status Kemitraan</label>
+                                                        <div class=""><?php echo $edit_perusahaan['Status_Kemitraan']; ?></div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <label class="fw-semibold fs-6 mb-2">Status Active</label>
+                                                        <div class=""><?php echo $edit_perusahaan['Is_Active']; ?></div>
+                                                    </div>
+                                                </div>
+
+                                                <hr>
+
+                                                <div class="form-group row">
+                                                    <div class="col-lg-6">
+                                                        <label class="fw-semibold fs-6 mb-2">Provinsi</label>
+                                                        <div class=""><?php echo $edit_perusahaan['Provinsi']; ?></div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label class="fw-semibold fs-6 mb-2">Kota / Kabupaten</label>
+                                                        <div class=""><?php echo $edit_perusahaan['Kabupaten_Kota']; ?></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <div class="col-lg-6">
+                                                        <label class="fw-semibold fs-6 mb-2">Kecamatan</label>
+                                                        <div class=""><?php echo $edit_perusahaan['Kecamatan']; ?></div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label class="fw-semibold fs-6 mb-2">Kelurahan</label>
+                                                        <div class=""><?php echo $edit_perusahaan['Kelurahan']; ?></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <div class="col-lg-12">
+                                                        <label class="required fw-semibold fs-6 mb-2">Alamat Perusahaan</label>
+                                                        <div class=""><?php echo $edit_perusahaan['Alamat_Perusahaan']; ?></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
                                             <hr>
                                             <div class="col-lg-9">
                                                 <h3>Saldo : </h3>
                                             </div>
-                                            <div class="col-lg-3 text-right">
-                                                <button class="btn btn-success btn-sm"> Riwayat Transaksi Saldo</button>
+                                            <div class="col-lg-3">
+                                                <br>
+                                                <a href=""> <i class="fa fa-eye"></i> Riwayat Transaksi Saldo</a>
                                             </div>
-
                                         </div>
+
+                                        <div class="form-group row">
+                                            <hr>
+                                            <div class="col-lg-9">
+                                                <h3>Data Mitra</h3>
+                                            </div>
+                                        </div>
+
                                         <div class="form-grup row">
                                             <hr>
-                                            <div class="col-lg-4">
-                                                <label class="mb-5">Foto Mitra</label>
-                                                <?php
-                                                if (isset($_GET['edit'])) {
-                                                    if ($edit['Foto'] <> "") {
-                                                ?>
-                                                        <img src="media/kemitraan_foto/<?php echo $edit['Foto'] ?>" style="width: 100%; height:350px; object-fit: cover;" />
-                                                <?php
-                                                    }
-                                                }
-                                                ?>
-                                                <input type="file" name="Foto" accept=".png, .jpg, .jpeg" class="form-control" />
-                                                <div class="form-text">File yang diizinkan types: png, jpg, jpeg.</div>
-                                            </div>
+                                            <div class="col-lg-12">
 
-                                            <div class="col-lg-8">
+                                                <?php if (isset($_GET['edit'])) { ?>
+                                                    <div class="">
+                                                        <input type="hidden" readonly name="Organisasi_Kode" value="<?php if (isset($_GET["edit"])) {                        echo $edit['Organisasi_Kode'];                    } ?>" />
+                                                    </div>
+                                                <?php } ?>
+
+                                                <div class="form-group row d-none">
+                                                    <div class="col-lg-4">
+                                                        <label class="mb-5">Foto Mitra</label>
+                                                        <?php
+                                                        if (isset($_GET['edit'])) {
+                                                            if ($edit['Foto'] <> "") {
+                                                        ?>
+                                                                <img src="media/kemitraan_foto/<?php echo $edit['Foto'] ?>" style="width: 100%; height:350px; object-fit: cover;" />
+                                                        <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                        <input type="file" name="Foto" accept=".png, .jpg, .jpeg" class="form-control" />
+                                                        <div class="form-text">File yang diizinkan types: png, jpg, jpeg.</div>
+                                                    </div>
+                                                </div>
+
                                                 <div class="form-group row">
                                                     <div class="col-lg-6">
                                                         <label class="fw-semibold fs-6 mb-2">Username*</label>
-                                                        <input <?php if (isset($_GET['tambah'])) { ?>required <?php } ?> name="Username" type="text" pattern="[a-z0-9_]*" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                                                                                                                                                                                        echo $edit['Username'];
-                                                                                                                                                                                                                                                                                                                    } ?>" />
+                                                        <input <?php if (isset($_GET['tambah'])) { ?>required <?php } ?> name="Username" type="text" pattern="[a-z0-9_]*" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9_]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {                    echo $edit['Username'];                    } ?>" />
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label class="fw-semibold fs-6 mb-2">Password*</label>
@@ -161,14 +257,11 @@
                                                     <div class="col-lg-6">
                                                         <label class="fw-semibold fs-6 mb-2">Nama Depan*</label>
                                                         <input required name="Nama_Depan" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                                                                                                                                echo $edit['Nama_Depan'];
-                                                                                                                                                                                                                                                            } ?>" />
+                                                                    echo $edit['Nama_Depan'];} ?>" />
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label class="fw-semibold fs-6 mb-2">Nama Belakang*</label>
-                                                        <input required name="Nama_Belakang" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                                                                                                                                    echo $edit['Nama_Belakang'];
-                                                                                                                                                                                                                                                                } ?>" />
+                                                        <input required name="Nama_Belakang" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {echo $edit['Nama_Belakang'];} ?>" />
                                                     </div>
                                                 </div>
 
@@ -187,371 +280,76 @@
                                                     <div class="col-lg-6">
                                                         <label class="fw-semibold fs-6 mb-2">Nomor Handphone*</label>
                                                         <input name="No_Handphone" type="text" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                                                                                                            echo $edit['No_Handphone'];
-                                                                                                                                                                                                                                        } ?>" />
+                                                echo $edit['No_Handphone'];                            } ?>" />
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row">
                                                     <div class="col-lg-6">
                                                         <label class="fw-semibold fs-6 mb-2">Tempat Lahir</label>
-                                                        <input name="Tempat_Lahir" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                                                                                                                            echo $edit['Tempat_Lahir'];
-                                                                                                                                                                                                                                                        } ?>" />
+                                                        <input name="Tempat_Lahir" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {                        echo $edit['Tempat_Lahir'];
+                                                                            } ?>" />
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label class="fw-semibold fs-6 mb-2">Tanggal Lahir</label>
-                                                        <input name="Tanggal_Lahir" type="date" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                                echo $edit['Tanggal_Lahir'];
-                                                                                                                                                            } ?>" />
+                                                        <input name="Tanggal_Lahir" type="date" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {                    echo $edit['Tanggal_Lahir'];                } ?>" />
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row">
                                                     <div class="col-lg-6">
                                                         <label class="fw-semibold fs-6 mb-2">No KTP</label>
-                                                        <input name="No_KTP" type="text" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                                                                                                    echo $edit['No_KTP'];
-                                                                                                                                                                                                                                } ?>" />
+                                                        <input name="No_KTP" type="text" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {                                                    echo $edit['No_KTP'];        } ?>" />
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label class="fw-semibold fs-6 mb-2">No NPWP</label>
-                                                        <input name="No_NPWP" type="text" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                            echo $edit['No_NPWP'];
-                                                                                                                                                        } ?>" />
+                                                        <input name="No_NPWP" type="text" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {                echo $edit['No_NPWP'];            } ?>" />
                                                     </div>
                                                 </div>
 
                                                 <hr>
 
                                                 <div class="form-group row">
-                                                    <div class="col-lg-12">
+                                                    <div class="col-lg-6">
                                                         <label class="required fw-semibold fs-6 mb-2">Alamat*</label>
-                                                        <textarea name="Alamat" class="form-control form-control-solid mb-3 mb-lg-0" rows="3"><?php if (isset($_GET["edit"])) {
-                                                                                                                                                    echo $edit['Alamat'];
-                                                                                                                                                } ?></textarea>
+                                                        <textarea name="Alamat" class="form-control form-control-solid mb-3 mb-lg-0" rows="3"><?php if (isset($_GET["edit"])) {        echo $edit['Alamat'];    } ?></textarea>
                                                     </div>
-                                                </div>
 
-                                                <hr>
-
-                                                <div class="mb-7">
-                                                    <label class="required fw-semibold fs-6 mb-5">Hak Akses</label>
-                                                    <div class="my-15">
-                                                        <div class="fw-bold"> <input type="checkbox" value="Iya" style="cursor: pointer; position: relative; left: 0; opacity: 1;" <?php if (isset($_GET['edit'])) {
-                                                                                                                                                                                        if ($edit['Akses_Profile'] == "Iya") {
-                                                                                                                                                                                            echo "checked";
-                                                                                                                                                                                        }
-                                                                                                                                                                                    } ?>> &nbsp; Edit Profile</div>
-                                                        <div class="text-muted">User mendapat hak akses untuk mengedit profile</div>
-                                                    </div>
-                                                    <div class="my-15">
-                                                        <div class="fw-bold"> <input type="checkbox" value="Iya" style="cursor: pointer; position: relative; left: 0; opacity: 1;" <?php if (isset($_GET['edit'])) {
-                                                                                                                                                                                        if ($edit['Akses_Pembelian'] == "Iya") {
-                                                                                                                                                                                            echo "checked";
-                                                                                                                                                                                        }
-                                                                                                                                                                                    } ?>> &nbsp; Pembelian</div>
-                                                        <div class="text-muted">User mendapat hak akses untuk melakukan pembelian produk</div>
-                                                    </div>
-                                                    <div class="my-15">
-                                                        <div class="fw-bold"> <input type="checkbox" value="Iya" style="cursor: pointer; position: relative; left: 0; opacity: 1;" <?php if (isset($_GET['edit'])) {
-                                                                                                                                                                                        if ($edit['Akses_Laporan'] == "Iya") {
-                                                                                                                                                                                            echo "checked";
-                                                                                                                                                                                        }
-                                                                                                                                                                                    } ?>> &nbsp; Laporan</div>
-                                                        <div class="text-muted">User mendapat hak akses untuk mendownload laporan</div>
-                                                    </div>
-                                                    <div class="my-15">
-                                                        <div class="fw-bold"> <input type="checkbox" value="Iya" style="cursor: pointer; position: relative; left: 0; opacity: 1;" <?php if (isset($_GET['edit'])) {
-                                                                                                                                                                                        if ($edit['Akses_Konten'] == "Iya") {
-                                                                                                                                                                                            echo "checked";
-                                                                                                                                                                                        }
-                                                                                                                                                                                    } ?>> &nbsp; Konten</div>
-                                                        <div class="text-muted">User mendapat hak akses untuk mengambil file-file konten</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <div class="col-lg-12">
-                                                <hr>
-                                                <h3>Data Perusahaan</h3>
-                                            </div>
-
-                                            <div class="col-lg-12">
-                                                <div class="form-group row">
                                                     <div class="col-lg-6">
-                                                        <label class="fw-semibold fs-6 mb-2">Nama Perusahaan*</label>
-                                                        <input required name="Nama_Perusahaan" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                                                                                                                                        echo $edit_perusahaan['Nama_Perusahaan'];
-                                                                                                                                                                                                                                                                    } ?>" />
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <label class="fw-semibold fs-6 mb-2">Nomor Telepon Perusahaan*</label>
-                                                        <input required name="No_Telepon_Perusahaan" type="text" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                                                                                                                            echo $edit_perusahaan['No_Telepon_Perusahaan'];
-                                                                                                                                                                                                                                                        } ?>" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-                                                    <div class="col-lg-6">
-                                                        <label class="fw-semibold fs-6 mb-2">Email Perusahaan*</label>
-                                                        <input required name="Email_Perusahaan" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" value="<?php if (isset($_GET["edit"])) {
-                                                                                                                                                                                                                                                                        echo $edit_perusahaan['Email_Perusahaan'];
-                                                                                                                                                                                                                                                                    } ?>" />
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <label class="fw-semibold fs-6 mb-2">Status Kemitraan*</label>
-                                                        <select name="Status_Kemitraan" id="" class="form-select">
-                                                            <option <?php if ((isset($_GET["edit"])) and ($edit_perusahaan['Status_Kemitraan'] == "Distributor")) {
-                                                                        echo "selected";
-                                                                    } ?> value="Distributor">Distributor</option>
-                                                            <option <?php if ((isset($_GET["edit"])) and ($edit_perusahaan['Status_Kemitraan'] == "Agen")) {
-                                                                        echo "selected";
-                                                                    } ?> value="Agen">Agen</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group row">
-
-                                                    <script>
-                                                        document.addEventListener('DOMContentLoaded', function() {
-                                                            var distributorRadio = document.getElementById('status_kemitraan_distributor');
-                                                            var agenRadio = document.getElementById('staus_kemitraan_agen');
-                                                            var distributorCheckbox = document.getElementById('checkbox_for_distributor');
-                                                            var agenCheckbox = document.getElementById('checkbox_for_agen');
-
-                                                            function validateCheckbox() {
-                                                                if (distributorRadio.checked && !distributorCheckbox.checked) {
-                                                                    distributorCheckbox.required = true;
-                                                                } else {
-                                                                    distributorCheckbox.required = false;
-                                                                }
-
-                                                                if (agenRadio.checked && !agenCheckbox.checked) {
-                                                                    agenCheckbox.required = true;
-                                                                } else {
-                                                                    agenCheckbox.required = false;
-                                                                }
-                                                            }
-
-                                                            distributorRadio.addEventListener('change', validateCheckbox);
-                                                            agenRadio.addEventListener('change', validateCheckbox);
-                                                            distributorCheckbox.addEventListener('change', validateCheckbox);
-                                                            agenCheckbox.addEventListener('change', validateCheckbox);
-                                                            validateCheckbox();
-                                                        });
-                                                    </script>
-
-                                                    <div class="">
-                                                        <div class="row">
-
-                                                            <div class="col-lg-6 mb-7">
-                                                                <label class="required form-label fw-bold text-gray-900 fs-6">Provinsi</label>
-                                                                <select id="select-provinsi" class="form-control form-select" data-control="select2" data-hide-search="false" data-placeholder="Pilih Provinsi" disabled onchange="get_kabupaten_kota(); set_provinsi(this)">
-                                                                    <option>Pilih Provinsi</option>
-                                                                </select>
-                                                                <script>
-                                                                    document.addEventListener('DOMContentLoaded', function() {
-                                                                        fetch('https://ghiffaryil.github.io/api-wilayah-indonesia//api/provinces.json')
-                                                                            .then(response => response.json())
-                                                                            .then(provinces => {
-                                                                                const selectProvinsi = document.getElementById('select-provinsi');
-                                                                                selectProvinsi.innerHTML = '<option></option>'; // Clear the 'Loading data ...' option
-                                                                                provinces.forEach(province => {
-                                                                                    const option = document.createElement('option');
-                                                                                    option.value = province.id;
-                                                                                    option.textContent = province.name;
-                                                                                    selectProvinsi.appendChild(option);
-                                                                                });
-                                                                                selectProvinsi.disabled = false; // Enable the select element
-                                                                            })
-                                                                            .catch(error => console.error('Error fetching provinces:', error));
-                                                                    });
-                                                                </script>
-                                                                <input type="hidden" readonly name="Provinsi" id="provinsi-name">
-                                                                <script>
-                                                                    function set_provinsi(selectElement) {
-                                                                        const selectedOption = selectElement.options[selectElement.selectedIndex].textContent;
-                                                                        document.getElementById('provinsi-name').value = selectedOption;
-                                                                    };
-                                                                </script>
-                                                            </div>
-
-                                                            <div class="col-lg-6">
-                                                                <label class="required form-label fw-bold text-gray-900 fs-6">Kota / Kabupaten</label>
-                                                                <select id="select-kabupaten-kota" class="form-control form-select" data-control="select2" data-hide-search="false" data-placeholder="Pilih Kota / Kabupaten" disabled onchange="get_kecamatan(); set_kabupaten_kota(this);">
-                                                                    <option>Pilih Kabupaten/Kota</option>
-                                                                </select>
-                                                                <script>
-                                                                    function get_kabupaten_kota() {
-                                                                        const selectProvinsi = document.getElementById('select-provinsi');
-                                                                        const selectKabupatenKota = document.getElementById('select-kabupaten-kota');
-                                                                        const selectKecamatan = document.getElementById('select-kecamatan');
-                                                                        const selectKelurahan = document.getElementById('select-kelurahan');
-
-                                                                        const provinsiId = selectProvinsi.value;
-                                                                        selectKabupatenKota.innerHTML = '<option>Loading data ...</option>';
-                                                                        selectKecamatan.innerHTML = '<option></option>';
-                                                                        selectKelurahan.innerHTML = '<option></option>';
-
-                                                                        selectKabupatenKota.disabled = true;
-                                                                        selectKecamatan.disabled = true;
-                                                                        selectKelurahan.disabled = true;
-
-                                                                        if (!provinsiId) return;
-
-                                                                        fetch(`https://ghiffaryil.github.io/api-wilayah-indonesia//api/regencies/${provinsiId}.json`)
-                                                                            .then(response => response.json())
-                                                                            .then(regencies => {
-                                                                                selectKabupatenKota.innerHTML = '<option></option>'; // Clear the 'Loading data ...' option
-                                                                                regencies.forEach(regency => {
-                                                                                    const option = document.createElement('option');
-                                                                                    option.value = regency.id;
-                                                                                    option.textContent = regency.name;
-                                                                                    selectKabupatenKota.appendChild(option);
-                                                                                });
-                                                                                selectKabupatenKota.disabled = false; // Enable the select element
-                                                                            })
-                                                                            .catch(error => console.error('Error fetching regencies:', error));
-
-                                                                    }
-                                                                </script>
-                                                                <input type="hidden" readonly name="Kabupaten_Kota" id="kabupaten-kota-name">
-                                                                <script>
-                                                                    function set_kabupaten_kota(selectElement) {
-                                                                        const selectedOption = selectElement.options[selectElement.selectedIndex].textContent;
-                                                                        document.getElementById('kabupaten-kota-name').value = selectedOption;
-                                                                    };
-                                                                </script>
-                                                            </div>
+                                                        <label class="required fw-semibold fs-6 mb-5">Hak Akses</label>
+                                                        <div class="my-15">
+                                                            <div class="fw-bold"> <input name="Akses_Profile" type="checkbox" value="Iya" style="cursor: pointer; position: relative; left: 0; opacity: 1;" <?php if (isset($_GET['edit'])) {if ($edit['Akses_Profile'] == "Iya") {echo "checked";}} ?>> &nbsp; Edit Profile</div>
+                                                            <div class="text-muted">User mendapat hak akses untuk mengedit profile</div>
                                                         </div>
-
-                                                        <div class="row">
-                                                            <div class="col-lg-6 mb-7">
-                                                                <label class="required form-label fw-bold text-gray-900 fs-6">Kecamatan</label>
-                                                                <select id="select-kecamatan" class="form-control form-select" data-control="select2" data-hide-search="false" data-placeholder="Pilih Kecamatan" disabled onchange="get_kelurahan(); set_kecamatan(this);">
-                                                                    <option>Pilih Kecamatan</option>
-                                                                </select>
-                                                                <script>
-                                                                    function get_kecamatan() {
-
-                                                                        const selectProvinsi = document.getElementById('select-provinsi');
-                                                                        const selectKabupatenKota = document.getElementById('select-kabupaten-kota');
-                                                                        const kabupatenKotaId = selectKabupatenKota.value;
-
-                                                                        const selectKecamatan = document.getElementById('select-kecamatan');
-                                                                        const selectKelurahan = document.getElementById('select-kelurahan');
-
-                                                                        selectKecamatan.disabled = true;
-                                                                        selectKelurahan.disabled = true;
-
-                                                                        selectKecamatan.innerHTML = '<option>Loading data ...</option>'; // Clear previous options
-                                                                        selectKelurahan.innerHTML = '<option></option>'; // Clear previous options
-
-
-                                                                        if (!kabupatenKotaId) return;
-
-                                                                        fetch(`https://ghiffaryil.github.io/api-wilayah-indonesia//api/districts/${kabupatenKotaId}.json`)
-                                                                            .then(response => response.json())
-                                                                            .then(districts => {
-                                                                                selectKecamatan.innerHTML = '<option></option>'; // Clear the 'Loading data ...' option
-                                                                                districts.forEach(district => {
-                                                                                    const option = document.createElement('option');
-                                                                                    option.value = district.id;
-                                                                                    option.textContent = district.name;
-                                                                                    selectKecamatan.appendChild(option);
-                                                                                });
-                                                                                selectKecamatan.disabled = false; // Enable the select element
-                                                                            })
-                                                                            .catch(error => console.error('Error fetching districts:', error));
-                                                                    };
-                                                                </script>
-                                                                <input type="hidden" readonly name="Kecamatan" id="kecamatan-name">
-                                                                <script>
-                                                                    function set_kecamatan(selectElement) {
-                                                                        const selectedOption = selectElement.options[selectElement.selectedIndex].textContent;
-                                                                        document.getElementById('kecamatan-name').value = selectedOption;
-                                                                    };
-                                                                </script>
-                                                            </div>
-                                                            <div class="col-lg-6">
-                                                                <label class="required form-label fw-bold text-gray-900 fs-6">Kelurahan</label>
-                                                                <select id="select-kelurahan" class="form-control form-select" data-control="select2" data-hide-search="false" data-placeholder="Pilih Kelurahan" disabled onchange="set_kelurahan(this)">
-                                                                    <option>Pilih Kelurahan</option>
-                                                                </select>
-                                                                <script>
-                                                                    function get_kelurahan() {
-
-                                                                        const selectKecamatan = document.getElementById('select-kecamatan');
-                                                                        const selectKelurahan = document.getElementById('select-kelurahan');
-                                                                        const kelurahanName = document.getElementById('kelurahan-name');
-
-                                                                        const kecamatanId = selectKecamatan.value;
-
-                                                                        selectKelurahan.disabled = true;
-                                                                        selectKelurahan.innerHTML = '<option>Loading data ...</option>'; // Clear previous options
-
-                                                                        if (!kecamatanId) return;
-
-                                                                        fetch(`https://ghiffaryil.github.io/api-wilayah-indonesia//api/villages/${kecamatanId}.json`)
-                                                                            .then(response => response.json())
-                                                                            .then(villages => {
-                                                                                selectKelurahan.innerHTML = '<option></option>'; // Clear the 'Loading data ...' option
-                                                                                villages.forEach(village => {
-                                                                                    const option = document.createElement('option');
-                                                                                    option.value = village.id;
-                                                                                    option.textContent = village.name;
-                                                                                    selectKelurahan.appendChild(option);
-                                                                                });
-                                                                                selectKelurahan.disabled = false;
-                                                                            })
-                                                                            .catch(error => console.error('Error fetching villages:', error));
-                                                                    }
-                                                                </script>
-                                                                <input type="hidden" readonly name="Kelurahan" id="kelurahan-name">
-                                                                <script>
-                                                                    function set_kelurahan(selectElement) {
-                                                                        const selectedOption = selectElement.options[selectElement.selectedIndex].textContent;
-                                                                        document.getElementById('kelurahan-name').value = selectedOption;
-                                                                    };
-                                                                </script>
-                                                            </div>
+                                                        <div class="my-15">
+                                                            <div class="fw-bold"> <input name="Akses_Pembelian" type="checkbox" value="Iya" style="cursor: pointer; position: relative; left: 0; opacity: 1;" <?php if (isset($_GET['edit'])) {if ($edit['Akses_Pembelian'] == "Iya") {echo "checked";}} ?>> &nbsp; Pembelian</div>
+                                                            <div class="text-muted">User mendapat hak akses untuk melakukan pembelian produk</div>
+                                                        </div>
+                                                        <div class="my-15">
+                                                            <div class="fw-bold"> <input name="Akses_Laporan" type="checkbox" value="Iya" style="cursor: pointer; position: relative; left: 0; opacity: 1;" <?php if (isset($_GET['edit'])) {if ($edit['Akses_Laporan'] == "Iya") {echo "checked";}} ?>> &nbsp; Laporan</div>
+                                                            <div class="text-muted">User mendapat hak akses untuk mendownload laporan</div>
+                                                        </div>
+                                                        <div class="my-15">
+                                                            <div class="fw-bold"> <input name="Akses_Konten" type="checkbox" value="Iya" style="cursor: pointer; position: relative; left: 0; opacity: 1;" <?php if (isset($_GET['edit'])) {if ($edit['Akses_Konten'] == "Iya") {echo "checked";}} ?>> &nbsp; Konten</div>
+                                                            <div class="text-muted">User mendapat hak akses untuk mengambil file-file konten</div>
                                                         </div>
                                                     </div>
-
                                                 </div>
+                                            </div>
 
-
-
-                                                <div class="form-group row">
-                                                    <div class="col-lg-12">
-                                                        <label class="required fw-semibold fs-6 mb-2">Alamat_Perusahaan*</label>
-                                                        <textarea name="Alamat_Perusahaan" class="form-control form-control-solid mb-3 mb-lg-0" rows="3"><?php if (isset($_GET["edit"])) {
-                                                                                                                                                                echo $edit_perusahaan['Alamat_Perusahaan'];
-                                                                                                                                                            } ?></textarea>
-                                                    </div>
+                                            <div class="form-group row mt-4">
+                                                <div class="pt-5 col-lg-12 text-center">
+                                                    <a href="<?php echo $kehalaman ?>"><button type="button" class="btn btn-danger">Kembali</button></a>
+                                                    <?php if (isset($_GET['edit'])) {
+                                                    ?>
+                                                        <button type="submit" class="btn btn-primary" name="submit_update">Update</button>
+                                                    <?php
+                                                    } else {
+                                                    ?>
+                                                        <button type="submit" class="btn btn-primary" name="submit_simpan">Simpan</button>
+                                                    <?php } ?>
                                                 </div>
-
                                             </div>
-                                        </div>
-
-                                        <div class="form-group row mt-4">
-                                            <div class="pt-5 col-lg-12 text-center">
-                                                <a href="<?php echo $kehalaman ?>"><button type="button" class="btn btn-danger">Kembali</button></a>
-                                                <?php if (isset($_GET['edit'])) {
-                                                ?>
-                                                    <button type="submit" class="btn btn-primary" name="submit_update">Update</button>
-                                                <?php
-                                                } else {
-                                                ?>
-                                                    <button type="submit" class="btn btn-primary" name="submit_simpan">Simpan</button>
-                                                <?php } ?>
-                                            </div>
-                                        </div>
                                 </form>
                             </div>
                         </div>
@@ -615,6 +413,7 @@
                                                     <td class="d-flex align-items-center">
                                                         <a class="text-gray-800 text-hover-primary" href="<?php echo $kehalaman ?>&edit&id=<?php echo $encode_id ?>">
                                                             <?php echo $data['Nama_Depan'] . " " . $data['Nama_Belakang'] ?>
+                                                            <br>
                                                             <span class="text-muted" style="font-size:smaller"> <?php echo $data_perusahaan['Nama_Perusahaan'] ?></span>
                                                         </a>
                                                     </td>

@@ -85,10 +85,10 @@
                 <thead>
                     <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
                         <th class="text-dark" style="width:5%">No</th>
-                        <th class="text-dark" style="width:20%">Judul</th>
-                        <th class="text-dark" style="width:10%">Kategori</th>
-                        <th class="text-dark" style="width:20%">Link</th>
-                        <th class="text-dark" style="width:20%">Media</th>
+                        <th class="text-dark" style="width:30%">Judul</th>
+                        <th class="text-dark" style="width:30%">Kategori</th>
+                        <th class="text-dark" style="width:30%">Link Download</th>
+                        <th class="d-none text-dark" style="width:20%">Media</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 fw-semibold">
@@ -120,8 +120,8 @@
                                 <span class="<?php echo $badge_kategori ?>"><?php echo $data['Kategori'] ?></span>
                             </td>
 
-                            <td><a href="<?php echo $data['Link_Eksternal'] ?>" target="_blank" class=""><?php echo substr(string: $data['Link_Eksternal'], offset: 0, length: 50) ?>...</a></td>
-                            <td>
+                            <td><a href="<?php echo $data['Link_Eksternal'] ?>" target="_blank" class="btn btn-primary btn-sm text-white"> <i class="fa fa-external-link text-white"></i> Download File </a></td>
+                            <td class="d-none">
                                 <?php
                                 if ($data['Kategori'] == "Foto") {
                                     $folder_konten = "../dashboard/media/konten_foto/";

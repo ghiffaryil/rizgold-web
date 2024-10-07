@@ -174,7 +174,7 @@ if (isset($_POST['submit_update_foto'])) {
         $path_file_upload = $_FILES['Foto']['name'];
         $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
         $nama_file_upload = $a_hash->hash_nama_file($Get_Id_Primary, "_Foto") . "_" . $Get_Id_Primary . "_Foto";
-        $folder_penyimpanan_file_upload = "assets/images/kemitraan_foto/";
+        $folder_penyimpanan_file_upload = "../dashboard/media/kemitraan_foto/";
         $tipe_file_yang_diizikan_file_upload = array("png", "gif", "jpg", "jpeg");
         $maksimum_ukuran_file_upload = 10000000;
 

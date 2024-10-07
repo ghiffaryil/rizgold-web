@@ -19,6 +19,10 @@ if (isset($_GET['menu'])) {
 			include "pages/transaksi/index.php";
 			break;
 
+		case 'profile':
+			include "pages/mitra/index.php";
+			break;
+
 		default:
 			include "pages/home/index.php";
 			break;

@@ -16,9 +16,13 @@ if (isset($_GET['id'])) {
 #-----------------------------------------------------------------------------------
 #FUNGSI EDIT DATA (READ)
 if (isset($_GET['edit'])) {
-    $result = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Id_Organisasi", $Get_Id_Primary);
+    $result = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Organisasi_Kode", $Get_Id_Primary);
     if ($result['Status'] == "Sukses") {
         $edit = $result['Hasil'];
+
+        $result_pengguna = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", $edit['Id_Pengguna']);
+        $edit_pengguna = $result_pengguna['Hasil'];
+
     } else {
         echo "<script>alert('Terjadi Kesalahan Saat Membaca Data');document.location.href='$kehalaman'</script>";
     }
@@ -61,6 +65,10 @@ if (isset($_POST['submit_simpan'])) {
         "Kabupaten_Kota",
         "Kecamatan",
         "Kelurahan",
+        "Id_Provinsi",
+        "Id_Kabupaten_Kota",
+        "Id_Kecamatan",
+        "Id_Kelurahan",
         "Alamat_Perusahaan",
         "Waktu_Simpan_Data",
         "Waktu_Update_Data",
@@ -71,12 +79,18 @@ if (isset($_POST['submit_simpan'])) {
         "$_POST[Nama_Perusahaan]",
         "$_POST[No_Telepon_Perusahaan]",
         "$_POST[Email_Perusahaan]",
+        
         "$Status_Kemitraan",
         "$_POST[Provinsi]",
         "$_POST[Kabupaten_Kota]",
         "$_POST[Kecamatan]",
         "$_POST[Kelurahan]",
+        "$_POST[Id_Provinsi]",
+        "$_POST[Id_Kabupaten_Kota]",
+        "$_POST[Id_Kecamatan]",
+        "$_POST[Id_Kelurahan]",
         "$_POST[Alamat_Perusahaan]",
+        
         "$Waktu_Sekarang",
         "$Waktu_Sekarang",
         "Aktif"
@@ -101,28 +115,41 @@ if (isset($_POST['submit_update'])) {
         "No_Telepon_Perusahaan",
         "Email_Perusahaan",
         "Status_Kemitraan",
+
         "Provinsi",
         "Kabupaten_Kota",
         "Kecamatan",
         "Kelurahan",
+
+        "Id_Provinsi",
+        "Id_Kabupaten_Kota",
+        "Id_Kecamatan",
+        "Id_Kelurahan",
+
         "Alamat_Perusahaan",
         "Waktu_Update_Data"
     );
     $form_value = array(
         "$_POST[Nama_Perusahaan]",
         "$_POST[No_Telepon_Perusahaan]",
-        "$_POST[Nama_Perusahaan]",
         "$_POST[Email_Perusahaan]",
         "$_POST[Status_Kemitraan]",
+
         "$_POST[Provinsi]",
         "$_POST[Kabupaten_Kota]",
         "$_POST[Kecamatan]",
         "$_POST[Kelurahan]",
+
+        "$_POST[Id_Provinsi]",
+        "$_POST[Id_Kabupaten_Kota]",
+        "$_POST[Id_Kecamatan]",
+        "$_POST[Id_Kelurahan]",
+
         "$_POST[Alamat_Perusahaan]",
         "$Waktu_Sekarang"
     );
 
-    $form_field_where = array("Id_Organisasi");
+    $form_field_where = array("Organisasi_Kode");
     $form_criteria_where = array("=");
     $form_value_where = array("$Get_Id_Primary");
     $form_connector_where = array("");
@@ -146,16 +173,17 @@ if (isset($_POST['submit_update_logo'])) {
         $path_file_upload = $_FILES['Logo_Perusahaan']['name'];
         $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
         $nama_file_upload = $a_hash->hash_nama_file($Get_Id_Primary, "_Logo_Perusahaan") . "_" . $Get_Id_Primary . "_Logo_Perusahaan";
-        $folder_penyimpanan_file_upload = "assets/images/kemitraan_logo_perusahaan/";
+        $folder_penyimpanan_file_upload = "media/logo_perusahaan/";
         $tipe_file_yang_diizikan_file_upload = array("png", "gif", "jpg", "jpeg");
         $maksimum_ukuran_file_upload = 10000000;
 
         $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
 
         if ($result_upload_file['Status'] == "Sukses") {
+
             $form_field = array("Logo_Perusahaan");
             $form_value = array("$nama_file_upload.$ext_file_upload");
-            $form_field_where = array("Id_Organisasi");
+            $form_field_where = array("Organisasi_Kode");
             $form_criteria_where = array("=");
             $form_value_where = array("$Get_Id_Primary");
             $form_connector_where = array("");
@@ -188,7 +216,7 @@ if (isset($_POST['submit_update_password'])) {
             $form_field = array("Password");
             $form_value = array("$_Password_Baru");
 
-            $form_field_where = array("Id_Organisasi");
+            $form_field_where = array("Organisasi_Kode");
             $form_criteria_where = array("=");
             $form_value_where = array("$Get_Id_Primary");
             $form_connector_where = array("");

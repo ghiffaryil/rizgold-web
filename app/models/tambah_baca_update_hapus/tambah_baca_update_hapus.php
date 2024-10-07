@@ -405,6 +405,9 @@ class a_tambah_baca_update_hapus extends a_database{
 		$sql = $sql." WHERE ";
 		$sql = $sql.$wherenya;
 
+		// echo "<br>";
+		// echo "<br>";
+		// echo "<br>";
 		// echo $sql;
 
 		#FUNGSI

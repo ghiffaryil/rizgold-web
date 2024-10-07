@@ -6,8 +6,14 @@ include "../dashboard/controller/saldo/controller_saldo.php"
 
 <div class="app-content">
     <div class="card card-flush">
-        <div class="mt-10 text-center">
+        <div class="my-10 text-center">
+            <br>
             <h1 class="fs-2x">Selamat datang di halaman <b class="text-danger">Kemitraan Rizgold</b></h1>
+        </div>
+        <div class="my-10 text-center">
+            <h1 class="fs-2x">Nikmatilah <b class="text-primary">fitur-fitur</b> yang ada di dalam halaman ini</b></h1>
+
+            <br><br>
         </div>
 
         <?php
@@ -33,7 +39,7 @@ include "../dashboard/controller/saldo/controller_saldo.php"
         } else {
             // BELUM ADA SALDO
         ?>
-            <div class="mt-4">
+            <div class="mt-4 d-none">
                 <div class="text-center">
                     <?php
                     if ($u_Status_Kemitraan == "Distributor") {

@@ -149,7 +149,7 @@ if (
 
 										<div class="col-lg-6 mb-7">
 											<label class="required form-label fw-bold text-gray-900 fs-6">Provinsi</label>
-											<select id="select-provinsi" class="form-control form-select" data-control="select2" data-hide-search="false" data-placeholder="Pilih Provinsi" disabled onchange="get_kabupaten_kota(); set_provinsi(this)">
+											<select name="Id_Provinsi" id="select-provinsi" class="form-control form-select" data-control="select2" data-hide-search="false" data-placeholder="Pilih Provinsi" disabled onchange="get_kabupaten_kota(); set_provinsi(this)">
 												<option>Pilih Provinsi</option>
 											</select>
 											<script>
@@ -181,7 +181,7 @@ if (
 
 										<div class="col-lg-6">
 											<label class="required form-label fw-bold text-gray-900 fs-6">Kota / Kabupaten</label>
-											<select id="select-kabupaten-kota" class="form-control form-select" data-control="select2" data-hide-search="false" data-placeholder="Pilih Kota / Kabupaten" disabled onchange="get_kecamatan(); set_kabupaten_kota(this);">
+											<select name="Id_Kabupaten_Kota" id="select-kabupaten-kota" class="form-control form-select" data-control="select2" data-hide-search="false" data-placeholder="Pilih Kota / Kabupaten" disabled onchange="get_kecamatan(); set_kabupaten_kota(this);">
 												<option>Pilih Kabupaten/Kota</option>
 											</select>
 											<script>
@@ -231,7 +231,7 @@ if (
 									<div class="row">
 										<div class="col-lg-6 mb-7">
 											<label class="required form-label fw-bold text-gray-900 fs-6">Kecamatan</label>
-											<select id="select-kecamatan" class="form-control form-select" data-control="select2" data-hide-search="false" data-placeholder="Pilih Kecamatan" disabled onchange="get_kelurahan(); set_kecamatan(this);">
+											<select name="Id_Kecamatan" id="select-kecamatan" class="form-control form-select" data-control="select2" data-hide-search="false" data-placeholder="Pilih Kecamatan" disabled onchange="get_kelurahan(); set_kecamatan(this);">
 												<option>Pilih Kecamatan</option>
 											</select>
 											<script>
@@ -278,7 +278,7 @@ if (
 										</div>
 										<div class="col-lg-6">
 											<label class="required form-label fw-bold text-gray-900 fs-6">Kelurahan</label>
-											<select id="select-kelurahan" class="form-control form-select" data-control="select2" data-hide-search="false" data-placeholder="Pilih Kelurahan" disabled onchange="set_kelurahan(this)">
+											<select name="Id_Kelurahan" id="select-kelurahan" class="form-control form-select" data-control="select2" data-hide-search="false" data-placeholder="Pilih Kelurahan" disabled onchange="set_kelurahan(this)">
 												<option>Pilih Kelurahan</option>
 											</select>
 											<script>

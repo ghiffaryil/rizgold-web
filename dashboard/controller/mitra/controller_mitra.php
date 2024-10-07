@@ -7,7 +7,7 @@ if (isset($_GET['url_kembali'])) {
 } else {
     if (isset($_GET['menu'])) {
         $kehalaman = "?menu=" . $_GET['menu'];
-    }else{
+    } else {
         $kehalaman = "home";
     }
 }
@@ -22,11 +22,10 @@ if (isset($_GET['id'])) {
 if (isset($_GET['edit'])) {
     $result = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", $Get_Id_Primary);
     if ($result['Status'] == "Sukses") {
-        
+
         $edit = $result['Hasil'];
         $result_perusahaan = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Organisasi_Kode", $edit['Organisasi_Kode']);
         $edit_perusahaan = $result_perusahaan['Hasil'];
-
     } else {
         echo "<script>alert('Terjadi Kesalahan Saat Membaca Data');document.location.href='$kehalaman'</script>";
     }
@@ -60,9 +59,9 @@ if (isset($_POST['submit_simpan'])) {
         $_Konten = "Iya";
     }
 
-    if($_POST['Tanggal_Lahir'] == ""){
+    if ($_POST['Tanggal_Lahir'] == "") {
         $Tanggal_Lahir = "0000-00-00";
-    }else{
+    } else {
         $Tanggal_Lahir = $_POST['Tanggal_Lahir'];
     }
 
@@ -115,15 +114,15 @@ if (isset($_POST['submit_simpan'])) {
         "$_POST[No_KTP]",
         "$_POST[No_NPWP]",
 
-        "$Akses_Profile",
-        "$Akses_Pembelian",
-        "$Akses_Laporan",
-        "$Akses_Konten",
+        "$_Profile",
+        "$_Pembelian",
+        "$_Laporan",
+        "$_Konten",
 
         "$Waktu_Sekarang",
         "$Waktu_Sekarang",
         "$Waktu_Sekarang",
-        "Status"
+        "Aktif"
     );
 
     $result = $a_tambah_baca_update_hapus->tambah_data("tb_pengguna", $form_field, $form_value);
@@ -189,9 +188,9 @@ if (isset($_POST['submit_update'])) {
         $_Konten = "Iya";
     }
 
-    if($_POST['Tanggal_Lahir'] == ""){
+    if ($_POST['Tanggal_Lahir'] == "") {
         $Tanggal_Lahir = "0000-00-00";
-    }else{
+    } else {
         $Tanggal_Lahir = $_POST['Tanggal_Lahir'];
     }
 
@@ -218,10 +217,7 @@ if (isset($_POST['submit_update'])) {
         "Akses_Laporan",
         "Akses_Konten",
 
-        "Tanggal_Registrasi",
-        "Waktu_Simpan_Data",
-        "Waktu_Update_Data",
-        "Status"
+        "Waktu_Update_Data"
 
     );
     $form_value = array(
@@ -240,15 +236,12 @@ if (isset($_POST['submit_update'])) {
         "$_POST[No_KTP]",
         "$_POST[No_NPWP]",
 
-        "$Akses_Profile",
-        "$Akses_Pembelian",
-        "$Akses_Laporan",
-        "$Akses_Konten",
+        "$_Profile",
+        "$_Pembelian",
+        "$_Laporan",
+        "$_Konten",
 
-        "$Waktu_Sekarang",
-        "$Waktu_Sekarang",
-        "$Waktu_Sekarang",
-        "Status"
+        "$Waktu_Sekarang"
     );
 
     $form_field_where = array("Id_Pengguna");
@@ -260,7 +253,7 @@ if (isset($_POST['submit_update'])) {
 
     if ($result['Status'] == "Sukses") {
 
-        // INSERT FOTO
+        // UPDATE FOTO
         if ($_FILES['Foto']['size'] <> 0 && $_FILES['Foto']['error'] == 0) {
 
             $post_file_upload = $_FILES['Foto'];
@@ -354,7 +347,7 @@ if (isset($_GET['filter'])) {
 
 $count_field_where = array("Status");
 $count_criteria_where = array("=");
-$count_connector_where = array( "");
+$count_connector_where = array("");
 
 #-----------------------------------------------------------------------------------
 #HITUNG AKTIF
@@ -375,9 +368,10 @@ $hitung_Terhapus = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_pe
 $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 #-----------------------------------------------------------------------------------
 
-class Search_Controller_Mitra{
+class Search_Controller_Mitra
+{
 
-    public function select_search_filter($filter_status = "Aktif", $limit = "999999", $orderby = "Id_Pengguna", $sortby ="DESC")
+    public function select_search_filter($filter_status = "Aktif", $limit = "999999", $orderby = "Id_Pengguna", $sortby = "DESC")
     {
         global $a_tambah_baca_update_hapus;
 

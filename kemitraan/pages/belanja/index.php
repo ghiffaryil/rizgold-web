@@ -235,16 +235,16 @@
                             $encode_id_pengguna = $a_hash->encode($u_Id_Pengguna, $_GET['menu']);
                             $Harga_Produk = ($u_Status_Kemitraan == "Distributor") ? $data['Harga_Distributor'] : (($u_Status_Kemitraan == "Agen") ? $data['Harga_Agen'] : "Anda belum terdaftar sebagai Agen / Distributor");
                         ?>
-                            <div class="col-lg-4 mb-4 d-flex">
+                            <div class="col-lg-3 d-flex my-5 px-5">
                                 <div class="card flex-fill" style="border:1px solid #ccc;">
-                                    <img src="../dashboard/media/produk_foto/<?php echo $data['Foto_Produk'] ?>" class="card-img-top" style="object-fit: cover; height: 350px;" alt="<?php echo $data['Nama_Produk']; ?>">
+                                    <img src="../dashboard/media/produk_foto/<?php echo $data['Foto_Produk'] ?>" class="card-img-top" style="object-fit: cover; height: 250px;" alt="<?php echo $data['Nama_Produk']; ?>">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <h3 class="card-title"><?php echo $data['Nama_Produk']; ?></h3>
                                             </div>
                                         </div>
-                                        <div class="row mb-4">
+                                        <div class="row">
                                             <div class="col-lg-12">
                                                 <?php
                                                 $read_kategori = $a_tambah_baca_update_hapus->baca_data_id("tb_produk_kategori", "Id_Produk_Kategori", "$data[Id_Produk_Kategori]");
@@ -253,11 +253,11 @@
                                                 <p class="my-1 fs-6 text-muted">Kategori : <?php echo $data_kategori['Nama_Kategori']; ?></p>
                                                 <p class="my-1 fs-6">Izin BPOM : <?php echo $data['Izin_BPOM']; ?></p>
                                             </div>
-                                        
 
-                                            <div class="col-lg-12 mb-4">
+
+                                            <div class="col-lg-12">
                                                 <h4 class="card-text my-1 fs-6">
-                                                    <small class="text-muted">Harga</small> &nbsp; 
+                                                    <small class="text-muted">Harga</small> &nbsp;
                                                     <?php
                                                     if ($u_Status_Kemitraan == "Distributor") {
                                                         echo $a_format_angka->rupiah($data['Harga_Distributor']);
@@ -270,7 +270,8 @@
                                                 </h4>
                                             </div>
 
-                                            <div class="d-flex row mt-4 text-center" style="width:100%">
+                                            <div class="col-lg-12 mt-4 text-center" style="width:100%">
+                                                <br>
                                                 <button
                                                     data-id="<?php echo $encode_id; ?>"
                                                     data-id-pengguna="<?php echo $encode_id_pengguna; ?>"
@@ -280,9 +281,32 @@
                                                     data-harga-produk="<?php echo $Harga_Produk; ?>"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#modal-pilih-produk"
-                                                    class="btn btn-primary bgn-block text-white">
+                                                    class="btn btn-primary bgn-block text-white d-none">
                                                     <span class="">Tambahkan ke Keranjang</span>
                                                 </button>
+
+                                                <?php
+                                                // LINK WHATSAPP
+                                                // Read data for WhatsApp link
+                                                $read_data_pengaturan = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan", "Id_Pengaturan", "1");
+
+                                                $Nomor_Admin_Pembelian = $read_data_pengaturan['Hasil']['Nomor_Admin_Pembelian']; // Example: 085779908779
+                                                $Pesan_Otomatis_Pembelian = $read_data_pengaturan['Hasil']['Pesan_Otomatis_Pembelian']; // Example: Saya ingin beli produk Rizgold
+
+                                                // Replace the first 0 with 62 for the Indonesian country code
+                                                $Nomor_Admin_Pembelian = preg_replace(pattern: '/^0/', replacement: '62', subject: $Nomor_Admin_Pembelian);
+
+                                                // Encode the message to replace spaces with %20
+                                                $Pesan_Otomatis_Pembelian = urlencode(string: $Pesan_Otomatis_Pembelian);
+
+                                                // Create the WhatsApp link
+                                                $Link_Whatsapp = "https://wa.me/$Nomor_Admin_Pembelian?text=$Pesan_Otomatis_Pembelian%20-%20$data[Nama_Produk]%20";
+
+                                                ?>
+
+                                                <a href="<?php echo $Link_Whatsapp?>" target="_blank" class="btn btn-success bgn-block text-white">
+                                                    <span class="">Pesan via Whatsapp</span>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>

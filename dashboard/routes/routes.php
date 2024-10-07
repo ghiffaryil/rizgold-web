@@ -12,6 +12,9 @@ if (isset($_GET['menu'])) {
             include "pages/data_admin/index.php";
             break;
 
+        case 'perusahaan':
+            include "pages/perusahaan/index.php";
+            break;
 
         case 'role':
             include "pages/role/index.php";

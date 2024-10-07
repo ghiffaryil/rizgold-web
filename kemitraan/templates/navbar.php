@@ -68,7 +68,7 @@
 
                         ?>
                             <div class="menu-item px-5">
-                                <a href="?menu=edit-profile&edit&id=<?php echo $a_hash->encode($u_Id_Pengguna, "Dashboard") ?>" class="menu-link px-5">
+                                <a href="?menu=profile&edit&id=<?php echo $a_hash->encode($u_Id_Pengguna, "Dashboard") ?>" class="menu-link px-5">
                                     Profile Saya
                                 </a>
                             </div>
