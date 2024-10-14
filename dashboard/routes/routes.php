@@ -12,10 +12,6 @@ if (isset($_GET['menu'])) {
             include "pages/data_admin/index.php";
             break;
 
-        case 'perusahaan':
-            include "pages/perusahaan/index.php";
-            break;
-
         case 'role':
             include "pages/role/index.php";
             break;
@@ -72,20 +68,20 @@ if (isset($_GET['menu'])) {
             include "pages/produk/produk_kategori.php";
             break;
 
-        case 'pengaturan':
-            include "pages/pengaturan/index.php";
+        case 'pengaturan-pembelian-produk':
+            include "pages/produk/pengaturan_pembelian_produk.php";
             break;
 
         case 'pengaturan-role':
             include "pages/pengaturan/role.php";
             break;
 
-        case 'pengaturan-produk-kategori':
-            include "pages/pengaturan/produk_kategori.php";
+        case 'pengaturan-kemitraan':
+            include "pages/pengaturan/index.php";
             break;
 
-        case 'pengaturan-sk-kemitraan':
-            include "pages/pengaturan/sk_kemitraan.php";
+        case 'perusahaan':
+            include "pages/perusahaan/index.php";
             break;
 
         case 'transaksi':

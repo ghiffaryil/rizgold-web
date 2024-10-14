@@ -13,9 +13,16 @@
 					</li>
 
 					<li>
-						<a href="?menu=setting_website">
+						<a href="?menu=setting_website&edit">
 							<i class="mdi mdi-pencil-box"><span class="path1"></span><span class="path2"></span></i>
 							<span>Data Website</span>
+						</a>
+					</li>
+					
+					<li>
+						<a href="?menu=pengaturan-kemitraan">
+							<i class="mdi mdi-settings"><span class="path1"></span><span class="path2"></span></i>
+							<span>Pengaturan Kemitraan</span>
 						</a>
 					</li>
 
@@ -113,6 +120,7 @@
 						<ul class="treeview-menu">
 							<li><a href="?menu=produk"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Produk</a></li>
 							<li><a href="?menu=produk-kategori"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Kategori Produk</a></li>
+							<li><a href="?menu=pengaturan-pembelian-produk&edit"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Pengaturan Pembelian</a></li>
 						</ul>
 					</li>
 

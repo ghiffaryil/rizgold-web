@@ -56,7 +56,7 @@
 
                     foreach ($data_hasil as $data) {
                       $nomor++;
-                      $encode_id = $a_hash->encode($data['Id_Produk'], "home");
+                      $encode_id = $a_hash->encode($data['Id_Produk'], "produk");
                     ?>
 
                       <tr>
@@ -123,7 +123,7 @@
 
                     foreach ($data_hasil as $data) {
                       $nomor++;
-                      $encode_id = $a_hash->encode($data['Id_Pengguna'], "home");
+                      $encode_id = $a_hash->encode($data['Id_Pengguna'], "mitra");
 
                       $result_perusahaan = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Organisasi_Kode", "$data[Organisasi_Kode]");
                       $data_perusahaan = $result_perusahaan['Hasil'];
@@ -184,7 +184,7 @@
 
                       foreach ($data_hasil as $data) {
                         $nomor++;
-                        $encode_id = $a_hash->encode($data['Id_Konten'], 'home');
+                        $encode_id = $a_hash->encode($data['Id_Konten'], 'konten');
                       ?>
                         <tr>
                           <td>

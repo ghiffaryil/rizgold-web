@@ -79,7 +79,7 @@ if (
 											Pilih Jenis Kemitraan
 										</h2>
 										<div class="text-muted fw-semibold fs-6">
-											Pelajari selengkapnya <a href="<?php echo "assets/konten/syarat_dan_ketentuan/" . $data_sk['File_Syarat_Dan_Ketentuan'] ?>" target="_blank" class="link-parimary fw-bold">Syarat & Ketentuan</a> Menjadi Agen & Distributor
+											Pelajari selengkapnya <a href="<?php echo "../dashboard/media/konten/syarat_dan_ketentuan/" . $data_sk['File_Syarat_Dan_Ketentuan'] ?>" target="_blank" class="link-parimary fw-bold">Syarat & Ketentuan</a> Menjadi Agen & Distributor
 										</div>
 										<div class="fv-row mt-7">
 											<div class="row">

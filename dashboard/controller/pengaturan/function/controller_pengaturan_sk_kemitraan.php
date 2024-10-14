@@ -16,14 +16,14 @@ $Get_Id_Primary = "1";
 #-----------------------------------------------------------------------------------
 #FUNGSI EDIT DATA (READ)
 
-if (isset($_GET['edit'])) {
-    $result = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan_sk_kemitraan", "Id_Pengaturan_SK_Kemitraan", $Get_Id_Primary);
-    if ($result['Status'] == "Sukses") {
-        $edit = $result['Hasil'];
-    } else {
-        echo "<script>alert('Terjadi Kesalahan Saat Membaca Data');document.location.href='$kehalaman'</script>";
-    }
+// if (isset($_GET['edit'])) {
+$result = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan_sk_kemitraan", "Id_Pengaturan_SK_Kemitraan", $Get_Id_Primary);
+if ($result['Status'] == "Sukses") {
+    $edit = $result['Hasil'];
+} else {
+    echo "<script>alert('Terjadi Kesalahan Saat Membaca Data');document.location.href='$kehalaman'</script>";
 }
+// }
 
 #-----------------------------------------------------------------------------------
 #FUNGSI SIMPAN DATA (CREATE)
@@ -119,14 +119,14 @@ if (isset($_POST['submit_update'])) {
             $post_file_upload = $_FILES['File_Syarat_Dan_Ketentuan'];
             $path_file_upload = $_FILES['File_Syarat_Dan_Ketentuan']['name'];
             $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
-            $nama_file_upload = $a_hash->hash_nama_file($Get_Id_Primary, "_File_Syarat_Dan_Ketentuan") . "_" . $Get_Id_Primary . "_File_Syarat_Dan_Ketentuan";
+            $nama_file_upload = "File_Syarat_Dan_Ketentuan_Rizgold";
 
-            $folder_konten = "assets/konten/syarat_dan_ketentuan/";
+            $folder_konten = "media/konten/syarat_dan_ketentuan/";
             $folder_penyimpanan_file_upload = $folder_konten;
 
             $tipe_file_yang_diizikan_file_upload = array("pdf");
 
-            $maksimum_ukuran_file_upload = 10000000;
+            $maksimum_ukuran_file_upload = 10 * 1024 * 1024;
 
             $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
 

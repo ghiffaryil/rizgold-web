@@ -4,7 +4,7 @@
 			<span class="icon-Align-left"><span class="path1"></span><span class="path2"></span><span class="path3"></span></span>
 		</a>
 		<!-- Logo -->
-		<a href="index.php" class="logo">
+		<a href="<?php echo $Link_Website . "/dashboard"; ?>" class="logo">
 			<!-- logo-->
 			<div class="logo-lg">
 				<span class="light-logo" style="color: #9f7a0c;">RIZGOLD ADMIN</span>

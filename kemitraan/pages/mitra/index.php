@@ -302,6 +302,7 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                         ?>
                                         <!-- <a href="< ?php echo $Link_Whatsapp_Top_Up?>" target="_blank" class="btn btn-light" disabled> Top Up Saldo</a> -->
                                         <button class="btn btn-light" disabled> Top Up Saldo</button>
+                                        <button class="btn btn-light" disabled> Tarik Saldo</button>
                                     </div>
                                 </div>
 

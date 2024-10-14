@@ -23,10 +23,9 @@ include "controller/testimoni/controller_testimoni.php";
 
 		<!-- Main content -->
 		<section class="content">
-
 			<div class="row">
-
 				<div class="col-12">
+
 					<?php if((isset($_GET["tambah"])) OR (isset($_GET["edit"]))){ ?>
 						<div class="box">
 							<div class="box-body">

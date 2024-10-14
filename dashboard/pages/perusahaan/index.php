@@ -308,8 +308,6 @@
     </div>
 </div>
 
-
-
 <script>
     // First Load Province
     document.addEventListener('DOMContentLoaded', function() {

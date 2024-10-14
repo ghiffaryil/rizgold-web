@@ -148,7 +148,7 @@ if (isset($_POST['submit_login'])) {
 								$result_sk = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan_sk_kemitraan", "Id_Pengaturan_SK_Kemitraan", "1");
 								$data_sk = $result_sk['Hasil'];
 								?>
-								Lihat <a href="<?php echo "assets/konten/syarat_dan_ketentuan/" . $data_sk['File_Syarat_Dan_Ketentuan'] ?>" target="_blank" class="link-parimary fw-bold">Syarat & Ketentuan</a>
+								Lihat <a href="<?php echo "../dashboard/media/konten/syarat_dan_ketentuan/" . $data_sk['File_Syarat_Dan_Ketentuan'] ?>" target="_blank" class="link-parimary fw-bold">Syarat & Ketentuan</a>
 							</div>
 						</form>
 					</div>
