@@ -9,7 +9,6 @@
         padding-top: 20px;
     }
 
-
     .img-bg-custom-home {
         text-align: right;
     }
@@ -19,7 +18,78 @@
         height: auto;
     }
 
-    @media screen and (max-width: 992px) {
+    .div-sosmed-atas {
+        width: 60%;
+    }
+
+    .div-sosmed-bawah {
+        width: 40%;
+    }
+
+    .btn-tokopedia {
+        background-color: white !important;
+        border: 2px solid #42b549;
+        display: block;
+        color: black;
+    }
+
+    .btn-tokopedia:hover {
+        color: white;
+        background-color: #42b549 !important;
+    }
+
+    .btn-shopee {
+        background-color: white !important;
+        border: 2px solid #EE4D2D;
+        display: block;
+        color: black;
+    }
+
+    .btn-shopee:hover {
+        color: white;
+        background-color: #EE4D2D !important;
+    }
+
+    .btn-tiktok {
+        background-color: white !important;
+        border: 2px solid #FE2C55;
+        display: block;
+        color: black;
+    }
+
+    .btn-tiktok:hover {
+        color: white;
+        background-color: #FE2C55 !important;
+    }
+
+    .btn-whatsapp {
+        background-color: white !important;
+        border: 2px solid #25d366;
+        display: block;
+        color: black;
+    }
+
+    .btn-whatsapp:hover {
+        color: white;
+        border: 2px solid #075e54;
+        background-color: #075e54 !important;
+    }
+
+    .btn-youtube {
+        background-color: white !important;
+        border: 2px solid #CC0000;
+        display: block;
+        color: black;
+    }
+
+    .btn-youtube:hover {
+        color: white;
+        border: 2px solid #FF0000;
+        background-color: #FF0000 !important;
+    }
+
+
+    @media (max-width: 992px) {
         .bg-custom-home {
             background: #131521;
             padding: 10px;
@@ -33,7 +103,7 @@
 
         .text-bg-custom-home {
             text-align: center;
-            padding-top: 100px;
+            padding-top: 2.5em;
         }
 
         .img-bg-custom-home {
@@ -45,8 +115,63 @@
             width: 80%;
             height: auto;
         }
+
+
+        .div-sosmed-bawah {
+            width: 60%;
+        }
+
+    }
+
+    @media (max-width: 768px) {
+
+        .banner-carousel-home {
+            display: none;
+        }
+
+        .tombol-get-started{
+            display: none;
+        }
+
+        .div-sosmed-atas {
+            width: 90%;
+        }
+
+        .div-sosmed-bawah {
+            width: 90%;
+        }
+
+        .banner {
+            height: 22em;
+        }
+
+        .btn-tokopedia {
+            margin-bottom: 15px;
+            border: 2px solid #075e54;
+        }
+
+        .btn-shopee {
+            margin-bottom: 15px;
+            border: 2px solid #075e54;
+        }
+
+        .btn-tiktok {
+            margin-bottom: 15px;
+            border: 2px solid #075e54;
+        }
+
+        .btn-whatsapp {
+            margin-bottom: 15px;
+            border: 2px solid #075e54;
+        }
+
+        .btn-youtube {
+            margin-bottom: 15px;
+            border: 2px solid #FF0000;
+        }
     }
 </style>
+
 
 <section class="banner custom-home">
     <div class="container bg-custom-home">
@@ -55,15 +180,43 @@
                 <div class="text-bg-custom-home">
                     <h1 style="color: #d6b961;" class="mb-3 mt-3"><?php echo $data_website['Judul_Website'] ?></h1>
                     <p class="mb-4 text-white"><?php echo $data_website['Deskripsi_Singkat'] ?></p>
-                    <div class="btn-container ">
+                    <div class="btn-container tombol-get-started">
                         <a href="<?php echo $data_website['Url_Youtube'] ?>" target="_blank" class="btn btn-danger btn-icon btn-round-full">Get Started<i class="icofont-simple-right ml-2  "></i></a>
                     </div>
                     <br>
                 </div>
             </div>
-            <div class="col-lg-6 d-none">
-                <div class="img-bg-custom-home">
-                    <img src="frontend/images/bg/bg-rizgold-blue.png" class="img-banner-home">
+            <div class="col-lg-6 banner-carousel-home">
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <?php
+                        $nomor = 0;
+                        $search_field_where = array("Status");
+                        $search_criteria_where = array("=");
+                        $search_value_where = array("Aktif");
+                        $search_connector_where = array("");
+                        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_banner", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                        if ($result['Status'] == "Sukses") {
+                            $data_hasil = $result['Hasil'];
+                            foreach ($data_hasil as $data) {
+                                $nomor++;
+                        ?>
+                                <div class="carousel-item <?php if ($nomor == 1) echo 'active'; ?>">
+                                    <img src="dashboard/media/banner/<?php echo $data['Foto_Banner'] ?>?time=<?php echo $Waktu_Sekarang ?>" class="d-block w-100 img-banner-home">
+                                </div>
+                        <?php
+                            }
+                        }
+                        ?>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
             </div>
 
@@ -81,119 +234,6 @@
         </div>
 
         <div class="d-flex flex-column align-items-center">
-
-            <style>
-                .div-sosmed-atas {
-                    width: 60%;
-                }
-
-                .div-sosmed-bawah {
-                    width: 40%;
-                }
-
-                .btn-tokopedia {
-                    background-color: white !important;
-                    border: 2px solid #42b549;
-                    display: block;
-                    color: black;
-                }
-
-                .btn-tokopedia:hover {
-                    color: white;
-                    background-color: #42b549 !important;
-                }
-
-                .btn-shopee {
-                    background-color: white !important;
-                    border: 2px solid #EE4D2D;
-                    display: block;
-                    color: black;
-                }
-
-                .btn-shopee:hover {
-                    color: white;
-                    background-color: #EE4D2D !important;
-                }
-
-                .btn-tiktok {
-                    background-color: white !important;
-                    border: 2px solid #FE2C55;
-                    display: block;
-                    color: black;
-                }
-
-                .btn-tiktok:hover {
-                    color: white;
-                    background-color: #FE2C55 !important;
-                }
-
-                .btn-whatsapp {
-                    background-color: white !important;
-                    border: 2px solid #25d366;
-                    display: block;
-                    color: black;
-                }
-
-                .btn-whatsapp:hover {
-                    color: white;
-                    border: 2px solid #075e54;
-                    background-color: #075e54 !important;
-                }
-
-                .btn-youtube {
-                    background-color: white !important;
-                    border: 2px solid #CC0000;
-                    display: block;
-                    color: black;
-                }
-
-                .btn-youtube:hover {
-                    color: white;
-                    border: 2px solid #FF0000;
-                    background-color: #FF0000 !important;
-                }
-
-                @media (max-width: 768px) {
-
-                    .div-sosmed-atas {
-                        width: 90%;
-                    }
-
-                    .div-sosmed-bawah {
-                        width: 90%;
-                    }
-
-                    .banner {
-                        height: 300px;
-                    }
-
-                    .btn-tokopedia {
-                        margin-bottom: 15px;
-                        border: 2px solid #075e54;
-                    }
-
-                    .btn-shopee {
-                        margin-bottom: 15px;
-                        border: 2px solid #075e54;
-                    }
-
-                    .btn-tiktok {
-                        margin-bottom: 15px;
-                        border: 2px solid #075e54;
-                    }
-
-                    .btn-whatsapp {
-                        margin-bottom: 15px;
-                        border: 2px solid #075e54;
-                    }
-
-                    .btn-youtube {
-                        margin-bottom: 15px;
-                        border: 2px solid #FF0000;
-                    }
-                }
-            </style>
-
             <div class="div-sosmed-atas">
                 <div class="row">
                     <div class="col-lg-4 mb-md-3 md-xs-3 text-center">
@@ -238,7 +278,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="feature-block d-lg-flex">
-                    
+
                     <div class="feature-item mb-5 mb-lg-0">
                         <div class="feature-icon mb-4">
                             <i class="icofont-surgeon-alt"></i>
@@ -396,7 +436,9 @@
                                     <div class="mt-3">
                                         <h4 style="color:#d6b961"><?php echo $data_produk['Nama_Produk'] ?></h4>
                                         <p class="text-muted" style="font-size:small"><?php echo substr($data_produk['Deskripsi'], offset: 0, length: 50) ?>...</p>
+                                        <a href="?view=product-detail&id=<?php echo $a_hash->encode($data_produk['Id_Produk'], "Home")?>" class="btn btn-primary"> Selengkapnya </a>
                                     </div>
+                                    <br>
                                 </div>
                             </div>
                         </div>

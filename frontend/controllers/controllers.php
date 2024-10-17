@@ -15,7 +15,7 @@ if (isset($_GET['view'])) {
             include "frontend/pages/product/index.php";
             break;
         case 'product-detail':
-            include "frontend/pages/products/product-detail.php";
+            include "frontend/pages/product/product-detail.php";
             break;
         case 'article':
             include "frontend/pages/article/index.php";

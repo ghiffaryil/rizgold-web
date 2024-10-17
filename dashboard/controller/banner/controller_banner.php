@@ -53,7 +53,7 @@ if (isset($_POST['submit_simpan'])) {
 				$nama_file_upload = $a_hash->hash_nama_file($Id_Auto_Increment, "_Foto_Banner") . "_" . $Id_Auto_Increment . "_Foto_Banner";
 				$folder_penyimpanan_file_upload = "media/banner/";
 				$tipe_file_yang_diizikan_file_upload = array("png", "gif", "jpg", "jpeg");
-				$maksimum_ukuran_file_upload = 3000000;
+				$maksimum_ukuran_file_upload = 10 * 1024 * 1024;
 
 				$result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
 
@@ -118,7 +118,7 @@ if (isset($_POST['submit_update'])) {
 				$nama_file_upload = $a_hash->hash_nama_file($Get_Id_Primary, "_Foto_Banner") . "_" . $Get_Id_Primary . "_Foto_Banner";
 				$folder_penyimpanan_file_upload = "media/banner/";
 				$tipe_file_yang_diizikan_file_upload = array("png", "gif", "jpg", "jpeg");
-				$maksimum_ukuran_file_upload = 3000000;
+				$maksimum_ukuran_file_upload = 10 * 1024 * 1024;
 
 				$result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
 

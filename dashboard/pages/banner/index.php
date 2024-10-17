@@ -137,17 +137,6 @@ include "controller/banner/controller_banner.php";
 													</div>
 												</div>
 
-												<div class="form-group row d-none">
-													<label class="col-lg-3 control-label"><i>Title (en)</i></label>
-													<div class="col-lg-9">
-														<input type="text" required class="form-control" name="Judul_Eng" value="<?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
-																																	echo $_POST['Judul_Eng'];
-																																} elseif (isset($_GET['edit'])) {
-																																	echo $edit['Judul_Eng'];
-																																} ?>">
-													</div>
-												</div>
-
 												<div class="form-group row">
 													<label class="col-lg-3 control-label">Deskripsi</label>
 													<div class="col-lg-9">
@@ -159,17 +148,6 @@ include "controller/banner/controller_banner.php";
 													</div>
 												</div>
 
-												<div class="form-group row d-none">
-													<label class="col-lg-3 control-label"><i>Description (en)</i></label>
-													<div class="col-lg-9">
-														<input type="text" class="form-control" name="Deskripsi_Eng" value="<?php if ((isset($_POST['submit_simpan'])) or (isset($_POST['submit_update']))) {
-																															echo $_POST['Deskripsi_Eng'];
-																														} elseif (isset($_GET['edit'])) {
-																															echo $edit['Deskripsi_Eng'];
-																														} ?>">
-													</div>
-												</div>
-												
 												<div class="form-group row">
 													<label class="col-lg-3 control-label">Posisi</label>
 													<div class="col-lg-9">
@@ -265,22 +243,14 @@ include "controller/banner/controller_banner.php";
 												}
 
 												$search_field_where = array("Status");
-
 												$search_criteria_where = array("=");
-
 												$search_value_where = array("$filter_status");
-
 												$search_connector_where = array("");
 
-
 												$nomor = 0;
-
-
 												$result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_banner", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
-
 												if ($result['Status'] == "Sukses") {
 													$data_hasil = $result['Hasil'];
-
 													foreach ($data_hasil as $data) {
 														$nomor++; ?>
 														<tr>

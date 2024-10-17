@@ -57,12 +57,14 @@
             <div class="service-block mb-5">
               <img src="dashboard/media/produk_foto/<?php echo $data_produk['Foto_Produk'] ?>" class="image-produk" style="height:300px; width:100%; object-fit:cover">
               <div class="content">
-                <h4 class="mt-4 mb-2 title-color"><a href="?menu=article&id-<?php echo $a_hash->encode($data_produk['Nama_Produk'], "dashboard"); ?>"><?php echo $data_produk['Judul_Pelayanan'] ?></a></h4>
-                <p class="mb-4"><?php echo substr(string: $data_produk['Deskripsi'], offset: 0, length: 200) ?>...</p>
+                <h4 class="mt-4 mb-2 title-color"><a href="?view=product-detail&id-<?php echo $a_hash->encode($data_produk['Id_Produk'], "dashboard"); ?>"><?php echo $data_produk['Judul_Pelayanan'] ?></a></h4>
+                <p class="mb-4"><?php echo substr(string: $data_produk['Deskripsi'], offset: 0, length: 100) ?>...</p>
+                <div class="text-center">
+                  <a href="?view=product-detail&id=<?php echo $a_hash->encode($data_produk['Id_Produk'], "dashboard") ?>" class="btn btn-primary"> Selengkapnya </a>
+                </div>
               </div>
             </div>
           </div>
-
       <?php
         }
       }

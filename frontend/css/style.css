@@ -504,7 +504,7 @@ a:focus {
   position: relative;
   overflow: hidden;
   /* background: #fff; */
-  background: url("../images/bg/Banner_Rizgold4.png") no-repeat;
+  background: url("../images/bg/banner-rizgold-0.png") no-repeat;
   background-size: cover;
   min-height: 350px;
 }

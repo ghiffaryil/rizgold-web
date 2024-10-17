@@ -45,7 +45,7 @@
                     <li class="nav-item <?php if (isset($_GET['view']) and $_GET['view'] == "about") {
                                             echo "active";
                                         } ?>"><a class="nav-link" href="?view=about">Tentang</a></li>
-                    <li class="nav-item <?php if (isset($_GET['view']) and $_GET['view'] == "product") {
+                    <li class="nav-item <?php if (isset($_GET['view']) and ($_GET['view'] == "product" or $_GET['view'] == "product-detail")) {
                                             echo "active";
                                         } ?>"><a class="nav-link" href="?view=product">Produk</a></li>
                     <li class="nav-item <?php if (isset($_GET['view']) and $_GET['view'] == "article") {
