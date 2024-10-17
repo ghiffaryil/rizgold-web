@@ -63,7 +63,7 @@
                 <div class="col-lg-6">
                     <div class="subscribe-form text-lg-right mt-5 mt-lg-0">
                         <form method="post" class="subscribe">
-                            <input id="Email" class="form-control" placeholder="Email" name="Email" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9@._+-]/g, '')"
+                            <input id="Email" class="form-control" placeholder="Email" name="Email"oninput="this.value = this.value.toLowerCase().replace(/[^a-z0-9@._+-]/g, '')"
                                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                 title="Masukkan email yang valid (e.g., example@domain.com)">
                             <button type="button" id="submit_add_newsletter" class="btn btn-main btn-round-full">Subscribe</button>

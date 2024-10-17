@@ -117,10 +117,10 @@
                                     $badge_kategori = "badge badge-warning";
                                 }
                                 ?>
-                                <span class="<?php echo $badge_kategori ?>"><?php echo $data['Kategori'] ?></span>
+                                <span class="badge badge-light"><?php echo $data['Kategori'] ?></span>
                             </td>
 
-                            <td><a href="<?php echo $data['Link_Eksternal'] ?>" target="_blank" class="btn btn-primary btn-sm text-white"> <i class="fa fa-external-link text-white"></i> Download File </a></td>
+                            <td><a href="<?php echo $data['Link_Eksternal'] ?>" target="_blank" class="btn btn-success btn-sm text-white"> <i class="fa fa-external-link text-white"></i> Akses File </a></td>
                             <td class="d-none">
                                 <?php
                                 if ($data['Kategori'] == "Foto") {

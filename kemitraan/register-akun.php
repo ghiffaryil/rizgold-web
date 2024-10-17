@@ -53,7 +53,7 @@ if (isset($_POST['submit_register_akun'])) {
 	} else {
 		$Id_Auto_Increment_Organisasi = 1;
 	}
-	
+
 	$a_result_pengguna_terbaru = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_pengguna", "Id_Pengguna");
 	if ($a_result_pengguna_terbaru['Status'] == "Sukses") {
 		$Id_Auto_Increment_Pengguna = $a_result_pengguna_terbaru['Hasil'][0]['Id_Pengguna'] + 1;
@@ -69,7 +69,7 @@ if (isset($_POST['submit_register_akun'])) {
 		"Nama_Perusahaan",
 		"No_Telepon_Perusahaan",
 		"Email_Perusahaan",
-		
+
 		"Provinsi",
 		"Id_Provinsi",
 		"Kabupaten_Kota",
@@ -213,9 +213,9 @@ if (isset($_POST['submit_register_akun'])) {
 		<div class="d-flex flex-column flex-lg-row flex-column-fluid">
 			<div class="d-flex flex-column flex-lg-row-auto bg-dark w-xl-600px position-xl-relative">
 				<div class="d-flex flex-column position-xl-fixed top-0 bottom-0 w-xl-600px scroll-y">
-					<div class="d-flex flex-row-fluid flex-column text-center p-5 p-lg-10 pt-lg-20">
-						<div class="py-2 py-lg-15">
-							<img alt="Logo" src="assets/images/logo/logo_square.png" class="h-50px h-lg-100px" />
+					<div class="d-flex flex-row-fluid flex-column text-center">
+						<div class="py-lg-15">
+							<a href="<?php echo $Link_Website ?>" style="cursor:pointer"><img alt="Logo" src="assets/images/logo/logo_square.png" class="h-50px h-lg-100px" /></a>
 						</div>
 						<h1 class="d-none d-lg-block fw-bold text-white fs-2qx pb-1 pb-md-10">Selamat datang di halaman <br>
 							<font class="text-warning"> Kemitraan Rizgold </font>

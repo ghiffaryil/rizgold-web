@@ -238,6 +238,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="feature-block d-lg-flex">
+                    
                     <div class="feature-item mb-5 mb-lg-0">
                         <div class="feature-icon mb-4">
                             <i class="icofont-surgeon-alt"></i>
@@ -253,7 +254,13 @@
                         </div>
                         <span>Sertifikasi</span>
                         <h4 class="mb-3">Izin & Sertifikasi Produk</h4>
-                        <p class="mb-4"><?php echo $data_tentang_kami['Info_Singkat'] ?> <br> <?php echo $data_tentang_kami['Info_Tambahan'] ?></p>
+                        <p class="mb-4" style="font-size:13px">
+                            RIZGOLD BLUE : TR213693661
+                            <br>RIZGOLD PROPOLIS MINT : TR246021851
+                            <br>RIZGOLD BEET BERRY KAPSUL : TR223063641
+                            <br>RIZGOLD 2 IN 1 : TR223051181
+                            <br>RIZGOLD PROHABBAT : TR223038471
+                        </p>
 
                         <div class="align-items-center text-center">
                             <img src="frontend/images/logo/logo_halal.png" alt="" style="height:70px;">
