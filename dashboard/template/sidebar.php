@@ -153,7 +153,7 @@
 
 					<li class="treeview">
 						<a href="#">
-							<i class="fa fa-money"><span class="path1"></span><span class="path2"></span></i>
+							<i class="fa fa-shopping-cart"><span class="path1"></span><span class="path2"></span></i>
 							<span>Transaksi</span>
 							<span class="pull-right-container">
 								<i class="fa fa-angle-right pull-right"></i>
@@ -161,6 +161,19 @@
 						</a>
 						<ul class="treeview-menu">
 							<li><a href="?menu=transaksi"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Transaksi</a></li>
+						</ul>
+					</li>
+
+					<li class="treeview">
+						<a href="#">
+							<i class="fa fa-money"><span class="path1"></span><span class="path2"></span></i>
+							<span>Saldo</span>
+							<span class="pull-right-container">
+								<i class="fa fa-angle-right pull-right"></i>
+							</span>
+						</a>
+						<ul class="treeview-menu">
+							<li><a href="?menu=saldo"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Saldo</a></li>
 						</ul>
 					</li>
 

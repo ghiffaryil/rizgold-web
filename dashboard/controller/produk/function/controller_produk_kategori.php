@@ -160,8 +160,6 @@ $hitung_Terhapus = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_pr
 $hitung_Terhapus = $hitung_Terhapus['Hasil'];
 #-----------------------------------------------------------------------------------
 
-
-
 class Search_Controller_Produk_Kategori{
 
     public function select_search_filter($filter_status = "Aktif") {

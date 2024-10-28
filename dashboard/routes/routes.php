@@ -96,6 +96,11 @@ if (isset($_GET['menu'])) {
             include "pages/konten/index.php";
             break;
 
+        case 'saldo':
+            include "pages/saldo/index.php";
+            break;
+
+
         default:
             include "pages/home/index.php";
             break;

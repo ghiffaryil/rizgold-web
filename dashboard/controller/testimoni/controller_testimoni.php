@@ -239,11 +239,8 @@ if (isset($_GET['hapus_data_permanen'])) {
 
 #-----------------------------------------------------------------------------------
 #FUNGSI HITUNG DATA (COUNT)
-
 $count_field_where = array("Status");
-
 $count_criteria_where = array("=");
-
 $count_connector_where = array("");
 
 //DATA AKTIF

@@ -1,6 +1,6 @@
 <?php
 
-include "../dashboard/controller/saldo/controller_saldo.php"
+include "controller/saldo/controller_saldo.php"
 
 ?>
 
@@ -9,11 +9,8 @@ include "../dashboard/controller/saldo/controller_saldo.php"
         <div class="my-10 text-center">
             <br>
             <h1 class="fs-2x">Selamat datang di halaman <b class="text-danger">Kemitraan Rizgold</b></h1>
-        </div>
-        <div class="my-10 text-center">
             <h1 class="fs-2x">Nikmatilah <b class="text-primary">fitur-fitur</b> yang ada di dalam halaman ini</b></h1>
-
-            <br><br>
+            
         </div>
 
         <?php
@@ -29,17 +26,16 @@ include "../dashboard/controller/saldo/controller_saldo.php"
         ?>
             <div class="mt-10">
                 <div class="text-center">
-                    <h1 class="text-primary fs-1x"><b>Anda telah mengupload bukti transfer</b></h1>
-                    <h2 class="text-muted">Transaksi anda sedang diproses oleh Admin</h2>
+                    <h1 class="text-success fs-1x"><b>Anda telah mengupload bukti transfer</b></h1>
+                    <h3 class="text-muted">Silahkan menunggu proses transaksi anda sedang diverifikasi oleh Admin</h3>
                 </div>
             </div>
             <br>
             <br>
         <?php
         } else {
-            // BELUM ADA SALDO
         ?>
-            <div class="mt-4 d-none">
+            <div class="">
                 <div class="text-center">
                     <?php
                     if ($u_Status_Kemitraan == "Distributor") {
@@ -48,12 +44,14 @@ include "../dashboard/controller/saldo/controller_saldo.php"
                         $nominal_transfer = "1500000";
                     };
                     ?>
-                    <h3>Silahkan Transfer sebesar <font class="text text-primary fs-2x fw-bold"><?php echo $a_format_angka->rupiah($nominal_transfer) ?></font> sebagai dana belanja pertama anda</h3>
+                    <h4>Silahkan Transfer sebesar <font class="text text-danger fs-2x fw-bold"><?php echo $a_format_angka->rupiah($nominal_transfer) ?></font> sebagai dana belanja pertama anda</h4>
                 </div>
                 <div class="mt-6">
                     <div class="text-center">
-                        <h1 class="text-danger fs-1x"><b>Bank BCA</b></h1>
-                        <h2 class="text-danger">A/n : Rokim Abdul Karim</h2>
+                        <h1 class="text-primary fs-1x"><b>Bank Central Asia (BCA)</b></h1>
+                        <h2 class="text-primary">Kode Bank : 451</h2>
+                        <h2 class="text-primary">A/n : Rokim Abdul Karim</h2>
+                        <br>
                         <h5><small>Nomor Rekening : </small></h5>
                         <span class="badge badge-warning text-hover-dark fs-2" onclick="copyToClipboard()" style="cursor: pointer;" title="Salin nomor rekening">
                             <span id="noRekening">32141 1231412 1231231</span> &nbsp;
