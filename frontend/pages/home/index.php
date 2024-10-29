@@ -500,17 +500,15 @@
 <section class="section testimonial-2" style="background:white">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-7">
-                <div class="section-title text-center">
+            <div class="col-lg-12">
+                <div class="text-center">
                     <h2>Testimoni Pelanggan</h2>
                     <div class="divider mx-auto my-4"></div>
                     <p>Sudah banyak yang menyukai produk Rizgold dan merasa puas dengan produk Rizgold ini</p>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-12 testimonial-wrap-2">
                 <?php
@@ -530,8 +528,7 @@
                         <div class="testimonial-block style-2 gray-bg">
                             <i class="icofont-quote-right"></i>
                             <div class="client-info text-center">
-                                <h3><?php echo $data_testimoni['Nama']; ?>, <small class="text-muted"><?php echo $data_testimoni['Instansi']; ?></small> </h3>
-                                <p><?php echo $data_testimoni['Testimoni']; ?></p>
+                                <img src="dashboard/media/testimoni/<?php echo $data_testimoni['Foto']?>" alt="" style="width:100%; height:auto">
                             </div>
                         </div>
 
