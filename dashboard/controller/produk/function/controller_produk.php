@@ -93,7 +93,7 @@ if (isset($_POST['submit_simpan'])) {
         "Aktif"
     );
 
-    $result = $a_tambah_baca_update_hapus->tambah_data("tb_produk", $form_field, $form_value);
+    $result = $a_tambah_baca_update_hapus->tambah_data("tb_produk", $form_field, $form_value, "Iya");
 
     if ($result['Status'] == "Sukses") {
 
@@ -174,7 +174,7 @@ if (isset($_POST['submit_update'])) {
     $form_value_where = array("$Get_Id_Primary");
     $form_connector_where = array("");
 
-    $result = $a_tambah_baca_update_hapus->update_data("tb_produk", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
+    $result = $a_tambah_baca_update_hapus->update_data("tb_produk", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where, "Iya");
 
     if ($result['Status'] == "Sukses") {
 

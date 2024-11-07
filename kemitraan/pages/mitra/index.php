@@ -98,13 +98,13 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                         <div class="card-header border-0">
                             <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-1 fs-4 fw-semibold">
                                 <li class="nav-item">
-                                    <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#tab_profile">Edit Profile</a>
+                                    <a class="nav-link text-active-primary pb-4 active" data-kt-countup-tabs="true" data-bs-toggle="tab" href="#tab_saldo">Saldo</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#tab_profile">Edit Profile</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true" data-bs-toggle="tab" href="#tab_edit_password">Edit Password</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true" data-bs-toggle="tab" href="#tab_saldo">Saldo</a>
                                 </li>
                             </ul>
                         </div>
@@ -112,8 +112,97 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                     <div class="card pt-4 mb-6 mb-xl-9">
                         <div class="tab-content" id="myTabContent">
 
+                            <!-- Tab Saldo -->
+                            <div class="tab-pane fade show active" id="tab_saldo" role="tabpanel">
+                                <div class="card-header border-0">
+                                    <div class="card-title">
+
+                                        <?php
+
+                                        $saldo = 0;
+
+                                        // CEK SALDO
+                                        $search_field_where = array("Id_Pengguna", "Status_Saldo");
+                                        $search_criteria_where = array("=", "=");
+                                        $search_value_where = array("$u_Id_Pengguna", "Approved");
+                                        $search_connector_where = array("AND", "");
+                                        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                                        if ($result['Status'] == "Sukses") {
+                                            $data_hasil_saldo = $result['Hasil'];
+                                            foreach ($data_hasil_saldo as $data_saldo) {
+                                                $saldo = $saldo+$data_saldo['Saldo'];
+                                            }
+                                        }
+
+                                        ?>
+
+                                        <h2>Saldo Anda : <b class="text-danger"><?php echo $a_format_angka->rupiah($saldo)?></b></h2>
+                                    </div>
+                                    <div class="card-toolbar">
+                                        <?php
+
+                                        $read_data_pengaturan = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan_pembelian", "Id_Pengaturan", "1");
+
+                                        // Replace the first 0 with 62 for the Indonesian country code
+                                        $Nomor_Admin_Pembelian = $read_data_pengaturan['Hasil']['Nomor_Admin_Pembelian']; // Example: 085779908779
+                                        $Nomor_Admin_Pembelian = preg_replace(pattern: '/^0/', replacement: '62', subject: $Nomor_Admin_Pembelian);
+
+
+                                        // Encode the message to replace spaces with %20
+                                        $Pesan_Otomatis_Pembelian = "Hallo Admin Rizgold, Saya ingin Top Up Saldo";
+                                        $Pesan_Otomatis_Pembelian = urlencode(string: $Pesan_Otomatis_Pembelian);
+
+                                        // Create the WhatsApp link
+                                        $Link_Whatsapp_Top_Up = "https://wa.me/$Nomor_Admin_Pembelian?text=$Pesan_Otomatis_Pembelian";
+                                        ?>
+                                        <!-- <a href="< ?php echo $Link_Whatsapp_Top_Up?>" target="_blank" class="btn btn-light" disabled> Top Up Saldo</a> -->
+                                        <button class="btn btn-warning"> <font class="text-dark"> Top Up Saldo </font></button> &nbsp; <button class="btn btn-primary"> Tarik Saldo</button>
+                                    </div>
+                                </div>
+
+                                <div class="card-body pt-0 pb-5">
+                                    <hr>
+                                    <div class="mb-7">
+                                        <h4>History Saldo</h4>
+                                        <br>
+                                        <?php 
+                                        
+                                          // CEK SALDO
+                                          $search_field_where = array("Id_Pengguna");
+                                          $search_criteria_where = array("=");
+                                          $search_value_where = array("$u_Id_Pengguna");
+                                          $search_connector_where = array("ORDER BY Waktu_Simpan_Data DESC");
+                                          $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_log_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                                          if ($result['Status'] == "Sukses") {
+                                              $data_hasil_log_saldo = $result['Hasil'];
+                                              foreach ($data_hasil_log_saldo as $data_log_saldo) {
+
+                                                if($data_log_saldo['Aktor'] == "Kemitraan"){
+                                                    $Aktor = "Anda";
+                                                }else{
+                                                    $Aktor = "Admin";
+                                                }
+                                                  ?>
+                                                  <div class="timeline">
+                                                      <div class="timeline-item">
+                                                          <div class="timeline-dot"></div>
+                                                          <div class="timeline-content">
+                                                              <p class="text-muted badge"> | <?php echo tanggal_dan_waktu_24_jam_indonesia($data_log_saldo['Waktu_Simpan_Data'])?></p>
+                                                              <p><?php echo $Aktor?> <?php echo $data_log_saldo['Aktivitas']?> <?php echo $a_format_angka->rupiah($data_log_saldo['Saldo'])?></p>
+                                                          </div>
+                                                      </div>
+                                            
+                                                  </div>
+                                                  <?php
+                                              }
+                                          }
+                                          ?>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Tab Profile -->
-                            <div class="tab-pane fade show active" id="tab_profile" role="tabpanel">
+                            <div class="tab-pane fade" id="tab_profile" role="tabpanel">
                                 <div class="card mb-xl-9">
                                     <div class="card-header border-0">
                                         <div class="card-title">
@@ -274,43 +363,6 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                             </div>
                                         </div>
                                     </form>
-                                </div>
-                            </div>
-
-                            <!-- Tab Saldo -->
-                            <div class="tab-pane fade" id="tab_saldo" role="tabpanel">
-                                <div class="card-header border-0">
-                                    <div class="card-title">
-                                        <h2 class="text-muted">Saldo Anda : Rp 0,-</h2>
-                                    </div>
-                                    <div class="card-toolbar">
-                                        <?php
-
-                                        $read_data_pengaturan = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan", "Id_Pengaturan", "1");
-                                        
-                                        // Replace the first 0 with 62 for the Indonesian country code
-                                        $Nomor_Admin_Pembelian = $read_data_pengaturan['Hasil']['Nomor_Admin_Pembelian']; // Example: 085779908779
-                                        $Nomor_Admin_Pembelian = preg_replace(pattern: '/^0/', replacement: '62', subject: $Nomor_Admin_Pembelian);
-
-                                        
-                                        // Encode the message to replace spaces with %20
-                                        $Pesan_Otomatis_Pembelian = "Hallo Admin Rizgold, Saya ingin Top Up Saldo";
-                                        $Pesan_Otomatis_Pembelian = urlencode(string: $Pesan_Otomatis_Pembelian);
-
-                                        // Create the WhatsApp link
-                                        $Link_Whatsapp_Top_Up = "https://wa.me/$Nomor_Admin_Pembelian?text=$Pesan_Otomatis_Pembelian";
-                                        ?>
-                                        <!-- <a href="< ?php echo $Link_Whatsapp_Top_Up?>" target="_blank" class="btn btn-light" disabled> Top Up Saldo</a> -->
-                                        <button class="btn btn-light" disabled> Top Up Saldo</button>
-                                        <button class="btn btn-light" disabled> Tarik Saldo</button>
-                                    </div>
-                                </div>
-
-                                <div class="card-body pt-0 pb-5">
-                                    <hr>
-                                    <div class="mb-7 text-center">
-                                        <h4>Fitur ini akan segera hadir</h4>
-                                    </div>
                                 </div>
                             </div>
 

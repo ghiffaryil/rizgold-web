@@ -49,13 +49,13 @@ if ($result['Status'] == "Sukses") {
 
                 <hr>
                 <h4>Deskripsi</h4>
-                <p class=""><?php echo $edit['Deskripsi'] ?></p>
+                <p class=""><?php echo nl2br($edit['Deskripsi']); ?></p>
 
                 <h4>Manfaat</h4>
-                <p class=""><?php echo $edit['Manfaat'] ?></p>
+                <p class=""><?php echo nl2br($edit['Manfaat']); ?></p>
 
                 <h4>Khasiat</h4>
-                <p class=""><?php echo $edit['Khasiat'] ?></p>
+                <p class=""><?php echo nl2br($edit['Khasiat']); ?></p>
             </div>
         </div>
     </div>

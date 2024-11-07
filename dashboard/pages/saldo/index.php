@@ -1,0 +1,249 @@
+<?php include "controller/saldo/controller_saldo.php"; ?>
+
+<div class="content-wrapper">
+    <div class="container-full">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="d-flex align-items-center">
+                <div class="me-auto">
+                    <h3 class="page-title">Data saldo</h3>
+                    <div class="d-inline-block align-items-center">
+                        <nav>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.php?menu=saldo"><i class="mdi mdi-home-outline"></i> Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Data saldo</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <div class="row">
+
+                <div class="col-12">
+                    <?php if (isset($_GET["edit"])) { ?>
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <div class="form-group row">
+                                            <label class="text-right col-lg-12 control-label">
+                                                Tanggal : <span class="text-muted"><?php echo tanggal_dan_waktu_24_jam_indonesia($edit['Waktu_Simpan_Data']); ?></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="form-group row">
+                                            <label class="text-right col-lg-3 control-label">Status</label>
+                                            <div class="col-lg-9 text-right">
+                                                : <span class="badge badge-warning fs-6"><?php echo $edit['Status_Saldo']; ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <fieldset class="content-group">
+                                    <div class="row">
+                                        <hr>
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label class="col-lg-3 control-label">Nama</label>
+                                                <div class="col-lg-9">
+                                                    <?php
+                                                    $result_pengguna = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", "$edit[Id_Pengguna]");
+                                                    $edit_pengguna = $result_pengguna['Hasil'];
+                                                    ?>
+                                                    : <?php echo $edit_pengguna['Nama_Depan'] . " " . $edit_pengguna['Nama_Belakang']; ?>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-lg-3 control-label">Aktivitas</label>
+                                                <div class="col-lg-9">
+                                                    : <?php echo $edit['Aktivitas']; ?> Saldo
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="text-right col-lg-3 control-label">Saldo</label>
+                                                <div class="col-lg-9 text-right">
+                                                    : <span class="badge badge-dark fs-4"><?php echo $a_format_angka->rupiah($edit['Saldo']); ?></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-lg-12 control-label">Bukti Transfer</label>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-lg-12">
+                                                    <?php
+                                                    if ($edit['Bukti_Transfer_Saldo'] == "") {
+                                                        echo "<h3> Transaksi ini tidak memiliki Bukti Transfer Saldo </h3>";
+                                                    } else {
+                                                    ?>
+                                                        <a href="media/bukti_transfer_saldo/<?php echo $edit['Bukti_Transfer_Saldo'] ?>" target="_blank">
+                                                            <img src="media/bukti_transfer_saldo/<?php echo $edit['Bukti_Transfer_Saldo'] ?>" alt="" style="width: 50%; height:auto">
+                                                        </a>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                Tanggal Update Bukti Transfer : <span class="text-muted"><?php echo tanggal_dan_waktu_24_jam_indonesia($edit['Tanggal_Update_Bukti_Transfer']); ?></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3">
+
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <hr>
+
+                                <?php if ($edit['Status_Saldo'] == "Pending") { ?>
+                                    <div class="text-center mt-5">
+                                        <form method="POST">
+                                            <input type="hidden" readonly name="Id_Pengguna_Saldo" class="form-control" value="<?php echo $edit['Id_Pengguna'] ?>">
+                                            <input type="hidden" readonly name="Id_Saldo" class="form-control" value="<?php echo $edit['Id_Saldo'] ?>">
+                                            <input type="hidden" readonly name="Saldo" class="form-control" value="<?php echo $edit['Saldo'] ?>">
+                                            <div class="form-group text-right">
+                                                <button type="submit" name="submit_approve_saldo" class="btn btn-success" onclick="return confirm('Anda yakin akan menyetujui Top Up saldo ini?')"> <i class="fa fa-check"></i> Approve </button>
+                                                &nbsp;
+                                                <button type="submit" name="submit_reject_saldo" class="btn btn-danger" onclick="return confirm('Anda yakin akan menplak Top Up saldo ini?')"> <i class="fa fa-close"> </i> Reject </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                <?php } ?>
+
+                                
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="container">
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <h4>Log History Saldo</h4>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group row">
+                                                <div class="col-lg-12">
+                                                    <?php
+                                                    include "controller/saldo/controller_log_saldo.php";
+                                                    $search_controller = new Search_Controller_Log_Saldo();
+                                                    $data_hasil = $search_controller->select_search_filter($edit['Id_Pengguna']);
+                                                    $nomor_log = 0;
+                                                    foreach ($data_hasil as $data) {
+                                                        $nomor_log++;
+                                                        if ($data['Aktor'] == "Kemitraan") {
+                                                            $read_pengguna = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", "$data[Id_Aktor]");
+                                                            $data_pengguna = $read_pengguna['Hasil'];
+                                                            $nama_pengguna = $data_pengguna['Nama_Depan'] . " " . $data_pengguna['Nama_Belakang'];
+                                                        } else {
+                                                            $read_pengguna = $a_tambah_baca_update_hapus->baca_data_id("tb_admin", "Id_Admin", "$data[Id_Aktor]");
+                                                            $data_pengguna = $read_pengguna['Hasil'];
+                                                            $nama_pengguna = $data_pengguna['Nama_Lengkap'];
+                                                        }
+                                                    ?>
+                                                        <div class="form-group"> <?php echo tanggal_dan_waktu_24_jam_indonesia($data['Waktu_Simpan_Data']) . " - " . $nama_pengguna . " - " . $data['Aktivitas'] . " - " . $a_format_angka->rupiah($data['Saldo']) ?> </div>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+
+                    <?php if (!((isset($_GET["tambah"])) or (isset($_GET["edit"])))) { ?>
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 d-none">
+                                        <a href="<?php echo $kehalaman ?>&tambah" class="btn btn-primary">Tambah Baru</a>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="table-responsive">
+                                    <table id="example1" class="table table-bordered" style="width:100%">
+                                        <thead>
+                                            <tr class="bg-light">
+                                                <th style="width:5%;">No</th>
+                                                <th style="width:20%;">Tanggal</th>
+                                                <th style="width:25%;">Mitra</th>
+                                                <th style="width:10%;">Aktivitas</th>
+                                                <th style="width:15%;">Saldo</th>
+                                                <th style="width:15%;">Status Saldo</th>
+                                                <th style="width:5%;">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $search_controller = new Search_Controller_Saldo();
+                                            $data_hasil = $search_controller->select_search_filter("");
+                                            $nomor = 0;
+
+                                            foreach ($data_hasil as $data) {
+                                                $nomor++;
+
+                                                $result_pengguna = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", "$data[Id_Pengguna]");
+                                                $data_pengguna = $result_pengguna['Hasil'];
+
+                                            ?>
+                                                <tr>
+                                                    <td><?php echo $nomor ?></td>
+                                                    <td>
+                                                        <a href="<?php echo $kehalaman ?>&edit&id=<?php echo $a_hash->encode($data["Id_Saldo"], $_GET['menu']); ?>">
+                                                            <?php echo tanggal_dan_waktu_24_jam_indonesia($data['Tanggal_Update_Bukti_Transfer']); ?>
+                                                        </a>
+                                                    </td>
+                                                    <td><?php echo $data_pengguna['Nama_Depan'] . " " . $data_pengguna['Nama_Belakang']; ?></td>
+                                                    <td><?php echo $data['Aktivitas'] ?></td>
+                                                    <td><?php echo $a_format_angka->rupiah($data['Saldo']); ?></td>
+                                                    <td>
+                                                        <?php if ($data['Status_Saldo'] == 'Pending'): ?>
+                                                            <span class="badge bg-warning text-dark">Pending</span>
+                                                        <?php elseif ($data['Status_Saldo'] == 'Approved'): ?>
+                                                            <span class="badge bg-success">Approved</span>
+                                                        <?php elseif ($data['Status_Saldo'] == 'Void'): ?>
+                                                            <span class="badge bg-danger">Void</span>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <a href="<?php echo $kehalaman ?>&edit&id=<?php echo $a_hash->encode($data["Id_Saldo"], $_GET['menu']); ?>" class="btn btn-dark btn-sm">
+                                                                Lihat
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

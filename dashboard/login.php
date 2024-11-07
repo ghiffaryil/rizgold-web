@@ -37,6 +37,7 @@ if (isset($_POST['submit_login'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -79,13 +80,29 @@ if (isset($_POST['submit_login'])) {
 									</div>
 									<div class="form-group">
 										<div class="input-group mb-3">
-											<span class="input-group-text  bg-transparent"><i class="ti-lock"></i></span>
-											<input name="Password" type="password" class="form-control ps-15 bg-transparent" placeholder="Password">
+											<span class="input-group-text bg-transparent"><i class="ti-lock"></i></span>
+											<input name="Password" type="password" class="form-control ps-15 bg-transparent" placeholder="Password" id="password">
+											<span class="input-group-text bg-transparent" onclick="togglePasswordVisibility()"><i class="ti-eye" id="toggleIcon"></i></span>
 										</div>
+										<script>
+											function togglePasswordVisibility() {
+												var passwordField = document.getElementById("password");
+												var toggleIcon = document.getElementById("toggleIcon");
+												if (passwordField.type === "password") {
+													passwordField.type = "text";
+													toggleIcon.classList.remove("ti-eye");
+													toggleIcon.classList.add("ti-close");
+												} else {
+													passwordField.type = "password";
+													toggleIcon.classList.remove("ti-close");
+													toggleIcon.classList.add("ti-eye");
+												}
+											}
+										</script>
 									</div>
 									<div class="row">
 										<div class="col-12 text-center">
-											<button type="submit" name="submit_login" class="btn btn-dark"  style="width: 100%;">Login</button>
+											<button type="submit" name="submit_login" class="btn btn-dark" style="width: 100%;">Login</button>
 										</div>
 									</div>
 								</form>

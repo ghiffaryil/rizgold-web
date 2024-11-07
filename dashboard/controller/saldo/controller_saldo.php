@@ -27,6 +27,9 @@ if (isset($_GET['edit'])) {
 #FUNGSI UPDATE DATA (UPDATE)
 if (isset($_POST['submit_approve_saldo'])) {
 
+    $read_data_saldo = $a_tambah_baca_update_hapus->baca_data_id("tb_saldo", "Id_Saldo", $Get_Id_Primary);
+    $data_saldo = $read_data_saldo['Hasil'];
+
     $form_field = array("Status_Saldo", "Waktu_Update_Data");
     $form_value = array("Approved", "$Waktu_Sekarang");
 
@@ -45,6 +48,21 @@ if (isset($_POST['submit_approve_saldo'])) {
 
         $result = $a_tambah_baca_update_hapus->tambah_data("tb_log_saldo", $form_field, $form_value);
 
+
+        if($data_saldo['Keterangan'] == "Pertama"){
+            // UPDATE PERMISSION KEMITRAAN
+            $Id_Pengguna_Kemitraan = $data_saldo['Id_Pengguna'];
+
+            $form_field = array("Akses_Profile","Akses_Pembelian","Akses_Laporan","Akses_Konten","Waktu_Update_Data");
+            $form_value = array("Iya","Iya","Iya","Iya","$Waktu_Sekarang");
+        
+            $form_field_where = array("Id_Pengguna");
+            $form_criteria_where = array("=");
+            $form_value_where = array("$Id_Pengguna_Kemitraan");
+            $form_connector_where = array("");
+        
+            $result = $a_tambah_baca_update_hapus->update_data("tb_pengguna", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
+        }
         echo "<script>alert('Data Terupdate');document.location.href='$kehalaman'</script>";
     } else {
         echo "<script>alert('Terjadi Kesalahan Saat Mengupdate Data');document.location.href='$kehalaman'</script>";
@@ -100,3 +118,4 @@ class Search_Controller_Saldo
         }
     }
 }
+
