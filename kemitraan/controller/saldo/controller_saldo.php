@@ -2,33 +2,15 @@
 
 if (isset($_POST['submit_upload'])) {
 
-    $form_field = array(
-        "Id_Pengguna",
-        "Aktivitas",
-        "Saldo",
-        "Tanggal_Update_Bukti_Transfer",
-        "Status_Saldo",
-        "Keterangan",
-        "Waktu_Simpan_Data",
-        "Waktu_Update_Data"
-    );
-    $form_value = array(
-        "$u_Id_Pengguna",
-        "Isi",
-        "$_POST[Saldo]",
-        "$Waktu_Sekarang",
-        "Pending",
-        "Pertama",
-        "$Waktu_Sekarang",
-        "$Waktu_Sekarang"
-    );
-    $result = $a_tambah_baca_update_hapus->tambah_data("tb_saldo", $form_field, $form_value);
+    $form_field = array("Id_Pengguna","Saldo","Tanggal_Upload_Bukti_Transfer","Status_Saldo","Keterangan","Waktu_Simpan_Data","Waktu_Update_Data");
+    $form_value = array("$u_Id_Pengguna","$_POST[Saldo]","$Waktu_Sekarang","Pending","Pertama","$Waktu_Sekarang","$Waktu_Sekarang");
+    $result = $a_tambah_baca_update_hapus->tambah_data("tb_top_up_saldo", $form_field, $form_value);
 
     if ($result['Status'] == "Sukses") {
 
-        $read_last_data_saldo = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_saldo", "Id_Saldo");
+        $read_last_data_saldo = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_top_up_saldo", "Id_Top_Up_Saldo");
         if ($read_last_data_saldo['Status'] == "Sukses") {
-            $Id_Auto_Increment = $read_last_data_saldo['Hasil'][0]['Id_Saldo'];
+            $Id_Auto_Increment = $read_last_data_saldo['Hasil'][0]['Id_Top_Up_Saldo'];
         } else {
             $Id_Auto_Increment = 1;
         }
@@ -48,34 +30,16 @@ if (isset($_POST['submit_upload'])) {
 
                 $form_field = array("Bukti_Transfer_Saldo");
                 $form_value = array("$nama_file_upload.$ext_file_upload");
-                $form_field_where = array("Id_Saldo");
+                $form_field_where = array("Id_Top_Up_Saldo");
                 $form_criteria_where = array("=");
                 $form_value_where = array("$Id_Auto_Increment");
                 $form_connector_where = array("");
 
-                $result = $a_tambah_baca_update_hapus->update_data("tb_saldo", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
+                $result = $a_tambah_baca_update_hapus->update_data("tb_top_up_saldo", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
 
                 // INSERT LOG SALDO
-                $form_field = array(
-                    "Aktivitas",
-                    "Saldo",
-                    "Status_Saldo",
-                    "Aktor",
-                    "Id_Saldo",
-                    "Id_Pengguna",
-                    "Id_Aktor",
-                    "Waktu_Simpan_Data"
-                );
-                $form_value = array(
-                    "Anda melakukan isi saldo",
-                    "$_POST[Saldo]",
-                    "Pending",
-                    "Kemitraan",
-                    "$Id_Auto_Increment",
-                    "$u_Id_Pengguna",
-                    "$u_Id_Pengguna",
-                    "$Waktu_Sekarang"
-                );
+                $form_field = array("Aktivitas","Keterangan","Saldo","Status_Saldo","Aktor","Id_Saldo","Id_Pengguna","Id_Aktor","Waktu_Simpan_Data");
+                $form_value = array("Top Up","melakukan Top-Up saldo","$_POST[Saldo]","Pending","Kemitraan","$Id_Auto_Increment","$u_Id_Pengguna","$u_Id_Pengguna","$Waktu_Sekarang");
                 $result = $a_tambah_baca_update_hapus->tambah_data("tb_log_saldo", $form_field, $form_value);
                 // exit();
 

@@ -118,15 +118,15 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                     <div class="card-title">
 
                                         <?php
-
                                         $saldo = 0;
-
+                                        
                                         // CEK SALDO
-                                        $search_field_where = array("Id_Pengguna", "Status_Saldo");
-                                        $search_criteria_where = array("=", "=");
-                                        $search_value_where = array("$u_Id_Pengguna", "Approved");
-                                        $search_connector_where = array("AND", "");
-                                        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                                        $search_field_where = array("Id_Pengguna");
+                                        $search_criteria_where = array("=");
+                                        $search_value_where = array("$u_Id_Pengguna");
+                                        $search_connector_where = array("");
+
+                                        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_top_up_saldo_release", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
                                         if ($result['Status'] == "Sukses") {
                                             $data_hasil_saldo = $result['Hasil'];
                                             foreach ($data_hasil_saldo as $data_saldo) {
@@ -187,11 +187,9 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                                       <div class="timeline-item">
                                                           <div class="timeline-dot"></div>
                                                           <div class="timeline-content">
-                                                              <p class="text-muted badge"> | <?php echo tanggal_dan_waktu_24_jam_indonesia($data_log_saldo['Waktu_Simpan_Data'])?></p>
-                                                              <p><?php echo $Aktor?> <?php echo $data_log_saldo['Aktivitas']?> <?php echo $a_format_angka->rupiah($data_log_saldo['Saldo'])?></p>
+                                                          <p><span class="text-muted badge"> <?php echo tanggal_dan_waktu_24_jam_indonesia($data_log_saldo['Waktu_Simpan_Data'])?></span> | <?php echo $Aktor?> <?php echo $data_log_saldo['Keterangan']?> <?php echo $a_format_angka->rupiah($data_log_saldo['Saldo'])?></p>
                                                           </div>
                                                       </div>
-                                            
                                                   </div>
                                                   <?php
                                               }

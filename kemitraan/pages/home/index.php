@@ -11,8 +11,8 @@ include "controller/saldo/controller_saldo.php"
         $search_field_where = array("Id_Pengguna");
         $search_criteria_where = array("=");
         $search_value_where = array("$u_Id_Pengguna");
-        $search_connector_where = array("ORDER BY Id_Saldo ASC LIMIT 1");
-        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+        $search_connector_where = array("ORDER BY Id_Top_Up_Saldo ASC LIMIT 1");
+        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_top_up_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
         if ($result['Status'] == "Sukses") {
             $data_saldo = $result['Hasil'][0];
             if ($data_saldo['Status_Saldo'] == "Approved") {

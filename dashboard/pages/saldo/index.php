@@ -32,16 +32,22 @@
                                 <div class="row">
                                     <div class="col-lg-10">
                                         <div class="form-group row">
-                                            <label class="text-right col-lg-12 control-label">
+                                            <label class=" col-lg-12 control-label">
                                                 Tanggal : <span class="text-muted"><?php echo tanggal_dan_waktu_24_jam_indonesia($edit['Waktu_Simpan_Data']); ?></span>
                                             </label>
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
                                         <div class="form-group row">
-                                            <label class="text-right col-lg-3 control-label">Status</label>
-                                            <div class="col-lg-9 text-right">
-                                                : <span class="badge badge-warning fs-6"><?php echo $edit['Status_Saldo']; ?></span>
+                                            <label class=" col-lg-3 control-label">Status</label>
+                                            <div class="col-lg-9 ">
+                                                <?php if ($edit['Status_Saldo'] == 'Pending'): ?>
+                                                    <span class="badge bg-warning text-dark">Pending</span>
+                                                <?php elseif ($edit['Status_Saldo'] == 'Approved'): ?>
+                                                    <span class="badge bg-success">Approved</span>
+                                                <?php elseif ($edit['Status_Saldo'] == 'Void'): ?>
+                                                    <span class="badge bg-danger">Void</span>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -50,39 +56,37 @@
                                 <fieldset class="content-group">
                                     <div class="row">
                                         <hr>
-                                        <div class="col-md-5">
+                                        <div class="col-lg-6">
                                             <div class="form-group row">
-                                                <label class="col-lg-3 control-label">Nama</label>
-                                                <div class="col-lg-9">
+                                                <label class="col-lg-5 control-label">Nama</label>
+                                                <div class="col-lg-7">
                                                     <?php
                                                     $result_pengguna = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", "$edit[Id_Pengguna]");
                                                     $edit_pengguna = $result_pengguna['Hasil'];
                                                     ?>
-                                                    : <?php echo $edit_pengguna['Nama_Depan'] . " " . $edit_pengguna['Nama_Belakang']; ?>
+                                                    <?php echo $edit_pengguna['Nama_Depan'] . " " . $edit_pengguna['Nama_Belakang']; ?>
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
-                                                <label class="col-lg-3 control-label">Aktivitas</label>
-                                                <div class="col-lg-9">
-                                                    : <?php echo $edit['Aktivitas']; ?> Saldo
+                                                <label class="col-lg-5 control-label">Saldo</label>
+                                                <div class="col-lg-7 ">
+                                                    <span class="badge badge-danger fs-4"><?php echo $a_format_angka->rupiah($edit['Saldo']); ?></span>
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
-                                                <label class="text-right col-lg-3 control-label">Saldo</label>
-                                                <div class="col-lg-9 text-right">
-                                                    : <span class="badge badge-dark fs-4"><?php echo $a_format_angka->rupiah($edit['Saldo']); ?></span>
+                                                <label class="col-lg-5 control-label">Tanggal Upload Bukti Transfer</label>
+                                                <div class="col-lg-7">
+                                                    <span class="text-muted"><?php echo tanggal_dan_waktu_24_jam_indonesia($edit['Tanggal_Upload_Bukti_Transfer']); ?></span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
+                                        <div class="col-lg-4">
                                             <div class="form-group row">
-                                                <label class="col-lg-12 control-label">Bukti Transfer</label>
-                                            </div>
-                                            <div class="form-group row">
-                                                <div class="col-lg-12">
+                                                <label class="col-lg-5 control-label">Bukti Transfer</label>
+                                                <div class="col-lg-7">
                                                     <?php
                                                     if ($edit['Bukti_Transfer_Saldo'] == "") {
                                                         echo "<h3> Transaksi ini tidak memiliki Bukti Transfer Saldo </h3>";
@@ -96,14 +100,6 @@
                                                     ?>
                                                 </div>
                                             </div>
-
-                                            <div class="form-group row">
-                                                Tanggal Update Bukti Transfer : <span class="text-muted"><?php echo tanggal_dan_waktu_24_jam_indonesia($edit['Tanggal_Update_Bukti_Transfer']); ?></span>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3">
-
                                         </div>
                                     </div>
                                 </fieldset>
@@ -113,9 +109,9 @@
                                     <div class="text-center mt-5">
                                         <form method="POST">
                                             <input type="hidden" readonly name="Id_Pengguna_Saldo" class="form-control" value="<?php echo $edit['Id_Pengguna'] ?>">
-                                            <input type="hidden" readonly name="Id_Saldo" class="form-control" value="<?php echo $edit['Id_Saldo'] ?>">
+                                            <input type="hidden" readonly name="Id_Top_Up_Saldo" class="form-control" value="<?php echo $edit['Id_Top_Up_Saldo'] ?>">
                                             <input type="hidden" readonly name="Saldo" class="form-control" value="<?php echo $edit['Saldo'] ?>">
-                                            <div class="form-group text-right">
+                                            <div class="form-group ">
                                                 <button type="submit" name="submit_approve_saldo" class="btn btn-success" onclick="return confirm('Anda yakin akan menyetujui Top Up saldo ini?')"> <i class="fa fa-check"></i> Approve </button>
                                                 &nbsp;
                                                 <button type="submit" name="submit_reject_saldo" class="btn btn-danger" onclick="return confirm('Anda yakin akan menplak Top Up saldo ini?')"> <i class="fa fa-close"> </i> Reject </button>
@@ -124,7 +120,7 @@
                                     </div>
                                 <?php } ?>
 
-                                
+
                             </div>
                         </div>
 
@@ -189,7 +185,6 @@
                                                 <th style="width:5%;">No</th>
                                                 <th style="width:20%;">Tanggal</th>
                                                 <th style="width:25%;">Mitra</th>
-                                                <th style="width:10%;">Aktivitas</th>
                                                 <th style="width:15%;">Saldo</th>
                                                 <th style="width:15%;">Status Saldo</th>
                                                 <th style="width:5%;">Aksi</th>
@@ -211,12 +206,11 @@
                                                 <tr>
                                                     <td><?php echo $nomor ?></td>
                                                     <td>
-                                                        <a href="<?php echo $kehalaman ?>&edit&id=<?php echo $a_hash->encode($data["Id_Saldo"], $_GET['menu']); ?>">
-                                                            <?php echo tanggal_dan_waktu_24_jam_indonesia($data['Tanggal_Update_Bukti_Transfer']); ?>
+                                                        <a href="<?php echo $kehalaman ?>&edit&id=<?php echo $a_hash->encode($data["Id_Top_Up_Saldo"], $_GET['menu']); ?>">
+                                                            <?php echo tanggal_dan_waktu_24_jam_indonesia($data['Tanggal_Upload_Bukti_Transfer']); ?>
                                                         </a>
                                                     </td>
                                                     <td><?php echo $data_pengguna['Nama_Depan'] . " " . $data_pengguna['Nama_Belakang']; ?></td>
-                                                    <td><?php echo $data['Aktivitas'] ?></td>
                                                     <td><?php echo $a_format_angka->rupiah($data['Saldo']); ?></td>
                                                     <td>
                                                         <?php if ($data['Status_Saldo'] == 'Pending'): ?>
@@ -229,7 +223,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="d-flex">
-                                                            <a href="<?php echo $kehalaman ?>&edit&id=<?php echo $a_hash->encode($data["Id_Saldo"], $_GET['menu']); ?>" class="btn btn-dark btn-sm">
+                                                            <a href="<?php echo $kehalaman ?>&edit&id=<?php echo $a_hash->encode($data["Id_Top_Up_Saldo"], $_GET['menu']); ?>" class="btn btn-dark btn-sm">
                                                                 Lihat
                                                             </a>
                                                         </div>
