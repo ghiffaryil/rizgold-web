@@ -262,8 +262,6 @@ if (isset($_GET['hapus_data_permanen'])) {
 
 #-----------------------------------------------------------------------------------
 #FUNGSI HITUNG DATA (COUNT)
-
-
 if (isset($_GET['filter'])) {
     $filter = $_GET['filter'];
 } else {

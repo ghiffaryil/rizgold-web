@@ -52,8 +52,10 @@ if (isset($_POST['submit_approve_saldo'])) {
         $form_value = array("$_POST[Id_Top_Up_Saldo]", "$_POST[Id_Pengguna_Saldo]", "$_POST[Saldo]", "$u_Id_User", "Admin", "$Waktu_Sekarang", "$Waktu_Sekarang");
         $result = $a_tambah_baca_update_hapus->tambah_data("tb_top_up_saldo_release", $form_field, $form_value);
 
-        if ($data_saldo['Keterangan'] == "Pertama") {
+        // UPDATE SALDO JADI TERARSIP
 
+
+        if ($data_saldo['Keterangan'] == "Pertama") {
 
             // UPDATE PERMISSION KEMITRAAN
             $Id_Pengguna_Kemitraan = $data_saldo['Id_Pengguna'];
@@ -91,8 +93,8 @@ if (isset($_POST['submit_reject_saldo'])) {
     if ($result['Status'] == "Sukses") {
 
         // INSERT KE TB LOG SALDO
-        $form_field = array("Aktivitas", "Saldo", "Status_Saldo", "Aktor", "Id_Aktor", "Id_Top_Up_Saldo", "Id_Pengguna", "Waktu_Simpan_Data");
-        $form_value = array("Menolak Top-Up saldo", "$_POST[Saldo]", "Rejected", "Admin", "$u_Id_User", "$_POST[Id_Top_Up_Saldo]", "$_POST[Id_Pengguna_Saldo]", "$Waktu_Sekarang");
+        $form_field = array("Aktivitas", "Keterangan", "Saldo", "Status_Saldo", "Aktor", "Id_Aktor", "Id_Saldo", "Id_Pengguna", "Waktu_Simpan_Data");
+        $form_value = array("Reject", "menolak Top-Up saldo", "$_POST[Saldo]", "Approved", "Admin", "$u_Id_User", "$_POST[Id_Top_Up_Saldo]", "$_POST[Id_Pengguna_Saldo]",  "$Waktu_Sekarang");
         $result = $a_tambah_baca_update_hapus->tambah_data("tb_log_saldo", $form_field, $form_value);
 
         echo "<script>alert('Data Terupdate');document.location.href='$kehalaman'</script>";
@@ -100,6 +102,41 @@ if (isset($_POST['submit_reject_saldo'])) {
         echo "<script>alert('Terjadi Kesalahan Saat Mengupdate Data');document.location.href='$kehalaman'</script>";
     }
 }
+
+
+#-----------------------------------------------------------------------------------
+#FUNGSI HITUNG DATA (COUNT)
+if (isset($_GET['filter'])) {
+    $filter = $_GET['filter'];
+} else {
+    $filter = "";
+}
+
+$count_field_where = array("Status_Saldo");
+$count_criteria_where = array("=");
+$count_connector_where = array("");
+
+#-----------------------------------------------------------------------------------
+#HITUNG AKTIF
+$count_value_where = array("Pending");
+$hitung_pending = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_top_up_saldo", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
+$hitung_pending = $hitung_pending['Hasil'];
+
+#-----------------------------------------------------------------------------------
+#HITUNG Approved
+$count_value_where = array("Approved");
+$hitung_approved = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_top_up_saldo", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
+$hitung_approved = $hitung_approved['Hasil'];
+
+#-----------------------------------------------------------------------------------
+#HITUNG Rejected
+$count_value_where = array("Rejected");
+$hitung_rejected = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_top_up_saldo", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
+$hitung_rejected = $hitung_rejected['Hasil'];
+#-----------------------------------------------------------------------------------
+
+
+
 
 #-----------------------------------------------------------------------------------
 class Search_Controller_Saldo

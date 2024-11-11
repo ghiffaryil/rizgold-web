@@ -2,8 +2,8 @@
 
 if (isset($_POST['submit_upload'])) {
 
-    $form_field = array("Id_Pengguna","Saldo","Tanggal_Upload_Bukti_Transfer","Status_Saldo","Keterangan","Waktu_Simpan_Data","Waktu_Update_Data");
-    $form_value = array("$u_Id_Pengguna","$_POST[Saldo]","$Waktu_Sekarang","Pending","Pertama","$Waktu_Sekarang","$Waktu_Sekarang");
+    $form_field = array("Id_Pengguna", "Saldo", "Tanggal_Upload_Bukti_Transfer", "Status_Saldo", "Keterangan", "Waktu_Simpan_Data", "Waktu_Update_Data");
+    $form_value = array("$u_Id_Pengguna", "$_POST[Saldo]", "$Waktu_Sekarang", "Pending", "Pertama", "$Waktu_Sekarang", "$Waktu_Sekarang");
     $result = $a_tambah_baca_update_hapus->tambah_data("tb_top_up_saldo", $form_field, $form_value);
 
     if ($result['Status'] == "Sukses") {
@@ -36,15 +36,15 @@ if (isset($_POST['submit_upload'])) {
                 $form_connector_where = array("");
 
                 $result = $a_tambah_baca_update_hapus->update_data("tb_top_up_saldo", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
-
-                // INSERT LOG SALDO
-                $form_field = array("Aktivitas","Keterangan","Saldo","Status_Saldo","Aktor","Id_Saldo","Id_Pengguna","Id_Aktor","Waktu_Simpan_Data");
-                $form_value = array("Top Up","melakukan Top-Up saldo","$_POST[Saldo]","Pending","Kemitraan","$Id_Auto_Increment","$u_Id_Pengguna","$u_Id_Pengguna","$Waktu_Sekarang");
-                $result = $a_tambah_baca_update_hapus->tambah_data("tb_log_saldo", $form_field, $form_value);
-                // exit();
-
-                echo "<script> alert('Terimakasih anda telah mengupload bukti transfer, silahkan tunggu informasi dari Admin');document.location.href = 'index.php';</script>";
             }
+
+            // INSERT LOG SALDO
+            $form_field = array("Aktivitas", "Keterangan", "Saldo", "Status_Saldo", "Aktor", "Id_Saldo", "Id_Pengguna", "Id_Aktor", "Waktu_Simpan_Data");
+            $form_value = array("Top Up", "melakukan Top-Up saldo", "$_POST[Saldo]", "Pending", "Kemitraan", "$Id_Auto_Increment", "$u_Id_Pengguna", "$u_Id_Pengguna", "$Waktu_Sekarang");
+            $result = $a_tambah_baca_update_hapus->tambah_data("tb_log_saldo", $form_field, $form_value);
+            // exit();
+
+            echo "<script> alert('Terimakasih anda telah mengupload bukti transfer, silahkan tunggu informasi dari Admin');document.location.href = 'index.php';</script>";
         }
     }
 }

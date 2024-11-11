@@ -119,13 +119,9 @@
                                         </form>
                                     </div>
                                 <?php } ?>
-
-
                             </div>
                         </div>
-
                         <br>
-
                         <div class="box">
                             <div class="box-body">
                                 <div class="container">
@@ -173,8 +169,17 @@
                         <div class="box">
                             <div class="box-body">
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-sm-12 d-none">
-                                        <a href="<?php echo $kehalaman ?>&tambah" class="btn btn-primary">Tambah Baru</a>
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12" style="text-align: right;">
+                                    <ul class="list-inline">
+											<li class="list-inline-item"><a href="<?php echo $kehalaman ?>&filter_status=Pending">Pending (<?php echo $hitung_pending ?>)</a></li>
+											<li class="list-inline-item"> | </li>
+											<li class="list-inline-item"><a href="<?php echo $kehalaman ?>&filter_status=Approved">Approved (<?php echo $hitung_approved ?>)</a></li>
+											<li class="list-inline-item"> | </li>
+											<li class="list-inline-item"><a href="<?php echo $kehalaman ?>&filter_status=Rejected">Rejected (<?php echo $hitung_rejected ?>)</a></li>
+										</ul>
                                     </div>
                                 </div>
                                 <br>
@@ -192,8 +197,9 @@
                                         </thead>
                                         <tbody>
                                             <?php
+                                            $filter_status = isset($_GET['filter_status']) ? $_GET['filter_status'] : "Pending";
                                             $search_controller = new Search_Controller_Saldo();
-                                            $data_hasil = $search_controller->select_search_filter("");
+                                            $data_hasil = $search_controller->select_search_filter(filter_status: $filter_status);
                                             $nomor = 0;
 
                                             foreach ($data_hasil as $data) {
