@@ -5,8 +5,8 @@
 				<!-- sidebar menu-->
 				<ul class="sidebar-menu" data-widget="tree">
 					<li class="header">Main Menu</li>
-					<li>
-						<a href="<?php echo $Link_Website . "/dashboard"; ?>">
+					<li >
+						<a href="index.php?home">
 							<i class="mdi mdi-home"><span class="path1"></span><span class="path2"></span></i>
 							<span>Dashboard</span>
 						</a>
@@ -18,7 +18,7 @@
 							<span>Data Website</span>
 						</a>
 					</li>
-					
+
 					<li>
 						<a href="?menu=pengaturan-kemitraan">
 							<i class="mdi mdi-settings"><span class="path1"></span><span class="path2"></span></i>

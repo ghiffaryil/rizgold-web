@@ -6,7 +6,7 @@ class Search_Controller_Log_Saldo{
         $search_field_where = array("Id_Pengguna");
         $search_criteria_where = array("=");
         $search_value_where = array("$u_Id_Pengguna");
-        $search_connector_where = array("");
+        $search_connector_where = array("ORDER BY Id_Log_Saldo DESC");
 
         $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_log_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
 

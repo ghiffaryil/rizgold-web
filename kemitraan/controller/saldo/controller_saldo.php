@@ -2,8 +2,10 @@
 
 if (isset($_POST['submit_upload'])) {
 
+    $encode_id_pengguna = $a_hash->encode($u_Id_Pengguna,'Dashboard');
+
     $form_field = array("Id_Pengguna", "Saldo", "Tanggal_Upload_Bukti_Transfer", "Status_Saldo", "Keterangan", "Waktu_Simpan_Data", "Waktu_Update_Data");
-    $form_value = array("$u_Id_Pengguna", "$_POST[Saldo]", "$Waktu_Sekarang", "Pending", "Pertama", "$Waktu_Sekarang", "$Waktu_Sekarang");
+    $form_value = array("$u_Id_Pengguna", "$_POST[Saldo]", "$Waktu_Sekarang", "Pending", "$_POST[Keterangan]", "$Waktu_Sekarang", "$Waktu_Sekarang");
     $result = $a_tambah_baca_update_hapus->tambah_data("tb_top_up_saldo", $form_field, $form_value);
 
     if ($result['Status'] == "Sukses") {
@@ -44,7 +46,11 @@ if (isset($_POST['submit_upload'])) {
             $result = $a_tambah_baca_update_hapus->tambah_data("tb_log_saldo", $form_field, $form_value);
             // exit();
 
-            echo "<script> alert('Terimakasih anda telah mengupload bukti transfer, silahkan tunggu informasi dari Admin');document.location.href = 'index.php';</script>";
+            if($_POST['Keterangan'] == "Pertama"){
+                echo "<script> alert('Terimakasih anda telah mengupload bukti transfer, silahkan tunggu informasi dari Admin');document.location.href = 'index.php';</script>";
+            }else{
+                echo "<script> alert('Terimakasih anda telah mengupload bukti transfer, silahkan tunggu informasi dari Admin');document.location.href = 'dashboard.php?menu=profile&edit&id=$encode_id_pengguna';</script>";
+            }
         }
     }
 }

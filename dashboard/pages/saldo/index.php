@@ -71,7 +71,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-5 control-label">Saldo</label>
                                                 <div class="col-lg-7 ">
-                                                    <span class="badge badge-danger fs-4"><?php echo $a_format_angka->rupiah($edit['Saldo']); ?></span>
+                                                    <span class="badge badge-info fs-4"><?php echo $a_format_angka->rupiah($edit['Saldo']); ?></span>
                                                 </div>
                                             </div>
 
@@ -119,6 +119,16 @@
                                         </form>
                                     </div>
                                 <?php } ?>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-lg-12 text-center">
+                                        <a href="?menu=saldo" class="btn btn-danger"> Kembali </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <br>

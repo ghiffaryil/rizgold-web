@@ -105,6 +105,7 @@ include "controller/saldo/controller_saldo.php"
                             <div class="d-flex align-items-center flex-column">
                                 <form method="POST" enctype="multipart/form-data">
                                     <input type="hidden" name="Saldo" value="<?php echo $nominal_transfer ?>">
+                                    <input type="text" name="Keterangan" value="Pertama">
                                     <div class="text-center">
                                         <div class="mb-6">
                                             <h6 class="text-dark"> Silahkan upload bukti transfer jika anda sudah melakukan transfer</h6>

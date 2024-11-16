@@ -149,7 +149,7 @@ class Search_Controller_Saldo
         $search_field_where = array("Status_Saldo");
         $search_criteria_where = array("LIKE");
         $search_value_where = array("%$filter_status%");
-        $search_connector_where = array("");
+        $search_connector_where = array("ORDER BY Id_Top_Up_Saldo DESC");
 
         $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_top_up_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
 
