@@ -94,7 +94,7 @@ if (isset($_POST['submit_reject_saldo'])) {
 
         // INSERT KE TB LOG SALDO
         $form_field = array("Aktivitas", "Keterangan", "Saldo", "Status_Saldo", "Aktor", "Id_Aktor", "Id_Saldo", "Id_Pengguna", "Waktu_Simpan_Data");
-        $form_value = array("Reject", "menolak Top-Up saldo", "$_POST[Saldo]", "Approved", "Admin", "$u_Id_User", "$_POST[Id_Top_Up_Saldo]", "$_POST[Id_Pengguna_Saldo]",  "$Waktu_Sekarang");
+        $form_value = array("Reject", "menolak Top-Up saldo", "$_POST[Saldo]", "Rejected", "Admin", "$u_Id_User", "$_POST[Id_Top_Up_Saldo]", "$_POST[Id_Pengguna_Saldo]",  "$Waktu_Sekarang");
         $result = $a_tambah_baca_update_hapus->tambah_data("tb_log_saldo", $form_field, $form_value);
 
         echo "<script>alert('Data Terupdate');document.location.href='$kehalaman'</script>";

@@ -164,35 +164,159 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                 <div class="card-body pt-0 pb-5">
                                     <hr>
                                     <div class="mb-7">
-                                        <h4>History Saldo</h4>
-                                        <br>
-                                        <?php
+                                        <div class="my-6">
+                                            <h4>Lihat Aktivitas Saldo</h4>
+                                        </div>
+                                        <div class="mb-7">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="">
+                                                        <form action="" method="POST">
 
-                                        // CEK SALDO
-                                        $search_field_where = array("Id_Pengguna");
-                                        $search_criteria_where = array("=");
-                                        $search_value_where = array("$u_Id_Pengguna");
-                                        $search_connector_where = array("ORDER BY Waktu_Simpan_Data DESC");
-                                        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_log_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
-                                        if ($result['Status'] == "Sukses") {
-                                            $data_hasil_log_saldo = $result['Hasil'];
-                                            foreach ($data_hasil_log_saldo as $data_log_saldo) {
+                                                            <button type="button" class="<?php if (isset($_POST['submit_filter_history_saldo']) && $_POST['filter_value'] == 'All') echo 'btn btn-light-primary border border-1 active';
+                                                                                            else echo 'btn btn-light-primary border border-1'; ?>" onclick="filterStatus('All')">All</button>
+                                                            <button type="button" class="<?php if (isset($_POST['submit_filter_history_saldo']) && $_POST['filter_value'] == 'Pending') echo 'btn btn-light-warning border border-1 active';
+                                                                                            else echo 'btn btn-light-warning border border-1'; ?>" onclick="filterStatus('Pending')">Pending</button>
+                                                            <button type="button" class="<?php if (isset($_POST['submit_filter_history_saldo']) && $_POST['filter_value'] == 'Approved') echo 'btn btn-light-success border border-1 active';
+                                                                                            else echo 'btn btn-light-success border border-1'; ?>" onclick="filterStatus('Approved')">Approved</button>
+                                                            <button type="button" class="<?php if (isset($_POST['submit_filter_history_saldo']) && $_POST['filter_value'] == 'Rejected') echo 'btn btn-light-danger border border-1 active';
+                                                                                            else echo 'btn btn-light-danger border border-1'; ?>" onclick="filterStatus('Rejected')">Rejected</button>
 
-                                                if ($data_log_saldo['Aktor'] == "Kemitraan") {
-                                                    $Aktor = "Anda";
-                                                } else {
-                                                    $Aktor = "Admin";
-                                                }
-                                        ?>
-                                                <div class="timeline">
-                                                    <div class="timeline-item">
-                                                        <div class="timeline-dot"></div>
-                                                        <div class="timeline-content">
-                                                            <small><span class="text-muted"> <?php echo tanggal_dan_waktu_24_jam_indonesia($data_log_saldo['Waktu_Simpan_Data']) ?> - <?php echo $Aktor ?> <?php echo $data_log_saldo['Keterangan'] ?> <?php echo $a_format_angka->rupiah($data_log_saldo['Saldo']) ?></small> </span>
-                                                        </div>
+                                                            <input style="display: none;" type="text" name="filter_value" id="filter_value" class="form-control" value="<?php if (isset($_POST['submit_filter_history_saldo'])) {
+                                                                                                                                                                            echo $_POST['filter_value'];
+                                                                                                                                                                        } ?>">
+
+                                                            <button style="display: none;" type="submit" id="filter_history_saldo" name="submit_filter_history_saldo" class="btn btn-dark"> Filter </button>
+                                                        </form>
+
+                                                        <script>
+                                                            document.addEventListener("DOMContentLoaded", function() {
+                                                                // Set default filter value to 'All' without reloading
+                                                                const filterValue = document.getElementById("filter_value").value;
+                                                                if (!filterValue) {
+                                                                    filterStatus('Pending');
+                                                                }
+                                                            });
+
+                                                            function filterStatus(status) {
+                                                                document.getElementById("filter_value").value = status;
+
+                                                                // Only submit if the filter value has changed
+                                                                if (status !== "<?php echo isset($_POST['filter_value']) ? $_POST['filter_value'] : ''; ?>") {
+                                                                    document.getElementById("filter_history_saldo").click();
+                                                                }
+                                                            }
+                                                        </script>
+
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+
+
+
                                         <?php
+                                        if (isset($_POST['submit_filter_history_saldo'])) {
+                                        ?>
+
+                                            <div class="my-6">
+                                                <h4>Riwayat Saldo</h4>
+                                            </div>
+
+
+                                            <?php
+                                            if ($_POST['filter_value'] == "All") {
+                                                $filter_status = "";
+                                            } else {
+                                                $filter_status = $_POST['filter_value'];
+                                            }
+
+                                            if ($filter_status == "Pending") {
+                                                // CEK SALDO
+                                                $search_field_where = array("Id_Pengguna", "Status_Saldo");
+                                                $search_criteria_where = array("=", "LIKE");
+                                                $search_value_where = array("$u_Id_Pengguna", "%$filter_status%");
+                                                $search_connector_where = array("AND", "ORDER BY Waktu_Simpan_Data DESC");
+                                                $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_top_up_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                                                if ($result['Status'] == "Sukses") {
+                                                    $data_hasil_saldo = $result['Hasil'];
+                                                    foreach ($data_hasil_saldo as $data_saldo) {
+                                            ?>
+                                                        <div class="">
+                                                            <div class="">
+                                                                <table class="table table-borderless">
+                                                                    <tr>
+                                                                        <td style="width:10%">
+                                                                            <span class="badge badge-warning"> <?php echo $data_saldo['Status_Saldo'] ?></span>
+                                                                        </td>
+                                                                        <td style="width:25%">
+                                                                            <?php echo tanggal_dan_waktu_24_jam_indonesia($data_saldo['Waktu_Simpan_Data']) ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php echo $data_saldo['Keterangan'] ?> <?php echo $a_format_angka->rupiah($data_saldo['Saldo']) ?>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+                                                    <?php
+                                                    }
+                                                } else {
+                                                    ?>
+                                                    <div class="timeline-content">
+                                                        <h4 class="text-muted"> Oops! Tidak ada data <?php echo $_POST['filter_value'] ?></h4>
+                                                    </div>
+                                                    <?php
+                                                }
+                                            } else {
+                                                // LOG SALDO
+                                                $search_field_where = array("Id_Pengguna", "Status_Saldo");
+                                                $search_criteria_where = array("=", "LIKE");
+                                                $search_value_where = array("$u_Id_Pengguna", "%$filter_status%");
+                                                $search_connector_where = array("AND", "ORDER BY Waktu_Simpan_Data DESC");
+                                                $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_log_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                                                if ($result['Status'] == "Sukses") {
+                                                    $data_hasil_log_saldo = $result['Hasil'];
+                                                    foreach ($data_hasil_log_saldo as $data_log_saldo) {
+
+                                                        if ($data_log_saldo['Aktor'] == "Kemitraan") {
+                                                            $Aktor = "Anda";
+                                                        } else {
+                                                            $Aktor = "Admin";
+                                                        }
+                                                    ?>
+                                                        <div class="">
+                                                            <div class="">
+                                                                <table class="table table-borderless">
+                                                                    <tr>
+                                                                        <td style="width:10%">
+                                                                            <span class="<?php if ($data_log_saldo['Status_Saldo'] == "Pending") echo "badge badge-warning";
+                                                                                            elseif ($data_log_saldo['Status_Saldo'] == "Approved") echo "badge badge-success";
+                                                                                            else echo "badge badge-danger"; ?>"> <?php echo $data_log_saldo['Status_Saldo'] ?></span>
+                                                                        </td>
+                                                                        <td style="width:25%">
+                                                                            <?php echo tanggal_dan_waktu_24_jam_indonesia($data_log_saldo['Waktu_Simpan_Data']) ?>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php echo $Aktor ?> <?php echo $data_log_saldo['Keterangan'] ?> <?php echo $a_format_angka->rupiah($data_log_saldo['Saldo']) ?>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    <?php
+
+                                                    }
+                                                } else {
+                                                    ?>
+
+                                                    <div class="timeline-content">
+                                                    <h4 class="text-muted"> Oops! Tidak ada data <?php echo $_POST['filter_value'] ?></h4>
+                                                    </div>
+
+                                        <?php
+                                                }
                                             }
                                         }
                                         ?>
