@@ -173,7 +173,8 @@
 							</span>
 						</a>
 						<ul class="treeview-menu">
-							<li><a href="?menu=saldo"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Saldo</a></li>
+							<li><a href="?menu=top-up-saldo"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Top Up Saldo</a></li>
+							<li><a href="?menu=tarik-saldo"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Tarik Saldo</a></li>
 						</ul>
 					</li>
 

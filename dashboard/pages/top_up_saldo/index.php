@@ -1,4 +1,4 @@
-<?php include "controller/saldo/controller_saldo.php"; ?>
+<?php include "controller/saldo/controller_top_up_saldo.php"; ?>
 
 <div class="content-wrapper">
     <div class="container-full">
@@ -6,7 +6,7 @@
         <div class="content-header">
             <div class="d-flex align-items-center">
                 <div class="me-auto">
-                    <h3 class="page-title">Data saldo</h3>
+                    <h3 class="page-title">Top Up saldo</h3>
                     <div class="d-inline-block align-items-center">
                         <nav>
                             <ol class="breadcrumb">
@@ -72,6 +72,13 @@
                                                 <label class="col-lg-5 control-label">Saldo</label>
                                                 <div class="col-lg-7 ">
                                                     <span class="badge badge-info fs-4"><?php echo $a_format_angka->rupiah($edit['Saldo']); ?></span>
+                                                </div>
+                                            </div>
+                                          
+                                            <div class="form-group row">
+                                                <label class="col-lg-5 control-label">Keterangan</label>
+                                                <div class="col-lg-7 ">
+                                                    <?php echo $edit['Keterangan']; ?>
                                                 </div>
                                             </div>
 
@@ -233,8 +240,8 @@
                                                             <span class="badge bg-warning text-dark">Pending</span>
                                                         <?php elseif ($data['Status_Saldo'] == 'Approved'): ?>
                                                             <span class="badge bg-success">Approved</span>
-                                                        <?php elseif ($data['Status_Saldo'] == 'Void'): ?>
-                                                            <span class="badge bg-danger">Void</span>
+                                                        <?php elseif ($data['Status_Saldo'] == 'Rejected'): ?>
+                                                            <span class="badge bg-danger">Rejected</span>
                                                         <?php endif; ?>
                                                     </td>
                                                     <td>

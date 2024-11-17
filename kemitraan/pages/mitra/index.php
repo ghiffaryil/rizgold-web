@@ -239,16 +239,15 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                                 $search_connector_where = array("AND", "ORDER BY Waktu_Simpan_Data DESC");
                                                 $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_top_up_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
                                                 if ($result['Status'] == "Sukses") {
-                                                    $data_hasil_saldo = $result['Hasil'];
-                                                    foreach ($data_hasil_saldo as $data_saldo) {
                                             ?>
+                                                    <div class="">
                                                         <div class="">
-                                                            <div class="">
-                                                                <table class="table table-borderless">
+                                                            <table class="table table-borderless">
+                                                                <?php
+                                                                $data_hasil_saldo = $result['Hasil'];
+                                                                foreach ($data_hasil_saldo as $data_saldo) {
+                                                                ?>
                                                                     <tr>
-                                                                        <td style="width:10%">
-                                                                            <span class="badge badge-warning"> <?php echo $data_saldo['Status_Saldo'] ?></span>
-                                                                        </td>
                                                                         <td style="width:25%">
                                                                             <?php echo tanggal_dan_waktu_24_jam_indonesia($data_saldo['Waktu_Simpan_Data']) ?>
                                                                         </td>
@@ -256,18 +255,19 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                                                             <?php echo $data_saldo['Keterangan'] ?> <?php echo $a_format_angka->rupiah($data_saldo['Saldo']) ?>
                                                                         </td>
                                                                     </tr>
-                                                                </table>
-                                                            </div>
+                                                                <?php
+                                                                }
+                                                                ?>
+                                                            </table>
                                                         </div>
-
-                                                    <?php
-                                                    }
+                                                    </div>
+                                                <?php
                                                 } else {
-                                                    ?>
+                                                ?>
                                                     <div class="timeline-content">
                                                         <h4 class="text-muted"> Oops! Tidak ada data <?php echo $_POST['filter_value'] ?></h4>
                                                     </div>
-                                                    <?php
+                                                <?php
                                                 }
                                             } else {
                                                 // LOG SALDO
@@ -277,24 +277,24 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                                 $search_connector_where = array("AND", "ORDER BY Waktu_Simpan_Data DESC");
                                                 $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_log_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
                                                 if ($result['Status'] == "Sukses") {
-                                                    $data_hasil_log_saldo = $result['Hasil'];
-                                                    foreach ($data_hasil_log_saldo as $data_log_saldo) {
+                                                ?>
 
-                                                        if ($data_log_saldo['Aktor'] == "Kemitraan") {
-                                                            $Aktor = "Anda";
-                                                        } else {
-                                                            $Aktor = "Admin";
-                                                        }
-                                                    ?>
+                                                    <div class="">
                                                         <div class="">
-                                                            <div class="">
-                                                                <table class="table table-borderless">
+                                                            <table class="table table-borderless">
+                                                                <?php
+                                                                $data_hasil_log_saldo = $result['Hasil'];
+                                                                foreach ($data_hasil_log_saldo as $data_log_saldo) {
+
+                                                                    if ($data_log_saldo['Aktor'] == "Kemitraan") {
+                                                                        $Aktor = "Anda";
+                                                                    } else {
+                                                                        $Aktor = "Admin";
+                                                                    }
+                                                                ?>
+
                                                                     <tr>
-                                                                        <td style="width:10%">
-                                                                            <span class="<?php if ($data_log_saldo['Status_Saldo'] == "Pending") echo "badge badge-warning";
-                                                                                            elseif ($data_log_saldo['Status_Saldo'] == "Approved") echo "badge badge-success";
-                                                                                            else echo "badge badge-danger"; ?>"> <?php echo $data_log_saldo['Status_Saldo'] ?></span>
-                                                                        </td>
+
                                                                         <td style="width:25%">
                                                                             <?php echo tanggal_dan_waktu_24_jam_indonesia($data_log_saldo['Waktu_Simpan_Data']) ?>
                                                                         </td>
@@ -302,19 +302,19 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                                                             <?php echo $Aktor ?> <?php echo $data_log_saldo['Keterangan'] ?> <?php echo $a_format_angka->rupiah($data_log_saldo['Saldo']) ?>
                                                                         </td>
                                                                     </tr>
-                                                                </table>
-                                                            </div>
+
+                                                                <?php
+                                                                }
+                                                                ?>
+                                                            </table>
                                                         </div>
-                                                    <?php
-
-                                                    }
-                                                } else {
-                                                    ?>
-
-                                                    <div class="timeline-content">
-                                                    <h4 class="text-muted"> Oops! Tidak ada data <?php echo $_POST['filter_value'] ?></h4>
                                                     </div>
-
+                                                <?php
+                                                } else {
+                                                ?>
+                                                    <div class="timeline-content">
+                                                        <h4 class="text-muted"> Oops! Tidak ada data <?php echo $_POST['filter_value'] ?></h4>
+                                                    </div>
                                         <?php
                                                 }
                                             }
@@ -523,8 +523,19 @@ $data_perusahaan = $result_perusahaan['Hasil'];
             <div class="modal-body">
                 <div class="card-body">
                     <div class="d-flex flex-column">
+
+
+                        <!-- MODAL TOP UP SALDO -->
+                        <script>
+                            function generateCode() {
+                                var code = Math.floor(Math.random() * 500) + 100;
+                                document.getElementById("input_generate_code").value = code;
+                                document.getElementById("input_generate_code_status").value = "ada";
+                            }
+                        </script>
+
                         <?php
-                        include "controller/saldo/controller_saldo.php";
+                        include "controller/saldo/controller_top_up_saldo.php";
                         ?>
                         <form method="POST" enctype="multipart/form-data">
                             <div class="">
@@ -551,14 +562,14 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                                 <span class="path2"></span>
                                             </i>
                                         </span>
+
                                     </div>
                                     <hr>
                                 </div>
                                 <div class="mb-5" id="button_update_saldo" style="display: none;">
 
                                     <input type="hidden" readonly name="Keterangan" value="Top Up">
-
-                                    <input type="hidden" readonly id="input_generate_code">
+                                    <input type="hidden" readonly name="Kode_Unik" id="input_generate_code">
                                     <input type="hidden" readonly id="input_generate_code_status">
                                     <span class="text-dark"> Upload bukti transfer jika sudah melakukan transfer, lalu klik tombol <b>"Upload"</b></span>
                                     <br><br>
@@ -586,7 +597,9 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                     function update_nominal_saldo() {
                                         var getNominalSaldo = parseInt(document.getElementById("nominal_saldo").value);
                                         var input_generate_code = parseInt(document.getElementById("input_generate_code").value);
+
                                         var generateNominal = getNominalSaldo + input_generate_code;
+
                                         if (getNominalSaldo == 0) {
                                             alert('Silahkan pilih nominal Saldo');
                                             document.getElementById("button_update_saldo").style.display = "none";

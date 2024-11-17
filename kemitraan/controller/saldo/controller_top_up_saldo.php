@@ -4,8 +4,8 @@ if (isset($_POST['submit_upload'])) {
 
     $encode_id_pengguna = $a_hash->encode($u_Id_Pengguna,'Dashboard');
 
-    $form_field = array("Id_Pengguna", "Saldo", "Tanggal_Upload_Bukti_Transfer", "Status_Saldo", "Keterangan", "Waktu_Simpan_Data", "Waktu_Update_Data");
-    $form_value = array("$u_Id_Pengguna", "$_POST[Saldo]", "$Waktu_Sekarang", "Pending", "$_POST[Keterangan]", "$Waktu_Sekarang", "$Waktu_Sekarang");
+    $form_field = array("Id_Pengguna", "Saldo", "Kode_Unik", "Tanggal_Upload_Bukti_Transfer", "Status_Saldo", "Keterangan", "Waktu_Simpan_Data", "Waktu_Update_Data");
+    $form_value = array("$u_Id_Pengguna", "$_POST[Saldo]", "$_POST[Kode_Unik]", "$Waktu_Sekarang", "Pending", "$_POST[Keterangan]", "$Waktu_Sekarang", "$Waktu_Sekarang");
     $result = $a_tambah_baca_update_hapus->tambah_data("tb_top_up_saldo", $form_field, $form_value);
 
     if ($result['Status'] == "Sukses") {

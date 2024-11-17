@@ -96,8 +96,12 @@ if (isset($_GET['menu'])) {
             include "pages/konten/index.php";
             break;
 
-        case 'saldo':
-            include "pages/saldo/index.php";
+        case 'top-up-saldo':
+            include "pages/top_up_saldo/index.php";
+            break;
+        
+            case 'tarik-saldo':
+            include "pages/tarik_saldo/index.php";
             break;
 
 

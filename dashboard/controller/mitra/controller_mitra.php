@@ -67,63 +67,8 @@ if (isset($_POST['submit_simpan'])) {
 
     $_Password = $a_hash_password->hash_password($_POST['Password']);
 
-    $form_field = array(
-
-        "Organisasi_Kode",
-        "Email",
-        "Username",
-        "Password",
-
-        "Nama_Depan",
-        "Nama_Belakang",
-
-        "Tempat_Lahir",
-        "Tanggal_Lahir",
-
-        "Alamat",
-        "No_Handphone",
-        "No_KTP",
-        "No_NPWP",
-
-        "Akses_Profile",
-        "Akses_Pembelian",
-        "Akses_Laporan",
-        "Akses_Konten",
-
-        "Tanggal_Registrasi",
-        "Waktu_Simpan_Data",
-        "Waktu_Update_Data",
-        "Status"
-
-    );
-    $form_value = array(
-
-        "$Organisasi_Kode",
-        "$_POST[Email]",
-        "$_POST[Username]",
-        "$_Password",
-
-        "$_POST[Nama_Depan]",
-        "$_POST[Nama_Belakang]",
-
-        "$_POST[Tempat_Lahir]",
-        "$Tanggal_Lahir",
-
-        "$_POST[Alamat]",
-        "$_POST[No_Handphone]",
-        "$_POST[No_KTP]",
-        "$_POST[No_NPWP]",
-
-        "$_Profile",
-        "$_Pembelian",
-        "$_Laporan",
-        "$_Konten",
-
-        "$Waktu_Sekarang",
-        "$Waktu_Sekarang",
-        "$Waktu_Sekarang",
-        "Aktif"
-    );
+    $form_field = array("Organisasi_Kode", "Email", "Username", "Password", "Nama_Depan", "Nama_Belakang", "Tempat_Lahir", "Tanggal_Lahir", "Alamat", "No_Handphone", "No_KTP", "No_NPWP", "Akses_Profile", "Akses_Pembelian", "Akses_Laporan", "Akses_Konten", "Tanggal_Registrasi", "Waktu_Simpan_Data", "Waktu_Update_Data", "Status");
+    $form_value = array("$Organisasi_Kode", "$_POST[Email]", "$_POST[Username]", "$_Password", "$_POST[Nama_Depan]", "$_POST[Nama_Belakang]", "$_POST[Tempat_Lahir]", "$Tanggal_Lahir", "$_POST[Alamat]", "$_POST[No_Handphone]", "$_POST[No_KTP]", "$_POST[No_NPWP]", "$_Profile", "$_Pembelian", "$_Laporan", "$_Konten", "$Waktu_Sekarang", "$Waktu_Sekarang", "$Waktu_Sekarang", "Aktif");
 
     $result = $a_tambah_baca_update_hapus->tambah_data("tb_pengguna", $form_field, $form_value);
 
@@ -194,55 +139,16 @@ if (isset($_POST['submit_update'])) {
         $Tanggal_Lahir = $_POST['Tanggal_Lahir'];
     }
 
-    $_Password = $a_hash_password->hash_password($_POST['Password']);
 
-    $form_field = array(
+    if ($_POST['Password'] != "") {
+        $_Password = $a_hash_password->hash_password($_POST['Password']);
+        $form_field = array("Email", "Username", "Password", "Nama_Depan", "Nama_Belakang", "Tempat_Lahir", "Tanggal_Lahir", "Alamat", "No_Handphone", "No_KTP", "No_NPWP", "Akses_Profile", "Akses_Pembelian", "Akses_Laporan", "Akses_Konten", "Waktu_Update_Data");
+        $form_value = array("$_POST[Email]", "$_POST[Username]", "$_Password", "$_POST[Nama_Depan]", "$_POST[Nama_Belakang]", "$_POST[Tempat_Lahir]", "$Tanggal_Lahir", "$_POST[Alamat]", "$_POST[No_Handphone]", "$_POST[No_KTP]", "$_POST[No_NPWP]", "$_Profile", "$_Pembelian", "$_Laporan", "$_Konten", "$Waktu_Sekarang");
+    } else {
+        $form_field = array("Email", "Username", "Nama_Depan", "Nama_Belakang", "Tempat_Lahir", "Tanggal_Lahir", "Alamat", "No_Handphone", "No_KTP", "No_NPWP", "Akses_Profile", "Akses_Pembelian", "Akses_Laporan", "Akses_Konten", "Waktu_Update_Data");
+        $form_value = array("$_POST[Email]", "$_POST[Username]", "$_POST[Nama_Depan]", "$_POST[Nama_Belakang]", "$_POST[Tempat_Lahir]", "$Tanggal_Lahir", "$_POST[Alamat]", "$_POST[No_Handphone]", "$_POST[No_KTP]", "$_POST[No_NPWP]", "$_Profile", "$_Pembelian", "$_Laporan", "$_Konten", "$Waktu_Sekarang");
+    }
 
-        "Email",
-        "Username",
-
-        "Nama_Depan",
-        "Nama_Belakang",
-
-        "Tempat_Lahir",
-        "Tanggal_Lahir",
-
-        "Alamat",
-        "No_Handphone",
-        "No_KTP",
-        "No_NPWP",
-
-        "Akses_Profile",
-        "Akses_Pembelian",
-        "Akses_Laporan",
-        "Akses_Konten",
-
-        "Waktu_Update_Data"
-
-    );
-    $form_value = array(
-
-        "$_POST[Email]",
-        "$_POST[Username]",
-
-        "$_POST[Nama_Depan]",
-        "$_POST[Nama_Belakang]",
-
-        "$_POST[Tempat_Lahir]",
-        "$Tanggal_Lahir",
-
-        "$_POST[Alamat]",
-        "$_POST[No_Handphone]",
-        "$_POST[No_KTP]",
-        "$_POST[No_NPWP]",
-
-        "$_Profile",
-        "$_Pembelian",
-        "$_Laporan",
-        "$_Konten",
-
-        "$Waktu_Sekarang"
-    );
 
     $form_field_where = array("Id_Pengguna");
     $form_criteria_where = array("=");

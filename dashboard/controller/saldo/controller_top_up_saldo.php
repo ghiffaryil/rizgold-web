@@ -103,7 +103,6 @@ if (isset($_POST['submit_reject_saldo'])) {
     }
 }
 
-
 #-----------------------------------------------------------------------------------
 #FUNGSI HITUNG DATA (COUNT)
 if (isset($_GET['filter'])) {
@@ -133,10 +132,6 @@ $hitung_approved = $hitung_approved['Hasil'];
 $count_value_where = array("Rejected");
 $hitung_rejected = $a_tambah_baca_update_hapus->hitung_data_dengan_filter("tb_top_up_saldo", $count_field_where, $count_criteria_where, $count_value_where, $count_connector_where);
 $hitung_rejected = $hitung_rejected['Hasil'];
-#-----------------------------------------------------------------------------------
-
-
-
 
 #-----------------------------------------------------------------------------------
 class Search_Controller_Saldo

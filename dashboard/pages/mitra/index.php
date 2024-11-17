@@ -1,12 +1,70 @@
 <?php include "controller/mitra/controller_mitra.php"; ?>
 
+
+<!-- SUBMIT TOP UP SALDO -->
+<?php
+
+#-----------------------------------------------------------------------------------
+#SUBMIT TOP UP SALDO DARI ADMIN
+if (isset($_POST['submit_top_up_saldo'])) {
+
+
+    $form_field = array("Id_Pengguna", "Saldo", "Kode_Unik", "Tanggal_Upload_Bukti_Transfer", "Status_Saldo", "Keterangan", "Waktu_Simpan_Data", "Waktu_Update_Data");
+    $form_value = array("$Get_Id_Primary", "$_POST[Saldo]", "$_POST[Kode_Unik]", "$Waktu_Sekarang", "Pending", "$_POST[Keterangan]", "$Waktu_Sekarang", "$Waktu_Sekarang");
+    $result = $a_tambah_baca_update_hapus->tambah_data("tb_top_up_saldo", $form_field, $form_value);
+
+    if ($result['Status'] == "Sukses") {
+
+        $read_last_data_saldo = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_top_up_saldo", "Id_Top_Up_Saldo");
+        if ($read_last_data_saldo['Status'] == "Sukses") {
+            $Id_Auto_Increment = $read_last_data_saldo['Hasil'][0]['Id_Top_Up_Saldo'];
+        } else {
+            $Id_Auto_Increment = 1;
+        }
+
+        if ($_FILES['Bukti_Transfer_Saldo']['size'] <> 0 && $_FILES['Bukti_Transfer_Saldo']['error'] == 0) {
+            $post_file_upload = $_FILES['Bukti_Transfer_Saldo'];
+            $path_file_upload = $_FILES['Bukti_Transfer_Saldo']['name'];
+            $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
+            $nama_file_upload = $a_hash->hash_nama_file($Id_Auto_Increment, "_Bukti_Transfer_Saldo_") . $Id_Auto_Increment . "_Bukti_Transfer_Saldo";
+            $folder_penyimpanan_file_upload = "media/Bukti_Transfer_Saldo/";
+            $tipe_file_yang_diizikan_file_upload = array("png", "jpg", "jpeg");
+            $maksimum_ukuran_file_upload = 3000000;
+
+            $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
+
+            if ($result_upload_file['Status'] == "Sukses") {
+
+                $form_field = array("Bukti_Transfer_Saldo");
+                $form_value = array("$nama_file_upload.$ext_file_upload");
+                $form_field_where = array("Id_Top_Up_Saldo");
+                $form_criteria_where = array("=");
+                $form_value_where = array("$Id_Auto_Increment");
+                $form_connector_where = array("");
+
+                $result = $a_tambah_baca_update_hapus->update_data("tb_top_up_saldo", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
+            }
+
+            // INSERT LOG SALDO
+            $form_field = array("Aktivitas", "Keterangan", "Saldo", "Status_Saldo", "Aktor", "Id_Saldo", "Id_Pengguna", "Id_Aktor", "Waktu_Simpan_Data");
+            $form_value = array("Top Up", "melakukan Top-Up saldo", "$_POST[Saldo]", "Pending", "Admin", "$Id_Auto_Increment", "$Get_Id_Primary", "$Get_Id_Primary", "$Waktu_Sekarang");
+            $result = $a_tambah_baca_update_hapus->tambah_data("tb_log_saldo", $form_field, $form_value);
+            // exit();
+
+            echo "<script> alert('Terimakasih anda telah mengupload bukti transfer, silahkan konfirmasi ');document.location.href = 'index.php?menu=mitra&edit&id=$_GET[id]';</script>";
+        }
+    }
+}
+
+?>
+
 <div class="content-wrapper">
     <div class="container-full">
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="d-flex align-items-center">
                 <div class="me-auto">
-                    <h3 class="page-title">Data Mitra</h3>
+                    <h4 class="page-title">Data Mitra</h4>
                     <div class="d-inline-block align-items-center">
                         <nav>
                             <ol class="breadcrumb">
@@ -117,98 +175,228 @@
                                 <form id="" method="POST" enctype="multipart/form-data">
                                     <div class="box-body">
                                         <?php if (isset($_GET['edit'])) { ?>
-                                            <hr>
-                                            <div class="form-group row">
-                                                <div class="col-lg-9">
-                                                    <h3>Data Perusahaan</h3>
+                                            <div id="SALDO">
+                                                <?php
+                                                $saldo = 0;
+                                                // CEK SALDO
+                                                $search_field_where = array("Id_Pengguna");
+                                                $search_criteria_where = array("=");
+                                                $search_value_where = array("$Get_Id_Primary");
+                                                $search_connector_where = array("");
+
+                                                $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_top_up_saldo_release", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                                                if ($result['Status'] == "Sukses") {
+                                                    $data_hasil_saldo = $result['Hasil'];
+                                                    foreach ($data_hasil_saldo as $data_saldo) {
+                                                        $saldo = $saldo + $data_saldo['Saldo'];
+                                                    }
+                                                }
+                                                ?>
+
+                                                <div class="form-group row">
+                                                    <hr>
+                                                    <div class="col-lg-8">
+                                                        <?php
+                                                        if ($saldo < 1) {
+                                                            $color = "danger";
+                                                        } else {
+                                                            $color = "primary";
+                                                        }
+                                                        ?>
+                                                        <h4>Saldo : <span class="text-<?php echo $color ?>"> <?php echo $a_format_angka->rupiah($saldo) ?> </span></h4>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalRiwayatSaldo" class="btn btn-primary"> <i class="fa fa-eye"></i> Riwayat Saldo</a>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalTopUpSaldo" onclick="generateCode()" class="btn btn-success"><i class="fa fa-money"></i> Top Up</a>
+                                                    </div>
                                                 </div>
-                                                <div class="col-lg-3 text-right">
-                                                    <a class="btn btn-warning btn-sm" href="?menu=perusahaan&edit&id=<?php echo $a_hash->encode($edit['Organisasi_Kode'], "perusahaan"); ?>"> <i class="fa fa-edit"></i> Edit Data Perusahaan</a>
+
+                                                <!-- MODAL RIWAYAT SALDO -->
+                                                <div class="modal fade" id="modalRiwayatSaldo" tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 700px;">
+                                                        <div class="modal-content">
+                                                            <!-- MODAL HEADER -->
+                                                            <div class="modal-header" id="">
+                                                                <h4 class="">Riwayat Saldo</h4>
+                                                                <div data-bs-dismiss="modal">
+                                                                    <i class="fa fa-close text-danger"></i>
+                                                                </div>
+                                                            </div>
+                                                            <!-- MODAL BODY -->
+                                                            <div class="modal-body">
+                                                                <div class="">
+                                                                    <div class="">
+                                                                        <div class="">
+                                                                            <table class="table table-borderless">
+                                                                                <?php
+                                                                                include "controller/saldo/controller_log_saldo.php";
+                                                                                $search_controller = new Search_Controller_Log_Saldo();
+                                                                                // LOG SALDO
+                                                                                $search_field_where = array("Id_Pengguna");
+                                                                                $search_criteria_where = array("=");
+                                                                                $search_value_where = array("$Get_Id_Primary");
+                                                                                $search_connector_where = array("ORDER BY Waktu_Simpan_Data DESC");
+                                                                                $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_log_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                                                                                if ($result['Status'] == "Sukses") {
+                                                                                    $data_hasil_log_saldo = $result['Hasil'];
+                                                                                    foreach ($data_hasil_log_saldo as $data_log_saldo) {
+
+                                                                                        if ($data_log_saldo['Aktor'] == "Kemitraan") {
+                                                                                            $Aktor = "Mitra";
+                                                                                        } else {
+                                                                                            $Aktor = "Admin";
+                                                                                        }
+                                                                                ?>
+
+                                                                                        <tr>
+                                                                                            <td style="width:10%">
+                                                                                                <span class="<?php if ($data_log_saldo['Status_Saldo'] == "Pending") echo "badge badge-warning";
+                                                                                                                elseif ($data_log_saldo['Status_Saldo'] == "Approved") echo "badge badge-success";
+                                                                                                                else echo "badge badge-danger"; ?>"><small> <?php echo $data_log_saldo['Status_Saldo'] ?> </small></span>
+                                                                                            </td>
+                                                                                            <td style="width:30%">
+                                                                                                <?php echo tanggal_dan_waktu_24_jam_indonesia($data_log_saldo['Waktu_Simpan_Data']) ?>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <?php echo $Aktor ?> <?php echo $data_log_saldo['Keterangan'] ?> <?php echo $a_format_angka->rupiah($data_log_saldo['Saldo']) ?>
+                                                                                            </td>
+                                                                                        </tr>
+
+                                                                                <?php
+
+                                                                                    }
+                                                                                }
+                                                                                ?>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- MODAL TOP UP SALDO -->
+                                                <script>
+                                                    function generateCode() {
+                                                        var code = Math.floor(Math.random() * 500) + 100;
+                                                        document.getElementById("input_generate_code").value = code;
+                                                        document.getElementById("input_generate_code_status").value = "ada";
+                                                    }
+                                                </script>
+
+                                                <div class="modal fade" id="modalTopUpSaldo" tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered ">
+                                                        <div class="modal-content">
+                                                            <!-- MODAL HEADER -->
+                                                            <div class="modal-header" id="">
+                                                                <h4 class="">Top Up Saldo</h4>
+                                                                <div data-bs-dismiss="modal">
+                                                                    <i class="fa fa-close text-danger"></i>
+                                                                </div>
+                                                            </div>
+                                                            <!-- MODAL BODY -->
+                                                            <div class="modal-body">
+                                                                <div class="">
+                                                                    <form method="POST" enctype="multipart/form-data">
+                                                                        <div class="">
+                                                                            <?php echo $Get_Id_Primary ?>
+                                                                            <label class="mb-3">Pilih Nominal Top-Up Saldo</label>
+                                                                            <select name="Saldo" id="nominal_saldo" onchange="update_nominal_saldo()" class="form-select" style="cursor:pointer">
+                                                                                <option value="0"> Pilih Nominal </option>
+                                                                                <option value="1000000"> Rp 1.000.000,- </option>
+                                                                                <option value="3000000"> Rp 3.000.000,- </option>
+                                                                                <option value="5000000"> Rp 5.000.000,- </option>
+                                                                                <option value="10000000"> Rp 10.000.000,- </option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="">
+                                                                            <div style="display: none; font-style:bold;" id="div_nominal_update_saldo">
+
+                                                                                <br>
+                                                                                <h5>Silahkan transfer <span class="text-danger fw-bold" id="nominal_update_saldo"></span> ke rekening di bawah ini : </h5>
+                                                                                <h5 class="fw-bold text-dark">Bank Central Asia (BCA)</h5>
+                                                                                <h5 class="fw-bold text-dark">A/n : Rokim Abdul Karim</h5>
+
+                                                                                <div class="">
+                                                                                    Nomor Rekening : <br>
+                                                                                    <span id="noRekening">
+                                                                                        <h5 class="badge badge-danger fs-4">32141 1231412 1231231</h5>
+                                                                                    </span> &nbsp;
+                                                                                    <div class="d-flex" onclick="copyToClipboard()" style="cursor: pointer;" title="Salin nomor rekening">
+                                                                                        <i class="fa fa-copy text-dark"></i> &nbsp; kilk icon ini untuk salin
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <hr>
+                                                                        </div>
+                                                                        <div class="mb-5" id="button_update_saldo" style="display: none;">
+
+                                                                            <input type="hidden" readonly name="Keterangan" value="Top Up">
+                                                                            <input type="hidden" readonly name="Kode_Unik" id="input_generate_code">
+                                                                            <input type="hidden" readonly id="input_generate_code_status">
+                                                                            <span class="text-dark"> Upload bukti transfer, lalu klik tombol <b>"Top Up"</b></span>
+                                                                            <br><br>
+
+                                                                            <div class="row">
+                                                                                <div class="col-lg-9">
+                                                                                    <input type="file" name="Bukti_Transfer_Saldo" class="form-control" accept="image/png, image/jpeg, image/jpg">
+                                                                                </div>
+                                                                                <div class="col-lg-3">
+                                                                                    <input type="submit" name="submit_top_up_saldo" class="btn btn-primary" value="Top Up" onclick="return confirm('Anda yakin untuk mengunggah file ini?')">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <script>
+                                                                            const rupiah = (number) => {
+                                                                                return new Intl.NumberFormat("id-ID", {
+                                                                                    style: "currency",
+                                                                                    currency: "IDR",
+                                                                                    minimumFractionDigits: 0,
+                                                                                    maximumFractionDigits: 0
+                                                                                }).format(number);
+                                                                            }
+
+                                                                            function update_nominal_saldo() {
+                                                                                var getNominalSaldo = parseInt(document.getElementById("nominal_saldo").value);
+                                                                                var input_generate_code = parseInt(document.getElementById("input_generate_code").value);
+                                                                                var generateNominal = getNominalSaldo + input_generate_code;
+                                                                                if (getNominalSaldo == 0) {
+                                                                                    alert('Silahkan pilih nominal Saldo');
+                                                                                    document.getElementById("button_update_saldo").style.display = "none";
+                                                                                    document.getElementById("div_nominal_update_saldo").style.display = "none";
+                                                                                } else {
+                                                                                    var textTransfer = rupiah(generateNominal) + ",-";
+                                                                                    document.getElementById("button_update_saldo").style.display = "";
+                                                                                    document.getElementById("div_nominal_update_saldo").style.display = "";
+                                                                                    document.getElementById("nominal_update_saldo").innerText = textTransfer;
+                                                                                }
+                                                                            }
+
+                                                                            function copyToClipboard() {
+                                                                                var copyText = document.getElementById("noRekening").innerText;
+                                                                                navigator.clipboard.writeText(copyText).then(function() {
+                                                                                    alert('No Rekening berhasil disalin');
+                                                                                }, function(err) {
+                                                                                    console.error('Error: ', err);
+                                                                                });
+                                                                            }
+                                                                        </script>
+
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+                                        <?php } ?>
 
-                                            <div class="form-group row">
-                                                <div class="col-lg-6">
-                                                    <label class="fw-semibold fs-6 mb-2">Nama Perusahaan</label>
-                                                    <div class=""><?php echo $edit_perusahaan['Nama_Perusahaan']; ?></div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <label class="fw-semibold fs-6 mb-2">Organisasi Kode</label>
-                                                    <div class=""><?php echo $edit_perusahaan['Organisasi_Kode']; ?></div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="col-lg-6">
-                                                    <label class="fw-semibold fs-6 mb-2">Nomor Telepon Perusahaan</label>
-                                                    <div class=""><?php echo $edit_perusahaan['No_Telepon_Perusahaan']; ?></div>
-                                                </div>
-
-                                                <div class="col-lg-6">
-                                                    <label class="fw-semibold fs-6 mb-2">Email Perusahaan</label>
-                                                    <div class=""><?php echo $edit_perusahaan['Email_Perusahaan']; ?></div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="col-lg-6">
-                                                    <label class="fw-semibold fs-6 mb-2">Status Kemitraan</label>
-                                                    <div class=""><?php echo $edit_perusahaan['Status_Kemitraan']; ?></div>
-                                                </div>
-
-                                                <div class="col-lg-6">
-                                                    <label class="fw-semibold fs-6 mb-2">Status Active</label>
-                                                    <div class=""><?php echo $edit_perusahaan['Is_Active']; ?></div>
-                                                </div>
-                                            </div>
-
-                                            <hr>
-
-                                            <div class="form-group row">
-                                                <div class="col-lg-6">
-                                                    <label class="fw-semibold fs-6 mb-2">Provinsi</label>
-                                                    <div class=""><?php echo $edit_perusahaan['Provinsi']; ?></div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <label class="fw-semibold fs-6 mb-2">Kota / Kabupaten</label>
-                                                    <div class=""><?php echo $edit_perusahaan['Kabupaten_Kota']; ?></div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="col-lg-6">
-                                                    <label class="fw-semibold fs-6 mb-2">Kecamatan</label>
-                                                    <div class=""><?php echo $edit_perusahaan['Kecamatan']; ?></div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <label class="fw-semibold fs-6 mb-2">Kelurahan</label>
-                                                    <div class=""><?php echo $edit_perusahaan['Kelurahan']; ?></div>
-                                                </div>
-                                            </div>
-
+                                        <?php if (isset($_GET['tambah'])) { ?>
                                             <div class="form-group row">
                                                 <div class="col-lg-12">
-                                                    <label class="required fw-semibold fs-6 mb-2">Alamat Perusahaan</label>
-                                                    <div class=""><?php echo $edit_perusahaan['Alamat_Perusahaan']; ?></div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="form-group row">
-                                                <hr>
-                                                <div class="col-lg-9">
-                                                    <h3>Saldo : </h3>
-                                                </div>
-                                                <div class="col-lg-3">
-                                                    <br>
-                                                    <a href=""> <i class="fa fa-eye"></i> Riwayat Transaksi Saldo</a>
-                                                </div>
-                                            </div>
-
-                                        <?php }
-                                        if (isset($_GET['tambah'])) { ?>
-                                            <div class="form-group row">
-                                                <div class="col-lg-9">
                                                     <h3>Data Perusahaan</h3>
                                                 </div>
                                             </div>
@@ -218,7 +406,7 @@
                                                     <label class="fw-semibold fs-6 mb-2">Nama Perusahaan*</label>
                                                     <input required name="Nama_Perusahaan" type="text" pattern="[a-zA-Z0-9- ]*" oninput="this.value = this.value.replace(/[^a-zA-Z0-9- ]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" />
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-6 text-right">
                                                     <label class="fw-semibold fs-6 mb-2">Nomor Telepon Perusahaan*</label>
                                                     <input required name="No_Telepon_Perusahaan" type="text" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="form-control form-control-solid mb-3 mb-lg-0" />
                                                 </div>
@@ -275,7 +463,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="col-lg-12">
                                                     <label class="required fw-semibold fs-6 mb-2">Alamat Perusahaan*</label>
                                                     <textarea name="Alamat_Perusahaan" class="form-control form-control-solid mb-3 mb-lg-0" rows="3"></textarea>
@@ -286,7 +474,7 @@
                                         <div class="form-group row">
                                             <div class="col-lg-12">
                                                 <hr>
-                                                <h3>Data Mitra</h3>
+                                                <h4>Data Mitra</h4>
                                             </div>
                                         </div>
 
@@ -457,6 +645,88 @@
                                                     <?php } ?>
                                                 </div>
                                             </div>
+
+
+                                            <?php if (isset($_GET['edit'])) { ?>
+                                                <div id="DATA_PERUSAHAAN" class="mt-4">
+                                                    <div class="form-group row">
+                                                        <hr>
+                                                        <div class="col-lg-9">
+                                                            <h4>Data Perusahaan</h4>
+                                                        </div>
+                                                        <div class="col-lg-3 text-right">
+                                                            <a class="btn btn-warning btn-sm" href="?menu=perusahaan&edit&id=<?php echo $a_hash->encode($edit['Organisasi_Kode'], "perusahaan"); ?>"> <i class="fa fa-edit"></i> Edit Data Perusahaan</a>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6">
+                                                            <label class="fw-semibold fs-6 mb-2">Nama Perusahaan</label>
+                                                            <div class=""><?php echo $edit_perusahaan['Nama_Perusahaan']; ?></div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="fw-semibold fs-6 mb-2">Organisasi Kode</label>
+                                                            <div class=""><?php echo $edit_perusahaan['Organisasi_Kode']; ?></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6">
+                                                            <label class="fw-semibold fs-6 mb-2">Nomor Telepon Perusahaan</label>
+                                                            <div class=""><?php echo $edit_perusahaan['No_Telepon_Perusahaan']; ?></div>
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+                                                            <label class="fw-semibold fs-6 mb-2">Email Perusahaan</label>
+                                                            <div class=""><?php echo $edit_perusahaan['Email_Perusahaan']; ?></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6">
+                                                            <label class="fw-semibold fs-6 mb-2">Status Kemitraan</label>
+                                                            <div class=""><?php echo $edit_perusahaan['Status_Kemitraan']; ?></div>
+                                                        </div>
+
+                                                        <div class="col-lg-6">
+                                                            <label class="fw-semibold fs-6 mb-2">Status Active</label>
+                                                            <div class=""><?php echo $edit_perusahaan['Is_Active']; ?></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <hr>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6">
+                                                            <label class="fw-semibold fs-6 mb-2">Provinsi</label>
+                                                            <div class=""><?php echo $edit_perusahaan['Provinsi']; ?></div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="fw-semibold fs-6 mb-2">Kota / Kabupaten</label>
+                                                            <div class=""><?php echo $edit_perusahaan['Kabupaten_Kota']; ?></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-6">
+                                                            <label class="fw-semibold fs-6 mb-2">Kecamatan</label>
+                                                            <div class=""><?php echo $edit_perusahaan['Kecamatan']; ?></div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <label class="fw-semibold fs-6 mb-2">Kelurahan</label>
+                                                            <div class=""><?php echo $edit_perusahaan['Kelurahan']; ?></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-lg-12">
+                                                            <label class="required fw-semibold fs-6 mb-2">Alamat Perusahaan</label>
+                                                            <div class=""><?php echo $edit_perusahaan['Alamat_Perusahaan']; ?></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            <?php } ?>
                                 </form>
                             </div>
                         </div>
