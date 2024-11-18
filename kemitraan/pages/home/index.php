@@ -11,6 +11,29 @@ include "controller/saldo/controller_top_up_saldo.php"
             maximumFractionDigits: 0
         }).format(number);
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        generateCode();
+    });
+
+    function generateCode() {
+
+        <?php
+        if ($u_Status_Kemitraan == "Distributor") { ?>
+            var nominal_transfer = 3000000;
+        <?php } else { ?>
+            var nominal_transfer = 1500000;
+        <?php }; ?>
+
+        var input_generate_code = Math.floor(Math.random() * 200) + 10;
+        var generateNominal = nominal_transfer + input_generate_code;
+        var textTransfer = rupiah(generateNominal) + ",-";
+
+        document.getElementById("input_generate_code").value = input_generate_code;
+        document.getElementById("input_generate_code_status").value = "ada";
+        document.getElementById("nominal_update_saldo").innerText = textTransfer;
+        document.getElementById("saldo").value = nominal_transfer;
+    }
 </script>
 <div class="app-content">
     <div class="card card-flush">
@@ -71,29 +94,6 @@ include "controller/saldo/controller_top_up_saldo.php"
                     <div class="m-6t">
                         <div class="text-center">
                             <h4>Silahkan Transfer sebesar </h4>
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function() {
-                                    generateCode();
-                                });
-
-                                function generateCode() {
-                                    <?php
-                                    if ($u_Status_Kemitraan == "Distributor") { ?>
-                                        var nominal_transfer = 3000000;
-                                    <?php } else { ?>
-                                        var nominal_transfer = 1500000;
-                                    <?php }; ?>
-
-                                    var input_generate_code = Math.floor(Math.random() * 500) + 100;
-                                    var generateNominal = nominal_transfer + input_generate_code;
-                                    var textTransfer = rupiah(generateNominal) + ",-";
-
-                                    document.getElementById("input_generate_code").value = input_generate_code;
-                                    document.getElementById("input_generate_code_status").value = "ada";
-                                    document.getElementById("nominal_update_saldo").innerText = textTransfer;
-                                    document.getElementById("saldo").value = nominal_transfer;
-                                }
-                            </script>
                             <h4>
                                 <b>
                                     <div class="text-danger fs-2x" id="nominal_update_saldo"></div>
@@ -131,10 +131,10 @@ include "controller/saldo/controller_top_up_saldo.php"
                         <div class="card-body">
                             <div class="d-flex align-items-center flex-column">
                                 <form method="POST" enctype="multipart/form-data">
-                                    <input type="text" name="Saldo" id="saldo">
-                                    <input type="text" name="Keterangan" value="Pertama">
-                                    <input type="text" id="input_generate_code" name="Kode_Unik">
-                                    <input type="text" id="input_generate_code_status">
+                                    <input type="hidden" name="Saldo" id="saldo">
+                                    <input type="hidden" name="Keterangan" value="Pertama">
+                                    <input type="hidden" id="input_generate_code" name="Kode_Unik">
+                                    <input type="hidden" id="input_generate_code_status">
                                     <div class="text-center">
                                         <div class="mb-6">
                                             <h6 class="text-dark"> Silahkan upload bukti transfer jika anda sudah melakukan transfer</h6>
@@ -172,30 +172,6 @@ include "controller/saldo/controller_top_up_saldo.php"
             <div class="mt-10">
                 <div class="text-center">
                     <h4>Silahkan Transfer sebesar </h4>
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            generateCode();
-                        });
-
-                        function generateCode() {
-
-                            <?php
-                            if ($u_Status_Kemitraan == "Distributor") { ?>
-                                var nominal_transfer = 3000000;
-                            <?php } else { ?>
-                                var nominal_transfer = 1500000;
-                            <?php }; ?>
-
-                            var input_generate_code = Math.floor(Math.random() * 500) + 100;
-                            var generateNominal = nominal_transfer + input_generate_code;
-                            var textTransfer = rupiah(generateNominal) + ",-";
-
-                            document.getElementById("input_generate_code").value = input_generate_code;
-                            document.getElementById("input_generate_code_status").value = "ada";
-                            document.getElementById("nominal_update_saldo").innerText = textTransfer;
-                            document.getElementById("saldo").value = nominal_transfer;
-                        }
-                    </script>
                     <h4>
                         <b>
                             <div class="text-danger fs-2x" id="nominal_update_saldo"></div>

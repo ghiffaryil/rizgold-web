@@ -5,6 +5,24 @@ $result_perusahaan = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", 
 $data_perusahaan = $result_perusahaan['Hasil'];
 ?>
 
+<script>
+    function generateCode() {
+        var code = Math.floor(Math.random() * 200) + 10;
+        document.getElementById("input_generate_code").value = code;
+        document.getElementById("input_generate_code_status").value = "ada";
+    }
+
+    const rupiah = (number) => {
+        return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(number);
+    }
+</script>
+
+
 <div class="app-main flex-column flex-row-fluid " id="kt_app_main">
 
     <div class="d-flex flex-column flex-column-fluid">
@@ -496,16 +514,6 @@ $data_perusahaan = $result_perusahaan['Hasil'];
         </div>
     </div>
 </div>
-
-<script>
-    function generateCode() {
-        var code = Math.floor(Math.random() * 500) + 100;
-        document.getElementById("input_generate_code").value = code;
-        document.getElementById("input_generate_code_status").value = "ada";
-    }
-</script>
-
-
 <div class="modal fade" id="topUpSaldoModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered ">
         <div class="modal-content">
@@ -523,17 +531,6 @@ $data_perusahaan = $result_perusahaan['Hasil'];
             <div class="modal-body">
                 <div class="card-body">
                     <div class="d-flex flex-column">
-
-
-                        <!-- MODAL TOP UP SALDO -->
-                        <script>
-                            function generateCode() {
-                                var code = Math.floor(Math.random() * 500) + 100;
-                                document.getElementById("input_generate_code").value = code;
-                                document.getElementById("input_generate_code_status").value = "ada";
-                            }
-                        </script>
-
                         <?php
                         include "controller/saldo/controller_top_up_saldo.php";
                         ?>
@@ -585,15 +582,6 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                 </div>
 
                                 <script>
-                                    const rupiah = (number) => {
-                                        return new Intl.NumberFormat("id-ID", {
-                                            style: "currency",
-                                            currency: "IDR",
-                                            minimumFractionDigits: 0,
-                                            maximumFractionDigits: 0
-                                        }).format(number);
-                                    }
-
                                     function update_nominal_saldo() {
                                         var getNominalSaldo = parseInt(document.getElementById("nominal_saldo").value);
                                         var input_generate_code = parseInt(document.getElementById("input_generate_code").value);

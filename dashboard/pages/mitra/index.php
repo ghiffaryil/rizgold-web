@@ -172,228 +172,9 @@ if (isset($_POST['submit_top_up_saldo'])) {
                                     </div>
                                 </div>
 
+                                <!-- DATA MITRA -->
                                 <form id="" method="POST" enctype="multipart/form-data">
                                     <div class="box-body">
-                                        <?php if (isset($_GET['edit'])) { ?>
-                                            <div id="SALDO">
-                                                <?php
-                                                $saldo = 0;
-                                                // CEK SALDO
-                                                $search_field_where = array("Id_Pengguna");
-                                                $search_criteria_where = array("=");
-                                                $search_value_where = array("$Get_Id_Primary");
-                                                $search_connector_where = array("");
-
-                                                $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_top_up_saldo_release", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
-                                                if ($result['Status'] == "Sukses") {
-                                                    $data_hasil_saldo = $result['Hasil'];
-                                                    foreach ($data_hasil_saldo as $data_saldo) {
-                                                        $saldo = $saldo + $data_saldo['Saldo'];
-                                                    }
-                                                }
-                                                ?>
-
-                                                <div class="form-group row">
-                                                    <hr>
-                                                    <div class="col-lg-8">
-                                                        <?php
-                                                        if ($saldo < 1) {
-                                                            $color = "danger";
-                                                        } else {
-                                                            $color = "primary";
-                                                        }
-                                                        ?>
-                                                        <h4>Saldo : <span class="text-<?php echo $color ?>"> <?php echo $a_format_angka->rupiah($saldo) ?> </span></h4>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalRiwayatSaldo" class="btn btn-primary"> <i class="fa fa-eye"></i> Riwayat Saldo</a>
-                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalTopUpSaldo" onclick="generateCode()" class="btn btn-success"><i class="fa fa-money"></i> Top Up</a>
-                                                    </div>
-                                                </div>
-
-                                                <!-- MODAL RIWAYAT SALDO -->
-                                                <div class="modal fade" id="modalRiwayatSaldo" tabindex="-1" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 700px;">
-                                                        <div class="modal-content">
-                                                            <!-- MODAL HEADER -->
-                                                            <div class="modal-header" id="">
-                                                                <h4 class="">Riwayat Saldo</h4>
-                                                                <div data-bs-dismiss="modal">
-                                                                    <i class="fa fa-close text-danger"></i>
-                                                                </div>
-                                                            </div>
-                                                            <!-- MODAL BODY -->
-                                                            <div class="modal-body">
-                                                                <div class="">
-                                                                    <div class="">
-                                                                        <div class="">
-                                                                            <table class="table table-borderless">
-                                                                                <?php
-                                                                                include "controller/saldo/controller_log_saldo.php";
-                                                                                $search_controller = new Search_Controller_Log_Saldo();
-                                                                                // LOG SALDO
-                                                                                $search_field_where = array("Id_Pengguna");
-                                                                                $search_criteria_where = array("=");
-                                                                                $search_value_where = array("$Get_Id_Primary");
-                                                                                $search_connector_where = array("ORDER BY Waktu_Simpan_Data DESC");
-                                                                                $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_log_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
-                                                                                if ($result['Status'] == "Sukses") {
-                                                                                    $data_hasil_log_saldo = $result['Hasil'];
-                                                                                    foreach ($data_hasil_log_saldo as $data_log_saldo) {
-
-                                                                                        if ($data_log_saldo['Aktor'] == "Kemitraan") {
-                                                                                            $Aktor = "Mitra";
-                                                                                        } else {
-                                                                                            $Aktor = "Admin";
-                                                                                        }
-                                                                                ?>
-
-                                                                                        <tr>
-                                                                                            <td style="width:10%">
-                                                                                                <span class="<?php if ($data_log_saldo['Status_Saldo'] == "Pending") echo "badge badge-warning";
-                                                                                                                elseif ($data_log_saldo['Status_Saldo'] == "Approved") echo "badge badge-success";
-                                                                                                                else echo "badge badge-danger"; ?>"><small> <?php echo $data_log_saldo['Status_Saldo'] ?> </small></span>
-                                                                                            </td>
-                                                                                            <td style="width:30%">
-                                                                                                <?php echo tanggal_dan_waktu_24_jam_indonesia($data_log_saldo['Waktu_Simpan_Data']) ?>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <?php echo $Aktor ?> <?php echo $data_log_saldo['Keterangan'] ?> <?php echo $a_format_angka->rupiah($data_log_saldo['Saldo']) ?>
-                                                                                            </td>
-                                                                                        </tr>
-
-                                                                                <?php
-
-                                                                                    }
-                                                                                }
-                                                                                ?>
-                                                                            </table>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <!-- MODAL TOP UP SALDO -->
-                                                <script>
-                                                    function generateCode() {
-                                                        var code = Math.floor(Math.random() * 500) + 100;
-                                                        document.getElementById("input_generate_code").value = code;
-                                                        document.getElementById("input_generate_code_status").value = "ada";
-                                                    }
-                                                </script>
-
-                                                <div class="modal fade" id="modalTopUpSaldo" tabindex="-1" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered ">
-                                                        <div class="modal-content">
-                                                            <!-- MODAL HEADER -->
-                                                            <div class="modal-header" id="">
-                                                                <h4 class="">Top Up Saldo</h4>
-                                                                <div data-bs-dismiss="modal">
-                                                                    <i class="fa fa-close text-danger"></i>
-                                                                </div>
-                                                            </div>
-                                                            <!-- MODAL BODY -->
-                                                            <div class="modal-body">
-                                                                <div class="">
-                                                                    <form method="POST" enctype="multipart/form-data">
-                                                                        <div class="">
-                                                                            <?php echo $Get_Id_Primary ?>
-                                                                            <label class="mb-3">Pilih Nominal Top-Up Saldo</label>
-                                                                            <select name="Saldo" id="nominal_saldo" onchange="update_nominal_saldo()" class="form-select" style="cursor:pointer">
-                                                                                <option value="0"> Pilih Nominal </option>
-                                                                                <option value="1000000"> Rp 1.000.000,- </option>
-                                                                                <option value="3000000"> Rp 3.000.000,- </option>
-                                                                                <option value="5000000"> Rp 5.000.000,- </option>
-                                                                                <option value="10000000"> Rp 10.000.000,- </option>
-                                                                            </select>
-                                                                        </div>
-                                                                        <div class="">
-                                                                            <div style="display: none; font-style:bold;" id="div_nominal_update_saldo">
-
-                                                                                <br>
-                                                                                <h5>Silahkan transfer <span class="text-danger fw-bold" id="nominal_update_saldo"></span> ke rekening di bawah ini : </h5>
-                                                                                <h5 class="fw-bold text-dark">Bank Central Asia (BCA)</h5>
-                                                                                <h5 class="fw-bold text-dark">A/n : Rokim Abdul Karim</h5>
-
-                                                                                <div class="">
-                                                                                    Nomor Rekening : <br>
-                                                                                    <span id="noRekening">
-                                                                                        <h5 class="badge badge-danger fs-4">32141 1231412 1231231</h5>
-                                                                                    </span> &nbsp;
-                                                                                    <div class="d-flex" onclick="copyToClipboard()" style="cursor: pointer;" title="Salin nomor rekening">
-                                                                                        <i class="fa fa-copy text-dark"></i> &nbsp; kilk icon ini untuk salin
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <hr>
-                                                                        </div>
-                                                                        <div class="mb-5" id="button_update_saldo" style="display: none;">
-
-                                                                            <input type="hidden" readonly name="Keterangan" value="Top Up">
-                                                                            <input type="hidden" readonly name="Kode_Unik" id="input_generate_code">
-                                                                            <input type="hidden" readonly id="input_generate_code_status">
-                                                                            <span class="text-dark"> Upload bukti transfer, lalu klik tombol <b>"Top Up"</b></span>
-                                                                            <br><br>
-
-                                                                            <div class="row">
-                                                                                <div class="col-lg-9">
-                                                                                    <input type="file" name="Bukti_Transfer_Saldo" class="form-control" accept="image/png, image/jpeg, image/jpg">
-                                                                                </div>
-                                                                                <div class="col-lg-3">
-                                                                                    <input type="submit" name="submit_top_up_saldo" class="btn btn-primary" value="Top Up" onclick="return confirm('Anda yakin untuk mengunggah file ini?')">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <script>
-                                                                            const rupiah = (number) => {
-                                                                                return new Intl.NumberFormat("id-ID", {
-                                                                                    style: "currency",
-                                                                                    currency: "IDR",
-                                                                                    minimumFractionDigits: 0,
-                                                                                    maximumFractionDigits: 0
-                                                                                }).format(number);
-                                                                            }
-
-                                                                            function update_nominal_saldo() {
-                                                                                var getNominalSaldo = parseInt(document.getElementById("nominal_saldo").value);
-                                                                                var input_generate_code = parseInt(document.getElementById("input_generate_code").value);
-                                                                                var generateNominal = getNominalSaldo + input_generate_code;
-                                                                                if (getNominalSaldo == 0) {
-                                                                                    alert('Silahkan pilih nominal Saldo');
-                                                                                    document.getElementById("button_update_saldo").style.display = "none";
-                                                                                    document.getElementById("div_nominal_update_saldo").style.display = "none";
-                                                                                } else {
-                                                                                    var textTransfer = rupiah(generateNominal) + ",-";
-                                                                                    document.getElementById("button_update_saldo").style.display = "";
-                                                                                    document.getElementById("div_nominal_update_saldo").style.display = "";
-                                                                                    document.getElementById("nominal_update_saldo").innerText = textTransfer;
-                                                                                }
-                                                                            }
-
-                                                                            function copyToClipboard() {
-                                                                                var copyText = document.getElementById("noRekening").innerText;
-                                                                                navigator.clipboard.writeText(copyText).then(function() {
-                                                                                    alert('No Rekening berhasil disalin');
-                                                                                }, function(err) {
-                                                                                    console.error('Error: ', err);
-                                                                                });
-                                                                            }
-                                                                        </script>
-
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php } ?>
-
                                         <?php if (isset($_GET['tambah'])) { ?>
                                             <div class="form-group row">
                                                 <div class="col-lg-12">
@@ -471,14 +252,11 @@ if (isset($_POST['submit_top_up_saldo'])) {
                                             </div>
                                         <?php } ?>
 
-                                        <div class="form-group row">
+                                        <div class="row">
                                             <div class="col-lg-12">
-                                                <hr>
                                                 <h4>Data Mitra</h4>
                                             </div>
-                                        </div>
 
-                                        <div class="form-grup row">
                                             <div class="col-lg-12">
 
                                                 <?php if (isset($_GET['edit'])) { ?>
@@ -727,6 +505,229 @@ if (isset($_POST['submit_top_up_saldo'])) {
                                                 </div>
 
                                             <?php } ?>
+                                </form>
+
+                                <!-- SALDO -->
+                                <form method="POST" enctype="multipart/form-data">
+                                    <?php if (isset($_GET['edit'])) { ?>
+                                        <div id="SALDO">
+                                            <?php
+                                            $saldo = 0;
+                                            // CEK SALDO
+                                            $search_field_where = array("Id_Pengguna");
+                                            $search_criteria_where = array("=");
+                                            $search_value_where = array("$Get_Id_Primary");
+                                            $search_connector_where = array("");
+
+                                            $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_top_up_saldo_release", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                                            if ($result['Status'] == "Sukses") {
+                                                $data_hasil_saldo = $result['Hasil'];
+                                                foreach ($data_hasil_saldo as $data_saldo) {
+                                                    $saldo = $saldo + $data_saldo['Saldo'];
+                                                }
+                                            }
+                                            ?>
+
+                                            <div class="form-group row">
+                                                <hr>
+                                                <div class="col-lg-8">
+                                                    <?php
+                                                    if ($saldo < 1) {
+                                                        $color = "danger";
+                                                    } else {
+                                                        $color = "primary";
+                                                    }
+                                                    ?>
+                                                    <h4>Saldo : <span class="text-<?php echo $color ?>"> <?php echo $a_format_angka->rupiah($saldo) ?> </span></h4>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalRiwayatSaldo" class="btn btn-primary"> <i class="fa fa-eye"></i> Riwayat Saldo</a>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalTopUpSaldo" onclick="generateCode()" class="btn btn-success"><i class="fa fa-money"></i> Top Up</a>
+                                                </div>
+                                            </div>
+
+                                            <!-- MODAL RIWAYAT SALDO -->
+                                            <div class="modal fade" id="modalRiwayatSaldo" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 700px;">
+                                                    <div class="modal-content">
+                                                        <!-- MODAL HEADER -->
+                                                        <div class="modal-header" id="">
+                                                            <h4 class="">Riwayat Saldo</h4>
+                                                            <div data-bs-dismiss="modal">
+                                                                <i class="fa fa-close text-danger"></i>
+                                                            </div>
+                                                        </div>
+                                                        <!-- MODAL BODY -->
+                                                        <div class="modal-body">
+                                                            <div class="">
+                                                                <div class="">
+                                                                    <div class="">
+                                                                        <table class="table table-borderless">
+                                                                            <?php
+                                                                            include "controller/saldo/controller_log_saldo.php";
+                                                                            $search_controller = new Search_Controller_Log_Saldo();
+                                                                            // LOG SALDO
+                                                                            $search_field_where = array("Id_Pengguna");
+                                                                            $search_criteria_where = array("=");
+                                                                            $search_value_where = array("$Get_Id_Primary");
+                                                                            $search_connector_where = array("ORDER BY Waktu_Simpan_Data DESC");
+                                                                            $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_log_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
+                                                                            if ($result['Status'] == "Sukses") {
+                                                                                $data_hasil_log_saldo = $result['Hasil'];
+                                                                                foreach ($data_hasil_log_saldo as $data_log_saldo) {
+
+                                                                                    if ($data_log_saldo['Aktor'] == "Kemitraan") {
+                                                                                        $Aktor = "Mitra";
+                                                                                    } else {
+                                                                                        $Aktor = "Admin";
+                                                                                    }
+                                                                            ?>
+
+                                                                                    <tr>
+                                                                                        <td style="width:10%">
+                                                                                            <span class="<?php if ($data_log_saldo['Status_Saldo'] == "Pending") echo "badge badge-warning";
+                                                                                                            elseif ($data_log_saldo['Status_Saldo'] == "Approved") echo "badge badge-success";
+                                                                                                            else echo "badge badge-danger"; ?>"><small> <?php echo $data_log_saldo['Status_Saldo'] ?> </small></span>
+                                                                                        </td>
+                                                                                        <td style="width:30%">
+                                                                                            <?php echo tanggal_dan_waktu_24_jam_indonesia($data_log_saldo['Waktu_Simpan_Data']) ?>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <?php echo $Aktor ?> <?php echo $data_log_saldo['Keterangan'] ?> <?php echo $a_format_angka->rupiah($data_log_saldo['Saldo']) ?>
+                                                                                        </td>
+                                                                                    </tr>
+
+                                                                            <?php
+
+                                                                                }
+                                                                            }
+                                                                            ?>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <!-- MODAL TOP UP SALDO -->
+                                            <script>
+                                                function generateCode() {
+                                                    var code = Math.floor(Math.random() * 200) + 10;
+                                                    document.getElementById("input_generate_code").value = code;
+                                                    document.getElementById("input_generate_code_status").value = "ada";
+                                                }
+                                            </script>
+
+                                            <div class="modal fade" id="modalTopUpSaldo" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered ">
+                                                    <div class="modal-content">
+                                                        <!-- MODAL HEADER -->
+                                                        <div class="modal-header" id="">
+                                                            <h4 class="">Top Up Saldo</h4>
+                                                            <div data-bs-dismiss="modal">
+                                                                <i class="fa fa-close text-danger"></i>
+                                                            </div>
+                                                        </div>
+                                                        <!-- MODAL BODY -->
+                                                        <div class="modal-body">
+                                                            <div class="">
+                                                                <form method="POST" enctype="multipart/form-data">
+                                                                    <div class="">
+                                                                        <?php echo $Get_Id_Primary ?>
+                                                                        <label class="mb-3">Pilih Nominal Top-Up Saldo</label>
+                                                                        <select name="Saldo" id="nominal_saldo" onchange="update_nominal_saldo()" class="form-select" style="cursor:pointer">
+                                                                            <option value="0"> Pilih Nominal </option>
+                                                                            <option value="1000000"> Rp 1.000.000,- </option>
+                                                                            <option value="3000000"> Rp 3.000.000,- </option>
+                                                                            <option value="5000000"> Rp 5.000.000,- </option>
+                                                                            <option value="10000000"> Rp 10.000.000,- </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="">
+                                                                        <div style="display: none; font-style:bold;" id="div_nominal_update_saldo">
+
+                                                                            <br>
+                                                                            <h5>Silahkan transfer <span class="text-danger fw-bold" id="nominal_update_saldo"></span> ke rekening di bawah ini : </h5>
+                                                                            <h5 class="fw-bold text-dark">Bank Central Asia (BCA)</h5>
+                                                                            <h5 class="fw-bold text-dark">A/n : Rokim Abdul Karim</h5>
+
+                                                                            <div class="">
+                                                                                Nomor Rekening : <br>
+                                                                                <span id="noRekening">
+                                                                                    <h5 class="badge badge-danger fs-4">32141 1231412 1231231</h5>
+                                                                                </span> &nbsp;
+                                                                                <div class="d-flex" onclick="copyToClipboard()" style="cursor: pointer;" title="Salin nomor rekening">
+                                                                                    <i class="fa fa-copy text-dark"></i> &nbsp; kilk icon ini untuk salin
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <hr>
+                                                                    </div>
+                                                                    <div class="mb-5" id="button_update_saldo" style="display: none;">
+
+                                                                        <input type="hidden" readonly name="Keterangan" value="Top Up">
+                                                                        <input type="hidden" readonly name="Kode_Unik" id="input_generate_code">
+                                                                        <input type="hidden" readonly id="input_generate_code_status">
+                                                                        <span class="text-dark"> Upload bukti transfer, lalu klik tombol <b>"Top Up"</b></span>
+                                                                        <br><br>
+
+                                                                        <div class="row">
+                                                                            <div class="col-lg-9">
+                                                                                <input type="file" name="Bukti_Transfer_Saldo" class="form-control" accept="image/png, image/jpeg, image/jpg">
+                                                                            </div>
+                                                                            <div class="col-lg-3">
+                                                                                <input type="submit" name="submit_top_up_saldo" class="btn btn-primary" value="Top Up" onclick="return confirm('Anda yakin untuk mengunggah file ini?')">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <script>
+                                                                        const rupiah = (number) => {
+                                                                            return new Intl.NumberFormat("id-ID", {
+                                                                                style: "currency",
+                                                                                currency: "IDR",
+                                                                                minimumFractionDigits: 0,
+                                                                                maximumFractionDigits: 0
+                                                                            }).format(number);
+                                                                        }
+
+                                                                        function update_nominal_saldo() {
+                                                                            var getNominalSaldo = parseInt(document.getElementById("nominal_saldo").value);
+                                                                            var input_generate_code = parseInt(document.getElementById("input_generate_code").value);
+                                                                            var generateNominal = getNominalSaldo + input_generate_code;
+                                                                            if (getNominalSaldo == 0) {
+                                                                                alert('Silahkan pilih nominal Saldo');
+                                                                                document.getElementById("button_update_saldo").style.display = "none";
+                                                                                document.getElementById("div_nominal_update_saldo").style.display = "none";
+                                                                            } else {
+                                                                                var textTransfer = rupiah(generateNominal) + ",-";
+                                                                                document.getElementById("button_update_saldo").style.display = "";
+                                                                                document.getElementById("div_nominal_update_saldo").style.display = "";
+                                                                                document.getElementById("nominal_update_saldo").innerText = textTransfer;
+                                                                            }
+                                                                        }
+
+                                                                        function copyToClipboard() {
+                                                                            var copyText = document.getElementById("noRekening").innerText;
+                                                                            navigator.clipboard.writeText(copyText).then(function() {
+                                                                                alert('No Rekening berhasil disalin');
+                                                                            }, function(err) {
+                                                                                console.error('Error: ', err);
+                                                                            });
+                                                                        }
+                                                                    </script>
+
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
                                 </form>
                             </div>
                         </div>
