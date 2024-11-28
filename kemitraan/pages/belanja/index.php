@@ -1,513 +1,587 @@
-<?php include "controller/produk/function/controller_produk.php"; ?>
-<div class="app-content">
-    <?php if ((isset($_GET["view"]))) { ?>
-        <div id="kt_app_toolbar" class="app-toolbar ">
-            <div id="kt_app_toolbar_container" class="app-container  container-fluid d-flex flex-stack flex-wrap ">
-                <div class="d-flex flex-stack flex-wrap gap-4 w-100">
-                    <div class="page-title d-flex flex-column gap-3 me-3">
-                        <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 fw-bolder fs-2x my-0">
-                            Detail Product
-                        </h1>
-                        <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
-                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
-                                <a href="index.php" class="text-gray-500 text-hover-primary">
-                                    <i class="ki-duotone ki-home fs-3 text-gray-500 me-n1"></i>
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-                            </li>
-                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">eCommerce </li>
-                            <li class="breadcrumb-item">
-                                <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-                            </li>
-                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1"> Catalog </li>
+<?php
+$result_pengguna = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", "$u_Id_Pengguna");
+$data_pengguna = $result_pengguna['Hasil'];
 
-                            <li class="breadcrumb-item">
-                                <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
-                            </li>
-                            <li class="breadcrumb-item text-gray-500"> Edit Product </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+$result_perusahaan = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Organisasi_Kode", "$u_Organisasi_Kode");
+$data_perusahaan = $result_perusahaan['Hasil'];
+?>
 
-        <div class="card mt-6">
-            <div class="card-body">
-                <div class="d-flex">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <img src="../dashboard/media/produk_foto/<?php echo $edit['Foto_Produk'] ?>" class="w-100" />
-                        </div>
+<style>
+    @media (max-width: 900px) {
+        #display-profile {
+            display: none;
+        }
+    }
+</style>
 
-                        <div class="col-lg-8">
-                            <div class="mb-4">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="fs-6 text-gray-700">Produk</label>
-                                        <h1 class=""><?php echo $edit['Nama_Produk']; ?></h1>
+<div class="app-main flex-column flex-row-fluid " id="kt_app_main">
+    <div class="d-flex flex-column flex-column-fluid">
+        <div id="kt_app_content" class="app-content pb-0">
+            <div class="d-flex flex-column flex-xl-row">
+
+                <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10" id="display-profile">
+                    <div class="card mb-5 mb-xl-8">
+                        <div class="card-body pt-15">
+                            <div class="d-flex flex-center flex-column mb-5">
+                                <div class="symbol symbol-150px symbol-circle mb-7">
+                                    <div class="image-input image-input-outline image-input-placeholder" data-kt-image-input="false">
+                                        <div class="image-input-wrapper w-250px h-250px" style="<?php if ($data_pengguna['Foto'] != "") { ?> background-image: url(../dashboard/media/kemitraan_foto/<?php echo $data_pengguna['Foto'] ?>); <?php } else { ?> background-image: url(assets/media/svg/files/blank-image.svg); <?php } ?>"></div>
                                     </div>
                                 </div>
-                                <div class="row mt-6">
-                                    <div class="col-lg-4">
-                                        <label class="fs-6 text-gray-700">Kategori</label>
-                                        <p class="fs-4 fw-semibold text-dark"><?php echo  $a_format_angka->rupiah($Harga_Produk); ?></p>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <label class="fs-6 text-gray-700">SKU</label>
-                                        <p class="fs-4 fw-semibold text-dark"><?php echo  $edit['SKU']; ?></p>
-                                    </div>
-
-                                    <div class="col-lg-4">
-                                        <label class="fs-6 text-gray-700">Stock</label>
-                                        <p class="fs-4 fw-semibold text-dark"><?php echo  $edit['Stock']; ?></p>
-                                    </div>
-                                </div>
-
-                                <div class="row mt-5">
-                                    <div class="col-lg-8">
-                                        <label class="fs-6 text-gray-700">Harga</label>
-                                        <?php
-                                        if ($u_Status_Kemitraan == "Distributor") {
-                                            $Harga_Produk = $edit['Harga_Distributor'];
-                                        } else {
-                                            $Harga_Produk = $edit['Harga_Agen'];
-                                        }
-                                        ?>
-                                        <h2 class="fs-3x fw-bold text-danger"><?php echo  $a_format_angka->rupiah($Harga_Produk); ?></h2>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <br class="">
-                                        <button
-                                            data-id="<?php echo $encode_id; ?>"
-                                            data-id-pengguna="<?php echo $encode_id_pengguna; ?>"
-                                            data-status-kemitraan="<?php echo $u_Status_Kemitraan; ?>"
-                                            data-nama-produk="<?php echo $edit['Nama_Produk']; ?>"
-                                            data-foto-produk="<?php echo $edit['Foto_Produk']; ?>"
-                                            data-harga-produk="<?php echo $Harga_Produk; ?>"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#modal-pilih-produk"
-                                            class="btn btn-primary">
-                                            <i class="ki-duotone ki-handcart fs-3 text-white"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                                <h3><?php echo $data_pengguna['Nama_Depan'] . " " . $data_pengguna['Nama_Belakang'] ?></h3>
+                                <span class="text-dark fs-6"><?php echo $data_perusahaan['Nama_Perusahaan'] ?></span>
+                                <span class="text-muted fs-6"><?php echo $data_perusahaan['Organisasi_Kode'] ?></span>
                             </div>
 
-                            <hr>
 
-                            <div class="mb-4">
-                                <div class="row mb-4">
-                                    <div class="col-lg-12">
-                                        <label class="fs-6 text-gray-700">Deskripsi</label>
-                                        <p class="fs-6 fw-semibold text-dark"><?php echo $edit['Deskripsi']; ?></p>
-                                    </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <hr>
-                                    <div class="col-lg-6">
-                                        <div class="fv-row mb-4">
-                                            <label class="fs-6 text-gray-700">Manfaat</label>
-                                            <p class="fs-6 fw-semibold text-dark"><?php echo $edit['Manfaat']; ?></p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="fv-row mb-4">
-                                            <label class="fs-6 text-gray-700">Khasiat</label>
-                                            <p class="fs-6 fw-semibold text-dark"><?php echo $edit['Khasiat']; ?></p>
-                                        </div>
-                                    </div>
-                                </div>
 
+                            <div class="d-flex flex-stack fs-4 py-3">
+                                <div class="fw-bold">
+                                    Status Kemitraan
+                                </div>
+                                <span class="badge badge-light-primary">
+                                    <?php echo $data_perusahaan['Status_Kemitraan'] ?>
+                                </span>
+                            </div>
+
+                            <div class="separator separator-dashed my-3"></div>
+
+                            <div class="pb-5 fs-6">
+                                <div class="fw-bold mt-5">Email</div>
+                                <div class="text-gray-600"><?php echo $data_pengguna['Email'] ?></div>
+
+                                <div class="fw-bold mt-5">No. Handphone</div>
+                                <div class="text-gray-600"><?php echo $data_pengguna['No_Handphone'] ?></div>
+
+                                <div class="fw-bold mt-5">Alamat</div>
+                                <div class="text-gray-600"><?php echo $data_pengguna['Alamat'] ?></div>
                             </div>
 
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="card mt-6">
-            <div class="card-body">
-                <div class="">
-                    <div class="fv-row text-center">
-                        <div class="">
-                            <a href="?menu=belanja" class="btn btn-light-danger btn-block"> Kembali </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <div class="flex-lg-row-fluid ms-lg-15">
+                    <?php include "controller/produk/function/controller_produk.php"; ?>
 
-        <?php } ?>
-
-        <?php if (!((isset($_GET['view'])))) { ?>
-            <div class="card">
-                <div class="card-header border-0">
-                    <div class="card-title">
-                        <div id="kt_app_toolbar" class="app-toolbar py-4">
-                            <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack flex-wrap">
+                    <!-- TAMPILAN DETAIL PRODUK -->
+                    <?php if ((isset($_GET["view"]))) { ?>
+                        <div id="kt_app_toolbar" class="app-toolbar ">
+                            <div id="kt_app_toolbar_container" class="app-container  container-fluid d-flex flex-stack flex-wrap ">
                                 <div class="d-flex flex-stack flex-wrap gap-4 w-100">
                                     <div class="page-title d-flex flex-column gap-3 me-3">
-                                        <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Produk</h1>
+                                        <h1 class="page-heading d-flex flex-column justify-content-center text-gray-900 fw-bolder fs-2x my-0">
+                                            Detail Product
+                                        </h1>
                                         <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
                                             <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
-                                                <a href="index.php" class="text-gray-500">
-                                                    <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
+                                                <a href="index.php" class="text-gray-500 text-hover-primary">
+                                                    <i class="ki-duotone ki-home fs-3 text-gray-500 me-n1"></i>
                                                 </a>
                                             </li>
                                             <li class="breadcrumb-item">
-                                                <i class="ki-duotone ki-right fs-6 text-gray-700 mx-n1"></i>
+                                                <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
                                             </li>
-                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Produk</li>
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1">eCommerce </li>
                                             <li class="breadcrumb-item">
-                                                <i class="ki-duotone ki-right fs-6 text-gray-700 mx-n1"></i>
+                                                <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
                                             </li>
-                                            <li class="breadcrumb-item text-gray-500"><a href="<?php echo $kehalaman ?>" class="text-dark">Data Produk</a></li>
+                                            <li class="breadcrumb-item text-gray-700 fw-bold lh-1"> Catalog </li>
+
+                                            <li class="breadcrumb-item">
+                                                <i class="ki-duotone ki-right fs-4 text-gray-700 mx-n1"></i>
+                                            </li>
+                                            <li class="breadcrumb-item text-gray-500"> Edit Product </li>
                                         </ul>
                                     </div>
+
+                                    <div class="mt-6">
+                                        <div class="text-center">
+                                            <a href="?menu=belanja" class="btn btn-danger text-white"> Kembali </a>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <form action="" method="POST">
-                        <br>
-                        <div class="card-toolbar">
-                            <div class="d-flex align-items-center position-relative my-1">
-                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>
-                                <input required type="text" name="Text_Input_Search" class="form-control form-control-solid w-250px ps-13" placeholder="Cari nama produk"
-                                    value="<?php if (isset($_POST['submit_button_search'])) {
-                                                echo $_POST['Text_Input_Search'];
-                                            }; ?>" />
-                            </div>
-                            <div id="div-button-search-clear">
-                                &nbsp;
-                                <button type="submit" class="btn btn-primary text-center" name="submit_button_search" id="submit-button-search">
-                                    <span class="text-white">Cari</span>
-                                </button>
-                                <button type="" class="btn btn-danger text-center <?php if (isset($_POST['submit_button_search'])) {
-                                                                                        echo '';
-                                                                                    } else {
-                                                                                        echo 'd-none';
-                                                                                    } ?>" id="button-clear-search">
-                                    <i class="ki-solid ki-cross text-white fs-2"></i>
-                                </button>
-                                <style>
-                                    @media (max-width: 700px) {
-                                        #submit-button-search {
-                                            display: block;
-                                            text-align: center;
-                                            margin-right: 10px;
-                                        }
-
-                                        #div-button-search-clear {
-                                            display: flex;
-                                            margin-top: 15px;
-                                            margin-right: 15px;
-                                        }
-                                    }
-                                </style>
-
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="card mt-4">
-                <div class="card-body px-4">
-                    <div class="row">
-                        <?php
-                        if (isset($_POST['submit_button_search'])) {
-                            $Text_Input_Search = $_POST['Text_Input_Search'];
-                        } else {
-                            $Text_Input_Search = "";
-                        }
-
-                        $search_controller = new Search_Controller_Produk();
-                        $filter_status = "Aktif";
-                        $data_hasil = $search_controller->select_search_filter($filter_status, $Text_Input_Search);
-
-                        foreach ($data_hasil as $data) {
-                            $encode_id = $a_hash->encode($data['Id_Produk'], $_GET['menu']);
-                            $encode_id_pengguna = $a_hash->encode($u_Id_Pengguna, $_GET['menu']);
-                            $Harga_Produk = ($u_Status_Kemitraan == "Distributor") ? $data['Harga_Distributor'] : (($u_Status_Kemitraan == "Agen") ? $data['Harga_Agen'] : "Anda belum terdaftar sebagai Agen / Distributor");
-                        ?>
-                            <div class="col-lg-3 d-flex my-5 px-5">
-                                <div class="card flex-fill" style="border:1px solid #ccc;">
-                                    <img src="../dashboard/media/produk_foto/<?php echo $data['Foto_Produk'] ?>" class="card-img-top" style="object-fit: cover; height: 250px;" alt="<?php echo $data['Nama_Produk']; ?>">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <h3 class="card-title"><?php echo $data['Nama_Produk']; ?></h3>
-                                            </div>
+                        <div class="card mt-6">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <img src="../dashboard/media/produk_foto/<?php echo $data_pengguna['Foto_Produk'] ?>" class="w-100" />
                                         </div>
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <?php
-                                                $read_kategori = $a_tambah_baca_update_hapus->baca_data_id("tb_produk_kategori", "Id_Produk_Kategori", "$data[Id_Produk_Kategori]");
-                                                $data_kategori = $read_kategori['Hasil'];
-                                                ?>
-                                                <p class="my-1 fs-6 text-muted">Kategori : <?php echo $data_kategori['Nama_Kategori']; ?></p>
-                                                <p class="my-1 fs-6">Izin BPOM : <?php echo $data['Izin_BPOM']; ?></p>
+
+                                        <div class="col-lg-8">
+                                            <div class="mb-4">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label class="fs-6 text-gray-700">Produk</label>
+                                                        <h1 class=""><?php echo $data_pengguna['Nama_Produk']; ?></h1>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-6">
+                                                    <div class="col-lg-4">
+                                                        <label class="fs-6 text-gray-700">Kategori</label>
+
+                                                        <?php
+                                                        $read_kategori = $a_tambah_baca_update_hapus->baca_data_id("tb_produk_kategori", "Id_Produk_Kategori", "$data_pengguna[Id_Produk_Kategori]");
+                                                        $data_kategori = $read_kategori['Hasil'];
+                                                        ?>
+
+                                                        <p class="fs-4 fw-semibold text-dark"><?php echo $data_kategori['Nama_Kategori']; ?></p>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <label class="fs-6 text-gray-700">SKU</label>
+                                                        <p class="fs-4 fw-semibold text-dark"><?php echo  $data_pengguna['SKU']; ?></p>
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <label class="fs-6 text-gray-700">Stock</label>
+                                                        <p class="fs-4 fw-semibold text-dark"><?php echo  $data_pengguna['Stock']; ?></p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-5">
+                                                    <div class="col-lg-8">
+                                                        <label class="fs-6 text-gray-700">Harga</label>
+                                                        <?php
+                                                        if ($u_Status_Kemitraan == "Distributor") {
+                                                            $Harga_Produk = $data_pengguna['Harga_Distributor'];
+                                                        } else {
+                                                            $Harga_Produk = $data_pengguna['Harga_Agen'];
+                                                        }
+                                                        ?>
+                                                        <h2 class="fs-3x fw-bold text-danger"><?php echo  $a_format_angka->rupiah($Harga_Produk); ?></h2>
+                                                    </div>
+                                                    <div class="col-lg-4 d-none">
+                                                        <br class="">
+                                                        <button
+                                                            data-id="<?php echo $encode_id; ?>"
+                                                            data-id-pengguna="<?php echo $encode_id_pengguna; ?>"
+                                                            data-status-kemitraan="<?php echo $u_Status_Kemitraan; ?>"
+                                                            data-nama-produk="<?php echo $data_pengguna['Nama_Produk']; ?>"
+                                                            data-foto-produk="<?php echo $data_pengguna['Foto_Produk']; ?>"
+                                                            data-harga-produk="<?php echo $Harga_Produk; ?>"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#modal-pilih-produk"
+                                                            class="btn btn-primary">
+                                                            <i class="ki-duotone ki-handcart fs-3 text-white"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
 
+                                            <hr>
 
-                                            <div class="col-lg-12">
-                                                <h4 class="card-text my-1 fs-6">
-                                                    <small class="text-muted">Harga</small> &nbsp;
-                                                    <?php
-                                                    if ($u_Status_Kemitraan == "Distributor") {
-                                                        echo $a_format_angka->rupiah($data['Harga_Distributor']);
-                                                    } else if ($u_Status_Kemitraan == "Agen") {
-                                                        echo $a_format_angka->rupiah($data['Harga_Agen']);
-                                                    } else {
-                                                        echo "Anda belum terdaftar sebagai Agen / Distributor";
-                                                    }
-                                                    ?>
-                                                </h4>
+                                            <div class="mb-4">
+                                                <div class="row mb-4">
+                                                    <div class="col-lg-12">
+                                                        <label class="fs-6 text-gray-700">Deskripsi</label>
+                                                        <p class="fs-6 fw-semibold text-dark"><?php echo $data_pengguna['Deskripsi']; ?></p>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-4">
+                                                    <hr>
+                                                    <div class="col-lg-6">
+                                                        <div class="fv-row mb-4">
+                                                            <label class="fs-6 text-gray-700">Manfaat</label>
+                                                            <p class="fs-6 fw-semibold text-dark"><?php echo $edit['Manfaat']; ?></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="fv-row mb-4">
+                                                            <label class="fs-6 text-gray-700">Khasiat</label>
+                                                            <p class="fs-6 fw-semibold text-dark"><?php echo $edit['Khasiat']; ?></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
 
-                                            <div class="col-lg-12 mt-4 text-center" style="width:100%">
-                                                <br>
-                                                <button
-                                                    data-id="<?php echo $encode_id; ?>"
-                                                    data-id-pengguna="<?php echo $encode_id_pengguna; ?>"
-                                                    data-status-kemitraan="<?php echo $u_Status_Kemitraan; ?>"
-                                                    data-nama-produk="<?php echo $data['Nama_Produk']; ?>"
-                                                    data-foto-produk="<?php echo $data['Foto_Produk']; ?>"
-                                                    data-harga-produk="<?php echo $Harga_Produk; ?>"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modal-pilih-produk"
-                                                    class="btn btn-primary bgn-block text-white d-none">
-                                                    <span class="">Tambahkan ke Keranjang</span>
-                                                </button>
-
-                                                <?php
-                                                // LINK WHATSAPP
-                                                // Read data for WhatsApp link
-                                                $read_data_pengaturan = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan", "Id_Pengaturan", "1");
-
-                                                $Nomor_Admin_Pembelian = $read_data_pengaturan['Hasil']['Nomor_Admin_Pembelian']; // Example: 085779908779
-                                                $Pesan_Otomatis_Pembelian = $read_data_pengaturan['Hasil']['Pesan_Otomatis_Pembelian']; // Example: Saya ingin beli produk Rizgold
-
-                                                // Replace the first 0 with 62 for the Indonesian country code
-                                                $Nomor_Admin_Pembelian = preg_replace(pattern: '/^0/', replacement: '62', subject: $Nomor_Admin_Pembelian);
-
-                                                // Encode the message to replace spaces with %20
-                                                $Pesan_Otomatis_Pembelian = urlencode(string: $Pesan_Otomatis_Pembelian);
-
-                                                // Create the WhatsApp link
-                                                $Link_Whatsapp = "https://wa.me/$Nomor_Admin_Pembelian?text=$Pesan_Otomatis_Pembelian%20-%20$data[Nama_Produk]%20";
-
-                                                ?>
-
-                                                <a href="<?php echo $Link_Whatsapp?>" target="_blank" class="btn btn-success bgn-block text-white">
-                                                    <span class="">Pesan via Whatsapp</span>
-                                                </a>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        <?php
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
-        <?php } ?>
-
-        </div>
-        <div class="modal fade" id="modal-pilih-produk" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered mw-750px">
-                <div class="modal-content">
-                    <div class="modal-header pb-1 pt-5" id="modal-pilih-produk_header">
-                        <h2 class="fw-bold">Beli Produk</h2>
-                        <div class="btn btn-icon btn-sm btn-active-icon-danger" data-bs-dismiss="modal">
-                            <i class="ki-duotone ki-cross fs-1">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                            </i>
                         </div>
-                    </div>
-                    <form id="modal-pilih-produk_form" class="form" method="POST" action="controller/transaksi/fetch/fetch_pembelian_produk.php">
-                        <div class="modal-body scroll-y mx-5 mx-xl-4">
-                            <div class="d-flex flex-column scroll-y me-n7 pe-4" id="modal-pilih-produk_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modal-pilih-produk_header" data-kt-scroll-wrappers="#modal-pilih-produk_scroll" data-kt-scroll-offset="245px">
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <img class="" style="height: 275px; width: 100%; object-fit:cover" id="modal-form-foto-produk">
-                                    </div>
-                                    <div class="col-lg-8">
-                                        <div class="row">
-                                            <div class="col-lg-6 mb-3">
-                                                <input readonly type="hidden" name="Id_Produk" id="modal-form-id-produk">
-                                                <input readonly type="hidden" name="Id_Pengguna" id="modal-form-id-pengguna">
-                                                <label class="required fs-7">Nama Produk</label>
-                                                <input readonly required type="text" name="Nama_Produk" id="modal-form-nama-produk" class="form-control form-control-solid fs-7" />
-                                            </div>
-                                            <div class="col-lg-6 mb-3">
-                                                <label class="required fs-7">Harga</label>
-                                                <input readonly placeholder="Harga akan terisi otomatis" name="Harga" id="modal-form-harga-produk" type="text" class="form-control form-control-solid fs-7" />
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 mb-3">
-                                                <label class="required fs-7">QTY</label>
-                                                <input required name="QTY" id="modal-form-qty-produk" min="0" max="100" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" type="number" class="form-control" onchange="hitung_total();" onkeyup="hitung_total()" />
-                                            </div>
-                                            <div class="col-lg-6 mb-3">
-                                                <label class="required fs-7">Total</label>
-                                                <input readonly required placeholder="Total akan terisi otomatis" name="Total" id="modal-form-total-harga-produk" type="text" class="form-control form-control-solid fs-7" />
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 mb-3">
-                                                <label class="required fs-7">Metode Pembelian</label>
-                                                <select name="Metode_Pembelian" id="modal-form-metode-pembelian" required class="form-select fs-7" data-kt-select2="true" data-placeholder="Pilih Metode Pembelian" data-allow-clear="true" data-hide-search="true" onchange="ubah_metode_pembelian()">
-                                                    <option value=""> </option>
-                                                    <option value="Shopee">Shopee</option>
-                                                    <option value="Whatsapp">Whatsapp</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-6 mb-3">
-                                                <label class="required fs-7">Metode Pembayaran</label>
-                                                <select name="Metode_Pembayaran" id="modal-form-metode-pembayaran" required class="form-select fs-7" data-kt-select2="true" data-placeholder="Pilih Metode Pembayaran" data-allow-clear="true" data-hide-search="true" onchange="ubah_metode_pembayaran()">
-                                                    <option value=""> </option>
-                                                </select>
-                                            </div>
-                                        </div>
+                    <?php } ?>
 
-                                        <div class="row">
-                                            <div class="col-lg-12 mb-3">
-                                                <label class="fs-7">Catatan (Opsional)</label>
-                                                <input placeholder="Tulis jika ada informasi tambahan" name="Catatan" id="modal-form-catatan" type="text" class="form-control fs-7" />
+                    <!-- TAMPILAN LIST PRODUK -->
+                    <?php if (!((isset($_GET['view'])))) { ?>
+                        <div class="card">
+                            <div class="card-header border-0">
+                                <div class="card-title">
+                                    <div id="kt_app_toolbar" class="app-toolbar py-4">
+                                        <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack flex-wrap">
+                                            <div class="d-flex flex-stack flex-wrap gap-4 w-100">
+                                                <div class="page-title d-flex flex-column gap-3 me-3">
+                                                    <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bolder fs-2x my-0">Produk</h1>
+                                                    <ul class="breadcrumb breadcrumb-separatorless fw-semibold">
+                                                        <li class="breadcrumb-item text-gray-700 fw-bold lh-1">
+                                                            <a href="index.php" class="text-gray-500">
+                                                                <i class="ki-duotone ki-home fs-3 text-gray-400 me-n1"></i>
+                                                            </a>
+                                                        </li>
+                                                        <li class="breadcrumb-item">
+                                                            <i class="ki-duotone ki-right fs-6 text-gray-700 mx-n1"></i>
+                                                        </li>
+                                                        <li class="breadcrumb-item text-gray-700 fw-bold lh-1">Produk</li>
+                                                        <li class="breadcrumb-item">
+                                                            <i class="ki-duotone ki-right fs-6 text-gray-700 mx-n1"></i>
+                                                        </li>
+                                                        <li class="breadcrumb-item text-gray-500"><a href="<?php echo $kehalaman ?>" class="text-dark">Data Produk</a></li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-lg-12 mt-3">
-                                        <div class="alert bg-light-primary"> <i class="ki-duotone ki-information text-primary fs-5">
+                                <form action="" method="POST">
+                                    <br>
+                                    <div class="card-toolbar">
+                                        <div class="d-flex align-items-center position-relative my-1">
+                                            <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
-                                                <span class="path3"></span>
-                                            </i> Silahkan pilih metode pembelian dan klik tombol <b class="text-primary">"Proses"</b>, maka anda akan dilanjutkan ke halaman <b class="text-success">Whatsapp</b> / <b style="color: #EE4D2D;">Link Shopee</b> untuk melanjutkan transaksi </div>
+                                            </i>
+                                            <input required type="text" name="Text_Input_Search" class="form-control form-control-solid w-250px ps-13" placeholder="Cari nama produk"
+                                                value="<?php if (isset($_POST['submit_button_search'])) {
+                                                            echo $_POST['Text_Input_Search'];
+                                                        }; ?>" />
+                                        </div>
+                                        <div id="div-button-search-clear">
+                                            &nbsp;
+                                            <button type="submit" class="btn btn-primary text-center" name="submit_button_search" id="submit-button-search">
+                                                <span class="text-white">Cari</span>
+                                            </button>
+                                            <button type="" class="btn btn-danger text-center <?php if (isset($_POST['submit_button_search'])) {
+                                                                                                    echo '';
+                                                                                                } else {
+                                                                                                    echo 'd-none';
+                                                                                                } ?>" id="button-clear-search">
+                                                <i class="ki-solid ki-cross text-white fs-2"></i>
+                                            </button>
+                                            <style>
+                                                @media (max-width: 700px) {
+                                                    #submit-button-search {
+                                                        display: block;
+                                                        text-align: center;
+                                                        margin-right: 10px;
+                                                    }
+
+                                                    #div-button-search-clear {
+                                                        display: flex;
+                                                        margin-top: 15px;
+                                                        margin-right: 15px;
+                                                    }
+                                                }
+                                            </style>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card mt-4">
+                            <div class="card-body px-4">
+                                <div class="row">
+                                    <?php
+                                    if (isset($_POST['submit_button_search'])) {
+                                        $Text_Input_Search = $_POST['Text_Input_Search'];
+                                    } else {
+                                        $Text_Input_Search = "";
+                                    }
+
+                                    $search_controller = new Search_Controller_Produk();
+                                    $filter_status = "Aktif";
+                                    $data_hasil = $search_controller->select_search_filter($filter_status, $Text_Input_Search);
+
+                                    foreach ($data_hasil as $data) {
+                                        $encode_id = $a_hash->encode($data['Id_Produk'], $_GET['menu']);
+                                        $encode_id_pengguna = $a_hash->encode($u_Id_Pengguna, $_GET['menu']);
+                                        $Harga_Produk = ($u_Status_Kemitraan == "Distributor") ? $data['Harga_Distributor'] : (($u_Status_Kemitraan == "Agen") ? $data['Harga_Agen'] : "Anda belum terdaftar sebagai Agen / Distributor");
+                                    ?>
+                                        <div class="col-lg-4 d-flex my-5 px-5">
+                                            <div class="card flex-fill" style="border:1px solid #ccc;">
+                                                <img src="../dashboard/media/produk_foto/<?php echo $data['Foto_Produk'] ?>" class="card-img-top" style="object-fit: cover; height: 250px;" alt="<?php echo $data['Nama_Produk']; ?>">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <a href="?menu=belanja&view&id=<?php echo $a_hash->encode($data['Id_Produk'], "belanja") ?>">
+                                                                <h3 class="card-title"><?php echo $data['Nama_Produk']; ?></h3>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <?php
+                                                            $read_kategori = $a_tambah_baca_update_hapus->baca_data_id("tb_produk_kategori", "Id_Produk_Kategori", "$data[Id_Produk_Kategori]");
+                                                            $data_kategori = $read_kategori['Hasil'];
+                                                            ?>
+                                                            <p class="my-1 fs-6 text-muted">Kategori : <?php echo $data_kategori['Nama_Kategori']; ?></p>
+                                                            <p class="my-1 fs-6">Izin BPOM : <?php echo $data['Izin_BPOM']; ?></p>
+                                                        </div>
+
+                                                        <div class="col-lg-12">
+                                                            <h4 class="card-text my-1 fs-6">
+                                                                <small class="text-muted">Harga</small> &nbsp;
+                                                                <?php
+                                                                if ($u_Status_Kemitraan == "Distributor") {
+                                                                    echo $a_format_angka->rupiah($data['Harga_Distributor']);
+                                                                    $Harga_Produk = $a_format_angka->rupiah($data['Harga_Distributor']);
+                                                                } else if ($u_Status_Kemitraan == "Agen") {
+                                                                    echo $a_format_angka->rupiah($data['Harga_Agen']);
+                                                                    $Harga_Produk = $a_format_angka->rupiah($data['Harga_Agen']);
+                                                                } else {
+                                                                    echo "Anda belum terdaftar sebagai Agen / Distributor";
+                                                                    $Harga_Produk = 0;
+                                                                }
+                                                                ?>
+                                                            </h4>
+                                                        </div>
+
+                                                        <div class="col-lg-12 mt-4 text-center" style="width:100%">
+                                                            <br>
+                                                            <button
+                                                                data-id="<?php echo $encode_id; ?>"
+                                                                data-id-pengguna="<?php echo $encode_id_pengguna; ?>"
+                                                                data-status-kemitraan="<?php echo $u_Status_Kemitraan; ?>"
+                                                                data-nama-produk="<?php echo $data['Nama_Produk']; ?>"
+                                                                data-foto-produk="<?php echo $data['Foto_Produk']; ?>"
+                                                                data-harga-produk="<?php echo $Harga_Produk; ?>"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modal-pilih-produk"
+                                                                class="btn btn-primary bgn-block text-white d-none">
+                                                                <span class="">Tambahkan ke Keranjang</span>
+                                                            </button>
+
+                                                            <?php
+                                                            // LINK WHATSAPP
+                                                            // Read data for WhatsApp link
+                                                            $read_data_pengaturan = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan_pembelian", "Id_Pengaturan_Pembelian", "1");
+
+                                                            $Nomor_Admin_Pembelian = $read_data_pengaturan['Hasil']['Nomor_Admin_Pembelian']; // Example: 085779908779
+                                                            $Pesan_Otomatis_Pembelian = $read_data_pengaturan['Hasil']['Pesan_Otomatis_Pembelian']; // Example: Saya ingin beli produk Rizgold
+
+                                                            // Replace the first 0 with 62 for the Indonesian country code
+                                                            $Nomor_Admin_Pembelian = preg_replace(pattern: '/^0/', replacement: '62', subject: $Nomor_Admin_Pembelian);
+
+                                                            // Encode the message to replace spaces with %20
+                                                            $Pesan_Otomatis_Pembelian = urlencode(string: $Pesan_Otomatis_Pembelian);
+
+                                                            // Create the WhatsApp link
+                                                            $Link_Whatsapp = "https://wa.me/$Nomor_Admin_Pembelian?text=$Pesan_Otomatis_Pembelian%20-%20$data[Nama_Produk]%20";
+
+                                                            ?>
+
+                                                            <a href="<?php echo $Link_Whatsapp ?>" target="_blank" class="btn btn-success bgn-block text-white">
+                                                                <span class="">Pesan via Whatsapp</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-pilih-produk" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered mw-750px">
+        <div class="modal-content">
+            <div class="modal-header pb-1 pt-5" id="modal-pilih-produk_header">
+                <h2 class="fw-bold">Beli Produk</h2>
+                <div class="btn btn-icon btn-sm btn-active-icon-danger" data-bs-dismiss="modal">
+                    <i class="ki-duotone ki-cross fs-1">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                </div>
+            </div>
+            <form id="modal-pilih-produk_form" class="form" method="POST" action="controller/transaksi/fetch/fetch_pembelian_produk.php">
+                <div class="modal-body scroll-y mx-5 mx-xl-4">
+                    <div class="d-flex flex-column scroll-y me-n7 pe-4" id="modal-pilih-produk_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#modal-pilih-produk_header" data-kt-scroll-wrappers="#modal-pilih-produk_scroll" data-kt-scroll-offset="245px">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <img class="" style="height: 275px; width: 100%; object-fit:cover" id="modal-form-foto-produk">
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-6 mb-3">
+                                        <input readonly type="hidden" name="Id_Produk" id="modal-form-id-produk">
+                                        <input readonly type="hidden" name="Id_Pengguna" id="modal-form-id-pengguna">
+                                        <label class="required fs-7">Nama Produk</label>
+                                        <input readonly required type="text" name="Nama_Produk" id="modal-form-nama-produk" class="form-control form-control-solid fs-7" />
+                                    </div>
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="required fs-7">Harga</label>
+                                        <input readonly placeholder="Harga akan terisi otomatis" name="Harga" id="modal-form-harga-produk" type="text" class="form-control form-control-solid fs-7" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="required fs-7">QTY</label>
+                                        <input required name="QTY" id="modal-form-qty-produk" min="0" max="100" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')" type="number" class="form-control" onchange="hitung_total();" onkeyup="hitung_total()" />
+                                    </div>
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="required fs-7">Total</label>
+                                        <input readonly required placeholder="Total akan terisi otomatis" name="Total" id="modal-form-total-harga-produk" type="text" class="form-control form-control-solid fs-7" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="required fs-7">Metode Pembelian</label>
+                                        <select name="Metode_Pembelian" id="modal-form-metode-pembelian" required class="form-select fs-7" data-kt-select2="true" data-placeholder="Pilih Metode Pembelian" data-allow-clear="true" data-hide-search="true" onchange="ubah_metode_pembelian()">
+                                            <option value=""> </option>
+                                            <option value="Shopee">Shopee</option>
+                                            <option value="Whatsapp">Whatsapp</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 mb-3">
+                                        <label class="required fs-7">Metode Pembayaran</label>
+                                        <select name="Metode_Pembayaran" id="modal-form-metode-pembayaran" required class="form-select fs-7" data-kt-select2="true" data-placeholder="Pilih Metode Pembayaran" data-allow-clear="true" data-hide-search="true" onchange="ubah_metode_pembayaran()">
+                                            <option value=""> </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12 mb-3">
+                                        <label class="fs-7">Catatan (Opsional)</label>
+                                        <input placeholder="Tulis jika ada informasi tambahan" name="Catatan" id="modal-form-catatan" type="text" class="form-control fs-7" />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <div class="text-center">
-                                <button type="button" class="btn btn-sm btn-light-danger me-3" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-sm btn-primary" name="submit_simpan" id="btn-simpan">
-                                    <span class="text-white">Proses</span>
-                                </button>
+
+                        <div class="row">
+                            <div class="col-lg-12 mt-3">
+                                <div class="alert bg-light-primary"> <i class="ki-duotone ki-information text-primary fs-5">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i> Silahkan pilih metode pembelian dan klik tombol <b class="text-primary">"Proses"</b>, maka anda akan dilanjutkan ke halaman <b class="text-success">Whatsapp</b> / <b style="color: #EE4D2D;">Link Shopee</b> untuk melanjutkan transaksi </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+                <div class="modal-footer">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-sm btn-light-danger me-3" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-sm btn-primary" name="submit_simpan" id="btn-simpan">
+                            <span class="text-white">Proses</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
+    </div>
+</div>
 
-        <script>
-            function ubah_metode_pembelian() {
-                var metodePembelian = document.getElementById('modal-form-metode-pembelian').value;
-                var metodePembayaran = document.getElementById('modal-form-metode-pembayaran');
+<script>
+    function ubah_metode_pembelian() {
+        var metodePembelian = document.getElementById('modal-form-metode-pembelian').value;
+        var metodePembayaran = document.getElementById('modal-form-metode-pembayaran');
 
-                // Clear existing options in Metode Pembayaran
-                metodePembayaran.innerHTML = "";
+        // Clear existing options in Metode Pembayaran
+        metodePembayaran.innerHTML = "";
 
-                // Create default "choose" option
-                var defaultOption = document.createElement('option');
-                defaultOption.value = "";
-                defaultOption.text = "Pilih Metode Pembayaran";
-                metodePembayaran.appendChild(defaultOption);
+        // Create default "choose" option
+        var defaultOption = document.createElement('option');
+        defaultOption.value = "";
+        defaultOption.text = "Pilih Metode Pembayaran";
+        metodePembayaran.appendChild(defaultOption);
 
-                // Check the selected metodePembelian and add relevant options
-                if (metodePembelian === "Shopee") {
-                    // Only add Transfer option for Shopee
-                    var transferOption = document.createElement('option');
-                    transferOption.value = "Transfer";
-                    transferOption.text = "Transfer";
-                    metodePembayaran.appendChild(transferOption);
-                } else if (metodePembelian === "Whatsapp") {
-                    // Add both Tunai and Transfer for Whatsapp
-                    var tunaiOption = document.createElement('option');
-                    tunaiOption.value = "Tunai";
-                    tunaiOption.text = "Tunai";
-                    metodePembayaran.appendChild(tunaiOption);
+        // Check the selected metodePembelian and add relevant options
+        if (metodePembelian === "Shopee") {
+            // Only add Transfer option for Shopee
+            var transferOption = document.createElement('option');
+            transferOption.value = "Transfer";
+            transferOption.text = "Transfer";
+            metodePembayaran.appendChild(transferOption);
+        } else if (metodePembelian === "Whatsapp") {
+            // Add both Tunai and Transfer for Whatsapp
+            var tunaiOption = document.createElement('option');
+            tunaiOption.value = "Tunai";
+            tunaiOption.text = "Tunai";
+            metodePembayaran.appendChild(tunaiOption);
 
-                    var transferOption = document.createElement('option');
-                    transferOption.value = "Transfer";
-                    transferOption.text = "Transfer";
-                    metodePembayaran.appendChild(transferOption);
-                }
+            var transferOption = document.createElement('option');
+            transferOption.value = "Transfer";
+            transferOption.text = "Transfer";
+            metodePembayaran.appendChild(transferOption);
+        }
+    }
+
+    function ubah_metode_pembayaran() {
+        var metodePembelian = document.getElementById('modal-form-metode-pembelian').value;
+        if (metodePembelian === "") {
+            alert('Pilih metode pembelian terlebih dahulu');
+        }
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Reference to the modal form
+        var form = document.getElementById('modal-pilih-produk_form');
+        var formModal = document.getElementById('modal-pilih-produk');
+
+        // Prevent form submission when pressing "Enter"
+        form.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent the default form submission
             }
+        });
+        formModal.addEventListener('show.bs.modal', function(event) {
+            // Button that triggered the modal
+            var button = event.relatedTarget;
+            var idPengguna = button.getAttribute('data-id-pengguna');
+            var statusKemitraan = button.getAttribute('data-status-kemitraan');
+            var idProduk = button.getAttribute('data-id');
+            var fotoProduk = button.getAttribute('data-foto-produk');
+            var namaProduk = button.getAttribute('data-nama-produk');
+            var hargaProduk = button.getAttribute('data-harga-produk');
 
-            function ubah_metode_pembayaran() {
-                var metodePembelian = document.getElementById('modal-form-metode-pembelian').value;
-                if (metodePembelian === "") {
-                    alert('Pilih metode pembelian terlebih dahulu');
-                }
+            // Fetch the data from the server based on the roleId
+            document.getElementById("modal-form-id-pengguna").value = idPengguna;
+            document.getElementById("modal-form-foto-produk").src = "../dashboard/media/produk_foto/" + fotoProduk;
+            document.getElementById("modal-form-id-produk").value = idProduk;
+            document.getElementById("modal-form-nama-produk").value = namaProduk;
+            document.getElementById("modal-form-harga-produk").value = formatRupiah(hargaProduk);
+        });
+    });
+</script>
+
+<script>
+    function formatRupiah(value) {
+        if (!value) return '';
+        return 'Rp ' + parseInt(value).toLocaleString('id-ID');
+    }
+
+    function hitung_total() {
+        var hargaProduk = document.getElementById('modal-form-harga-produk').value.replace(/\D/g, '');
+        var qtyProduk = document.getElementById('modal-form-qty-produk').value;
+
+        if (qtyProduk > 100) {
+            alert('Maksimal pembelian produk adalah 100 pcs');
+            document.getElementById('modal-form-qty-produk').value = 100;
+        } else {
+            if (hargaProduk && qtyProduk) {
+                var totalHargaProduk = hargaProduk * qtyProduk;
+                document.getElementById('modal-form-total-harga-produk').value = formatRupiah(totalHargaProduk); // Format total as Rupiah
+            } else {
+                document.getElementById('modal-form-total-harga-produk').value = '';
             }
-        </script>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Reference to the modal form
-                var form = document.getElementById('modal-pilih-produk_form');
-                var formModal = document.getElementById('modal-pilih-produk');
-
-                // Prevent form submission when pressing "Enter"
-                form.addEventListener('keydown', function(event) {
-                    if (event.key === 'Enter') {
-                        event.preventDefault(); // Prevent the default form submission
-                    }
-                });
-                formModal.addEventListener('show.bs.modal', function(event) {
-                    // Button that triggered the modal
-                    var button = event.relatedTarget;
-                    var idPengguna = button.getAttribute('data-id-pengguna');
-                    var statusKemitraan = button.getAttribute('data-status-kemitraan');
-                    var idProduk = button.getAttribute('data-id');
-                    var fotoProduk = button.getAttribute('data-foto-produk');
-                    var namaProduk = button.getAttribute('data-nama-produk');
-                    var hargaProduk = button.getAttribute('data-harga-produk');
-
-                    // Fetch the data from the server based on the roleId
-                    document.getElementById("modal-form-id-pengguna").value = idPengguna;
-                    document.getElementById("modal-form-foto-produk").src = "../dashboard/media/produk_foto/" + fotoProduk;
-                    document.getElementById("modal-form-id-produk").value = idProduk;
-                    document.getElementById("modal-form-nama-produk").value = namaProduk;
-                    document.getElementById("modal-form-harga-produk").value = formatRupiah(hargaProduk);
-                });
-            });
-        </script>
-
-        <script>
-            function formatRupiah(value) {
-                if (!value) return '';
-                return 'Rp ' + parseInt(value).toLocaleString('id-ID');
-            }
-
-            function hitung_total() {
-                var hargaProduk = document.getElementById('modal-form-harga-produk').value.replace(/\D/g, '');
-                var qtyProduk = document.getElementById('modal-form-qty-produk').value;
-
-                if (qtyProduk > 100) {
-                    alert('Maksimal pembelian produk adalah 100 pcs');
-                    document.getElementById('modal-form-qty-produk').value = 100;
-                } else {
-                    if (hargaProduk && qtyProduk) {
-                        var totalHargaProduk = hargaProduk * qtyProduk;
-                        document.getElementById('modal-form-total-harga-produk').value = formatRupiah(totalHargaProduk); // Format total as Rupiah
-                    } else {
-                        document.getElementById('modal-form-total-harga-produk').value = '';
-                    }
-                }
-            }
-        </script>
+        }
+    }
+</script>

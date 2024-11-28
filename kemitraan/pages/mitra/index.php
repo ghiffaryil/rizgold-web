@@ -29,7 +29,6 @@ include "controller/rekening/controller_rekening.php";
 
 
 <div class="app-main flex-column flex-row-fluid " id="kt_app_main">
-
     <div class="d-flex flex-column flex-column-fluid">
         <div id="kt_app_content" class="app-content pb-0">
             <div class="d-flex flex-column flex-xl-row">
