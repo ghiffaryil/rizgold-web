@@ -182,8 +182,8 @@ include "controller/rekening/controller_rekening.php";
                                         $Link_Whatsapp_Top_Up = "https://wa.me/$Nomor_Admin_Pembelian?text=$Pesan_Otomatis_Pembelian";
                                         ?>
                                         <!-- <a href="< ?php echo $Link_Whatsapp_Top_Up?>" target="_blank" class="btn btn-light" disabled> Top Up Saldo</a> -->
-                                        <button class="btn btn-warning text-dark" data-bs-toggle="modal" data-bs-target="#topUpSaldoModal" onclick="generateCode()"> Top Up Saldo</button>
-                                        &nbsp; <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tarikSaldoModal"> Tarik Saldo</button>
+                                        <button class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#topUpSaldoModal" onclick="generateCode()"> Top Up Saldo</button>
+                                        &nbsp; <button class="btn btn-danger text-white" data-bs-toggle="modal" data-bs-target="#tarikSaldoModal"> Tarik Saldo</button>
                                     </div>
                                 </div>
 
@@ -723,9 +723,9 @@ include "controller/rekening/controller_rekening.php";
         <div class="modal-content">
             <!-- MODAL HEADER -->
             <div class="modal-header" id="">
-                <h2 class="fw-bold">Top Up Saldo</h2>
+                <big class="fw-bold">Top Up Saldo</big>
                 <div data-bs-dismiss="modal" class="btn btn-icon btn-sm btn-active-icon-danger">
-                    <i class="ki-duotone ki-cross fs-1">
+                    <i class="ki-duotone ki-cross fs-1 text-danger">
                         <span class="path1"></span>
                         <span class="path2"></span>
                     </i>
@@ -832,9 +832,9 @@ include "controller/rekening/controller_rekening.php";
         <div class="modal-content">
             <!-- MODAL HEADER -->
             <div class="modal-header" id="">
-                <h2 class="fw-bold">Tarik Saldo</h2>
+                <big class="fw-bold">Tarik Saldo</big>
                 <div data-bs-dismiss="modal" class="btn btn-icon btn-sm btn-active-icon-danger">
-                    <i class="ki-duotone ki-cross fs-1">
+                    <i class="ki-duotone ki-cross fs-1 text-danger">
                         <span class="path1"></span>
                         <span class="path2"></span>
                     </i>
@@ -844,51 +844,94 @@ include "controller/rekening/controller_rekening.php";
             <div class="modal-body">
                 <div class="">
                     <div class="">
-                        <h4>Informasi Rekening</h4>
-                        Bank BCA <br>
-                        No.Rekening : 01231412412124 &nbsp; <i class="fa fa-copy" style="cursor:pointer"></i> <br>
-                        A/n : Ghifary Ilham Anugrah
-                        <br>
-                        Saldo Anda : <?php echo $a_format_angka->rupiah($saldo) ?> <input type="button" name="submit_set_saldo" id="submit_set_saldo" onclick="set_nominal_tarik_saldo()" class="btn btn-warning btn-sm" value="Tarik Semua">
 
+                        <?php
+                        $Get_Id_Primary = $a_hash->decode($_GET['id'], $_GET['menu']);
+                        $get_data_rekening = $a_tambah_baca_update_hapus->baca_data_id("tb_rekening_pengguna", "Id_Pengguna", $Get_Id_Primary);
+                        if ($get_data_rekening['Status'] == "Sukses") {
+                            $data_rekening = $get_data_rekening['Hasil'];
+                            $nama_bank = $data_rekening['Nama_Bank'];
+                            $nomor_rekening = $data_rekening['Nomor_Rekening'];
+                            $nama_pemilik_rekening = $data_rekening['Nama_Pemilik_Rekening'];
+                        ?>
+
+                            <h4>Informasi Rekening</h4>
+                            Bank : <?php echo $nama_bank ?> <br>
+                            No.Rekening : <?php echo $nomor_rekening ?> &nbsp; <br>
+                            A/n : <?php echo $nama_pemilik_rekening ?>
+                            <br><br>
+                            <span class="badge badge-warning"> Pastikan informasi rekening anda sudah valid dan benar </span>
+
+                        <?php
+                        } else {
+                        ?>
+
+                            <div class="alert alert-danger">
+                                <h3 class="text-danger"> <i class="fa fa-info-circle text-danger"></i> Anda belum memasukkan informasi rekening, harap isi informasi Rekening terlebih dahulu </h3>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12 text-center">
+                                    <button data-bs-dismiss="modal" class="btn btn-danger btn-sm text-white"> Tutup </button>
+                                </div>
+                            </div>
+
+                        <?php
+                        }
+                        ?>
                     </div>
 
                     <hr>
 
-                    <form method="POST" enctype="multipart/form-data">
-                        <div class="">
-                            <label class="mb-3">Pilih Nominal Tarik Saldo</label>
-                        </div>
-                        <div class="mb-5">
-                            <div class="form-group row">
-                                <div class="col-lg-6">
-                                    <input type="number" name="input_nominal_tarik_saldo" id="input_nominal_tarik_saldo" class="form-control" pattern="[0-9]*" max="5000000" oninput="validateSaldo(this)">
-                                    <div id="batas_maksimal_penarikan" style="display: none;">
-                                        <font class="text-danger"> Batas maksimal tarik saldo adalah Rp 5.000.000,-</font>
+                    <div style="display:<?php if ($get_data_rekening['Status'] == "Sukses") {
+                                            echo "";
+                                        } else {
+                                            echo "none";
+                                        } ?>">
+
+                        <big> Saldo Anda : <b> <?php echo $a_format_angka->rupiah($saldo) ?> </b> </big> &nbsp;&nbsp; <input type="button" name="submit_set_saldo" id="submit_set_saldo" onclick="set_nominal_tarik_saldo()" class="btn btn-danger text-white btn-sm" value="Tarik Semua">
+
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="">
+                                <label class="mb-3">Pilih Nominal Tarik Saldo</label>
+                            </div>
+                            <div class="mb-5">
+                                <div class="form-group row">
+                                    <div class="col-lg-8">
+                                        <input type="number" name="input_nominal_tarik_saldo" id="input_nominal_tarik_saldo" class="form-control" pattern="[0-9]*" max="5000000" oninput="validateSaldo(this)">
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <input type="submit" name="submit_tarik_saldo" class="btn btn-block btn-success text-white" value="Tarik Saldo" onclick="return confirm('Anda yakin untuk menarik saldo ini?')">
                                     </div>
                                 </div>
-                                <div class="col-lg-2">
-                                    <input type="submit" name="submit_tarik_saldo" class="btn btn-primary text-white" value="Tarik Saldo" onclick="return confirm('Anda yakin untuk menarik saldo ini?')">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <div id="batas_maksimal_penarikan" style="display: none;">
+                                            <br>
+                                            <font class="text-danger"> Batas maksimal dalam 1x tarik saldo adalah <b>Rp 5.000.000,-</b></font>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <script>
-                            function validateSaldo(element) {
-                                const value = parseInt(element.value);
-                                if (value > 5000000) {
-                                    element.value = 5000000;
-                                    document.getElementById('batas_maksimal_penarikan').style.display = 'block';
-                                } else {
-                                    document.getElementById('batas_maksimal_penarikan').style.display = 'none';
+                            <script>
+                                function validateSaldo(element) {
+                                    const value = parseInt(element.value);
+                                    if (value > 5000000) {
+                                        element.value = 5000000;
+                                        document.getElementById('batas_maksimal_penarikan').style.display = 'block';
+                                    } else {
+                                        document.getElementById('batas_maksimal_penarikan').style.display = 'none';
+                                    }
                                 }
-                            }
 
-                            function set_nominal_tarik_saldo() {
-                                document.getElementById("input_nominal_tarik_saldo").value = <?php echo $saldo; ?>;
-                                validateSaldo(document.getElementById("input_nominal_tarik_saldo"));
-                            }
-                        </script>
-                    </form>
+                                function set_nominal_tarik_saldo() {
+                                    document.getElementById("input_nominal_tarik_saldo").value = <?php echo $saldo; ?>;
+                                    validateSaldo(document.getElementById("input_nominal_tarik_saldo"));
+                                }
+                            </script>
+                        </form>
+
+                    </div>
                 </div>
             </div>
         </div>
