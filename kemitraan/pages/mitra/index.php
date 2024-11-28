@@ -183,7 +183,7 @@ include "controller/rekening/controller_rekening.php";
                                         ?>
                                         <!-- <a href="< ?php echo $Link_Whatsapp_Top_Up?>" target="_blank" class="btn btn-light" disabled> Top Up Saldo</a> -->
                                         <button class="btn btn-warning text-dark" data-bs-toggle="modal" data-bs-target="#topUpSaldoModal" onclick="generateCode()"> Top Up Saldo</button>
-                                        &nbsp; <button class="btn btn-primary"> Tarik Saldo</button>
+                                        &nbsp; <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tarikSaldoModal"> Tarik Saldo</button>
                                     </div>
                                 </div>
 
@@ -661,7 +661,7 @@ include "controller/rekening/controller_rekening.php";
                                         </div>
 
                                         <div class="">
-                                            <div class="alert alert-danger" role="alert"> <big> <i class="fa fa-info-circle text-danger"></i> &nbsp; <b> Perhatian! Nomor rekening akan digunakan dalam proses penarikan saldo, pastikan nomor rekening diisi dengan benar dan valid  </b> </big> </div>
+                                            <div class="alert alert-danger" role="alert"> <big> <i class="fa fa-info-circle text-danger"></i> &nbsp; <b> Perhatian! Nomor rekening akan digunakan dalam proses penarikan saldo, pastikan nomor rekening diisi dengan benar dan valid </b> </big> </div>
                                         </div>
 
                                         <div class="row mb-7">
@@ -716,6 +716,8 @@ include "controller/rekening/controller_rekening.php";
         </div>
     </div>
 </div>
+
+
 <div class="modal fade" id="topUpSaldoModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered ">
         <div class="modal-content">
@@ -817,6 +819,78 @@ include "controller/rekening/controller_rekening.php";
                 </div>
             </div>
 
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="tarikSaldoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <!-- MODAL HEADER -->
+            <div class="modal-header" id="">
+                <h2 class="fw-bold">Tarik Saldo</h2>
+                <div data-bs-dismiss="modal" class="btn btn-icon btn-sm btn-active-icon-danger">
+                    <i class="ki-duotone ki-cross fs-1">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                </div>
+            </div>
+            <!-- MODAL BODY -->
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <h4>Informasi Rekening</h4>
+                        Bank BCA <br>
+                        No.Rekening : 01231412412124 &nbsp; <i class="fa fa-copy" style="cursor:pointer"></i> <br>
+                        A/n : Ghifary Ilham Anugrah
+                        <br>
+                        Saldo Anda : <?php echo $a_format_angka->rupiah($saldo) ?> <input type="button" name="submit_set_saldo" id="submit_set_saldo" onclick="set_nominal_tarik_saldo()" class="btn btn-warning btn-sm" value="Tarik Semua">
+
+                    </div>
+
+                    <hr>
+
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="">
+                            <label class="mb-3">Pilih Nominal Tarik Saldo</label>
+                        </div>
+                        <div class="mb-5">
+                            <div class="form-group row">
+                                <div class="col-lg-6">
+                                    <input type="number" name="input_nominal_tarik_saldo" id="input_nominal_tarik_saldo" class="form-control" pattern="[0-9]*" max="5000000" oninput="validateSaldo(this)">
+                                    <div id="batas_maksimal_penarikan" style="display: none;">
+                                        <font class="text-danger"> Batas maksimal tarik saldo adalah Rp 5.000.000,-</font>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="submit" name="submit_tarik_saldo" class="btn btn-primary text-white" value="Tarik Saldo" onclick="return confirm('Anda yakin untuk menarik saldo ini?')">
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            function validateSaldo(element) {
+                                const value = parseInt(element.value);
+                                if (value > 5000000) {
+                                    element.value = 5000000;
+                                    document.getElementById('batas_maksimal_penarikan').style.display = 'block';
+                                } else {
+                                    document.getElementById('batas_maksimal_penarikan').style.display = 'none';
+                                }
+                            }
+
+                            function set_nominal_tarik_saldo() {
+                                document.getElementById("input_nominal_tarik_saldo").value = <?php echo $saldo; ?>;
+                                validateSaldo(document.getElementById("input_nominal_tarik_saldo"));
+                            }
+                        </script>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
