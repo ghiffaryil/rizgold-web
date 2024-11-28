@@ -245,7 +245,6 @@ class Search_Controller
         $search_criteria_where = array("=", "LIKE");
         $search_value_where = array("$filter_status", "%$filter%");
         $search_connector_where = array("AND", "");
-        $nomor = 0;
 
         $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_pengaturan_sk_kemitraan", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
 

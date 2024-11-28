@@ -103,6 +103,7 @@
                     foreach ($data_hasil as $data) {
                         $nomor++;
                         $encode_id = $a_hash->encode($data['Id_Konten'], $_GET['menu']);
+                        // echo $encode_id;
                     ?>
                         <tr>
                             <td><?php echo $nomor ?></td>

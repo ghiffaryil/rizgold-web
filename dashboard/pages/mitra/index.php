@@ -530,7 +530,7 @@ if (isset($_POST['submit_top_up_saldo'])) {
 
                                             <div class="form-group row">
                                                 <hr>
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-5">
                                                     <?php
                                                     if ($saldo < 1) {
                                                         $color = "danger";
@@ -540,11 +540,96 @@ if (isset($_POST['submit_top_up_saldo'])) {
                                                     ?>
                                                     <h4>Saldo : <span class="text-<?php echo $color ?>"> <?php echo $a_format_angka->rupiah($saldo) ?> </span></h4>
                                                 </div>
-                                                <div class="col-lg-4">
+                                                <div class="col-lg-7">
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalRekeningMitra" class="btn btn-warning"> <i class="fa fa-eye"></i> Rekening Mitra</a>
                                                     <a href="#" data-bs-toggle="modal" data-bs-target="#modalRiwayatSaldo" class="btn btn-primary"> <i class="fa fa-eye"></i> Riwayat Saldo</a>
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalTopUpSaldo" onclick="generateCode()" class="btn btn-success"><i class="fa fa-money"></i> Top Up</a>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalTopUpSaldo" class="btn btn-success"><i class="fa fa-money"></i> Top Up</a>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalTarikSaldo" onclick="generateCode()" class="btn btn-danger"><i class="fa fa-download"></i> Tarik Saldo</a>
                                                 </div>
                                             </div>
+
+                                            <!-- MODAL REKENING MITRA -->
+                                            <div class="modal fade" id="modalRekeningMitra" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 700px;">
+                                                    <div class="modal-content">
+                                                        <!-- MODAL HEADER -->
+                                                        <div class="modal-header" id="">
+                                                            <h4 class="">Rekening Mitra</h4>
+                                                            <div data-bs-dismiss="modal">
+                                                                <i class="fa fa-close text-danger"></i>
+                                                            </div>
+                                                        </div>
+                                                        <!-- MODAL BODY -->
+                                                        <div class="modal-body">
+                                                            <div class="">
+                                                                <div class="">
+                                                                    <div class="">
+                                                                        <h4>Nama Bank : </h4>
+                                                                        <h4>No. Rekening : </h4>
+                                                                        <h4>Nama Pemilik Rekening</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <!-- MODAL TARIK SALDO -->
+                                            <div class="modal fade" id="modalTarikSaldo" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+                                                    <div class="modal-content">
+                                                        <!-- MODAL HEADER -->
+                                                        <div class="modal-header" id="">
+                                                            <h4 class="">Rekening Mitra</h4>
+                                                            <div data-bs-dismiss="modal">
+                                                                <i class="fa fa-close text-danger"></i>
+                                                            </div>
+                                                        </div>
+                                                        <!-- MODAL BODY -->
+                                                        <div class="modal-body">
+                                                            <div class="">
+                                                                <div class="">
+                                                                    <h4>Informasi Rekening</h4>
+                                                                        Bank BCA <br>
+                                                                        No.Rekening : 01231412412124 &nbsp; <i class="fa fa-copy" style="cursor:pointer"></i> <br>
+                                                                        A/n : Ghifary Ilham Anugrah
+                                                                        <br>
+                                                                        Saldo Anda : <?php echo $a_format_angka->rupiah($saldo) ?> <input type="button" name="submit_set_saldo" id="submit_set_saldo" onclick="set_nominal_tarik_saldo()" class="btn btn-warning btn-sm" value="Tarik Semua">
+                                                                    
+                                                                </div>
+
+                                                                <hr>
+
+                                                                <form method="POST" enctype="multipart/form-data">
+                                                                    <div class="">
+                                                                        <label class="mb-3">Pilih Nominal Tarik Saldo</label>
+                                                                    </div>
+                                                                    <div class="mb-5">
+                                                                        <div class="form-group row">
+                                                                            <div class="col-lg-6">
+                                                                                <input type="number" name="input_nominal_tarik_saldo" id="input_nominal_tarik_saldo" class="form-control" pattern="[0-9]*" max="5000000" oninput="if (this.value > 5000000) { this.value = 5000000; document.getElementById('batas_maksimal_penarikan').style.display = 'block'; } else { document.getElementById('batas_maksimal_penarikan').style.display = 'none'; }">
+                                                                                <div id="batas_maksimal_penarikan" style="display: none;"> <font class="text-danger"> Batas maksimal tarik saldo adalah Rp 5.000.000,-</font> </div>
+                                                                            </div>
+                                                                            <div class="col-lg-2">
+                                                                                <input type="submit" name="submit_tarik_saldo" class="btn btn-primary btn-sm" value="Tarik Saldo" onclick="return confirm('Anda yakin untuk menarik saldo ini?')">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+
+                                                            <script>
+                                                                function set_nominal_tarik_saldo(){
+                                                                    document.getElementById("input_nominal_tarik_saldo").value = <?php echo $saldo; ?>
+                                                                }
+                                                            </script>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
 
                                             <!-- MODAL RIWAYAT SALDO -->
                                             <div class="modal fade" id="modalRiwayatSaldo" tabindex="-1" aria-hidden="true">
@@ -636,7 +721,6 @@ if (isset($_POST['submit_top_up_saldo'])) {
                                                             <div class="">
                                                                 <form method="POST" enctype="multipart/form-data">
                                                                     <div class="">
-                                                                        <?php echo $Get_Id_Primary ?>
                                                                         <label class="mb-3">Pilih Nominal Top-Up Saldo</label>
                                                                         <select name="Saldo" id="nominal_saldo" onchange="update_nominal_saldo()" class="form-select" style="cursor:pointer">
                                                                             <option value="0"> Pilih Nominal </option>

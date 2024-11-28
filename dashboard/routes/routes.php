@@ -79,6 +79,10 @@ if (isset($_GET['menu'])) {
         case 'pengaturan-kemitraan':
             include "pages/pengaturan/index.php";
             break;
+        
+            case 'pengaturan-rekening':
+            include "pages/pengaturan/pengaturan_rekening.php";
+            break;
 
         case 'perusahaan':
             include "pages/perusahaan/index.php";

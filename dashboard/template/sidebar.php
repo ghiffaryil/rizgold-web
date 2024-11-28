@@ -5,7 +5,7 @@
 				<!-- sidebar menu-->
 				<ul class="sidebar-menu" data-widget="tree">
 					<li class="header">Main Menu</li>
-					<li >
+					<li>
 						<a href="index.php?home">
 							<i class="mdi mdi-home"><span class="path1"></span><span class="path2"></span></i>
 							<span>Dashboard</span>
@@ -16,13 +16,6 @@
 						<a href="?menu=setting_website&edit">
 							<i class="mdi mdi-pencil-box"><span class="path1"></span><span class="path2"></span></i>
 							<span>Data Website</span>
-						</a>
-					</li>
-
-					<li>
-						<a href="?menu=pengaturan-kemitraan">
-							<i class="mdi mdi-settings"><span class="path1"></span><span class="path2"></span></i>
-							<span>Pengaturan Kemitraan</span>
 						</a>
 					</li>
 
@@ -204,6 +197,21 @@
 						<ul class="treeview-menu">
 							<li><a href="?menu=role"><i class="mdi mdi-shield"><span class="path1"></span><span class="path2"></span></i>Role Admin</a></li>
 						</ul>
+					</li>
+
+
+					<li>
+						<a href="?menu=pengaturan-kemitraan&edit">
+							<i class="mdi mdi-settings"><span class="path1"></span><span class="path2"></span></i>
+							<span>SK Kemitraan</span>
+						</a>
+					</li>
+
+					<li>
+						<a href="?menu=pengaturan-rekening&edit">
+							<i class="mdi mdi-cash"><span class="path1"></span><span class="path2"></span></i>
+							<span>Rekening</span>
+						</a>
 					</li>
 
 				</ul>

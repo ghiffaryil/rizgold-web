@@ -5,6 +5,11 @@ $result_perusahaan = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", 
 $data_perusahaan = $result_perusahaan['Hasil'];
 ?>
 
+
+<?php
+include "controller/rekening/controller_rekening.php";
+?>
+
 <script>
     function generateCode() {
         var code = Math.floor(Math.random() * 200) + 10;
@@ -124,6 +129,9 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                 <li class="nav-item">
                                     <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true" data-bs-toggle="tab" href="#tab_edit_password">Edit Password</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true" data-bs-toggle="tab" href="#tab_rekening">Rekening</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -159,7 +167,7 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                     <div class="card-toolbar">
                                         <?php
 
-                                        $read_data_pengaturan = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan_pembelian", "Id_Pengaturan", "1");
+                                        $read_data_pengaturan = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan_pembelian", "Id_Pengaturan_Pembelian", "1");
 
                                         // Replace the first 0 with 62 for the Indonesian country code
                                         $Nomor_Admin_Pembelian = $read_data_pengaturan['Hasil']['Nomor_Admin_Pembelian']; // Example: 085779908779
@@ -230,18 +238,12 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                                 </div>
                                             </div>
                                         </div>
-
-
-
                                         <?php
                                         if (isset($_POST['submit_filter_history_saldo'])) {
                                         ?>
-
                                             <div class="my-6">
                                                 <h4>Riwayat Saldo</h4>
                                             </div>
-
-
                                             <?php
                                             if ($_POST['filter_value'] == "All") {
                                                 $filter_status = "";
@@ -502,6 +504,206 @@ $data_perusahaan = $result_perusahaan['Hasil'];
                                                     <span class="text-white">Ubah Password</span>
                                                 </button>
                                             </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                            <!-- Tab Rekening -->
+                            <?php
+
+                            if (isset($_GET['id'])) {
+                                $Get_Id_Primary = $a_hash->decode($_GET['id'], $_GET['menu']);
+                                $get_data_rekening = $a_tambah_baca_update_hapus->baca_data_id("tb_rekening_pengguna", "Id_Pengguna", $Get_Id_Primary);
+                                if ($get_data_rekening['Status'] == "Sukses") {
+                                    $data_rekening = $get_data_rekening['Hasil'];
+                                    $nama_bank = $data_rekening['Nama_Bank'];
+                                    $nomor_rekening = $data_rekening['Nomor_Rekening'];
+                                    $nama_pemilik_rekening = $data_rekening['Nama_Pemilik_Rekening'];
+                                } else {
+                                    $nama_bank = "Pilih Nama Bank";
+                                    $nomor_rekening = "";
+                                    $nama_pemilik_rekening = "";
+                                }
+                            } else {
+                                $nama_bank = "Pilih Nama Bank";
+                                $nomor_rekening = "";
+                                $nama_pemilik_rekening = "";
+                            }
+
+                            ?>
+                            <div class="tab-pane fade" id="tab_rekening" role="tabpanel">
+                                <div class="card-header border-0">
+                                    <div class="card-title">
+                                        <h2>Informasi Rekening</h2>
+                                    </div>
+                                </div>
+
+                                <div class="card-body pt-0 pb-5">
+                                    <form action="" method="POST">
+                                        <div class="mb-7">
+                                            <label class="required fw-semibold fs-6 mb-2">Nama Bank</label>
+                                            <div class="input-group">
+                                                <select required name="Nama_Bank" class="form-control form-select mb-3" data-control="select2" data-hide-search="false" id="select_nama_bank" <?php if ($get_data_rekening['Status'] == "Sukses") {
+                                                                                                                                                                                                    echo "disabled=true";
+                                                                                                                                                                                                } ?>>
+                                                    <option value="<?php echo $nama_bank ?>"><?php echo $nama_bank ?></option>
+                                                    <option value="BCA">BCA</option>
+                                                    <option value="BRI">BRI</option>
+                                                    <option value="BNI">BNI</option>
+                                                    <option value="Mandiri">Mandiri</option>
+                                                    <option value="CIMB Niaga">CIMB Niaga</option>
+                                                    <option value="Danamon">Danamon</option>
+                                                    <option value="Maybank">Maybank</option>
+                                                    <option value="Panin">Panin</option>
+                                                    <option value="Permata">Permata</option>
+                                                    <option value="BTN">BTN</option>
+                                                    <option value="OCBC NISP">OCBC NISP</option>
+                                                    <option value="HSBC">HSBC</option>
+                                                    <option value="UOB">UOB</option>
+                                                    <option value="DBS">DBS</option>
+                                                    <option value="Bank Mega">Bank Mega</option>
+                                                    <option value="Bank Jatim">Bank Jatim</option>
+                                                    <option value="Bank Jateng">Bank Jateng</option>
+                                                    <option value="Bank Kaltimtara">Bank Kaltimtara</option>
+                                                    <option value="Bank Kalsel">Bank Kalsel</option>
+                                                    <option value="Bank Kalteng">Bank Kalteng</option>
+                                                    <option value="Bank Kaltara">Bank Kaltara</option>
+                                                    <option value="Bank Sulselbar">Bank Sulselbar</option>
+                                                    <option value="Bank Sultra">Bank Sultra</option>
+                                                    <option value="Bank Sulteng">Bank Sulteng</option>
+                                                    <option value="Bank Sultra">Bank Sultra</option>
+                                                    <option value="Bank Gorontalo">Bank Gorontalo</option>
+                                                    <option value="Bank Maluku Malut">Bank Maluku Malut</option>
+                                                    <option value="Bank Papua">Bank Papua</option>
+                                                    <option value="Bank NTT">Bank NTT</option>
+                                                    <option value="Bank NTB">Bank NTB</option>
+                                                    <option value="Bank Babel">Bank Babel</option>
+                                                    <option value="Bank Bengkulu">Bank Bengkulu</option>
+                                                    <option value="Bank Jambi">Bank Jambi</option>
+                                                    <option value="Bank Kaltim">Bank Kaltim</option>
+                                                    <option value="Bank Kalteng">Bank Kalteng</option>
+                                                    <option value="Bank Kaltara">Bank Kaltara</option>
+                                                    <option value="Bank Sulselbar">Bank Sulselbar</option>
+                                                    <option value="Bank Sultra">Bank Sultra</option>
+                                                    <option value="Bank Sulteng">Bank Sulteng</option>
+                                                    <option value="Bank Sultra">Bank Sultra</option>
+                                                    <option value="Bank Gorontalo">Bank Gorontalo</option>
+                                                    <option value="Bank Maluku Malut">Bank Maluku Malut</option>
+                                                    <option value="Bank Papua">Bank Papua</option>
+                                                    <option value="Bank NTT">Bank NTT</option>
+                                                    <option value="Bank NTB">Bank NTB</option>
+                                                    <option value="Bank Babel">Bank Babel</option>
+                                                    <option value="Bank Bengkulu">Bank Bengkulu</option>
+                                                    <option value="Bank Jambi">Bank Jambi</option>
+                                                    <option value="Bank Kaltim">Bank Kaltim</option>
+                                                    <option value="Bank Kalteng">Bank Kalteng</option>
+                                                    <option value="Bank Kaltara">Bank Kaltara</option>
+                                                    <option value="Bank Sulselbar">Bank Sulselbar</option>
+                                                    <option value="Bank Sultra">Bank Sultra</option>
+                                                    <option value="Bank Sulteng">Bank Sulteng</option>
+                                                    <option value="Bank Sultra">Bank Sultra</option>
+                                                    <option value="Bank Gorontalo">Bank Gorontalo</option>
+                                                    <option value="Bank Maluku Malut">Bank Maluku Malut</option>
+                                                    <option value="Bank Papua">Bank Papua</option>
+                                                    <option value="Bank NTT">Bank NTT</option>
+                                                    <option value="Bank NTB">Bank NTB</option>
+                                                    <option value="Bank Babel">Bank Babel</option>
+                                                    <option value="Bank Bengkulu">Bank Bengkulu</option>
+                                                    <option value="Bank Jambi">Bank Jambi</option>
+                                                    <option value="Bank Kaltim">Bank Kaltim</option>
+                                                    <option value="Bank Kalteng">Bank Kalteng</option>
+                                                    <option value="Bank Kaltara">Bank Kaltara</option>
+                                                    <option value="Bank Sulselbar">Bank Sulselbar</option>
+                                                    <option value="Bank Sultra">Bank Sultra</option>
+                                                    <option value="Bank Sulteng">Bank Sulteng</option>
+                                                    <option value="Bank Sultra">Bank Sultra</option>
+                                                    <option value="Bank Gorontalo">Bank Gorontalo</option>
+                                                    <option value="Bank Maluku Malut">Bank Maluku Malut</option>
+                                                    <option value="Bank Papua">Bank Papua</option>
+                                                    <option value="Bank NTT">Bank NTT</option>
+                                                    <option value="Bank NTB">Bank NTB</option>
+                                                    <option value="Bank Babel">Bank Babel</option>
+                                                    <option value="Bank Bengkulu">Bank Bengkulu</option>
+                                                    <option value="Bank Jambi">Bank Jambi</option>
+                                                    <option value="Bank Kaltim">Bank Kaltim</option>
+                                                    <option value="Bank Kalteng">Bank Kalteng</option>
+                                                    <option value="Bank Kaltara">Bank Kaltara</option>
+                                                    <option value="Bank Sulselbar">Bank Sulselbar</option>
+                                                    <option value="Bank Sultra">Bank Sultra</option>
+                                                    <option value="Bank Sulteng">Bank Sulteng</option>
+                                                    <option value="Bank Sultra">Bank Sultra</option>
+                                                    <option value="Bank Gorontalo">Bank Gorontalo</option>
+                                                    <option value="Bank Maluku Malut">Bank Maluku Malut</option>
+                                                    <option value="Bank Papua">Bank Papua</option>
+                                                    <option value="Bank NTT">Bank NTT</option>
+                                                    <option value="Bank NTB">Bank NTB</option>
+                                                    <option value="Bank Babel">Bank Babel</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-7">
+                                            <label class="required fw-semibold fs-6 mb-2">Nomor Rekening</label>
+                                            <div class="input-group">
+                                                <input required name="Nomor_Rekening" type="text" class="form-control mb-3 mb-lg-0" value="<?php echo $nomor_rekening ?>" id="input_nomor_rekening" <?php if ($get_data_rekening['Status'] == "Sukses") {
+                                                                                                                                                                                                        echo "disabled=true";
+                                                                                                                                                                                                    } ?> />
+                                            </div>
+                                        </div>
+                                        <div class="mb-7">
+                                            <label class="required fw-semibold fs-6 mb-2">Nama Pemilik Rekening</label>
+                                            <div class="input-group">
+                                                <input required name="Nama_Pemilik_Rekening" type="text" class="form-control mb-3 mb-lg-0" value="<?php echo $nama_pemilik_rekening ?>" id="input_nama_pemilik_rekening" <?php if ($get_data_rekening['Status'] == "Sukses") {
+                                                                                                                                                                                                                                echo "disabled=true";
+                                                                                                                                                                                                                            } ?> />
+                                            </div>
+                                        </div>
+
+                                        <div class="">
+                                            <div class="alert alert-danger" role="alert"> <big> <i class="fa fa-info-circle text-danger"></i> &nbsp; <b> Perhatian! Nomor rekening akan digunakan dalam proses penarikan saldo, pastikan nomor rekening diisi dengan benar dan valid  </b> </big> </div>
+                                        </div>
+
+                                        <div class="row mb-7">
+                                            <div class="pt-5 col-lg-12 text-center">
+                                                <?php
+                                                switch ($get_data_rekening['Status']) {
+                                                    case "Sukses":
+                                                        echo '<input type="button" class="btn btn-warning" name="" id="button_edit_rekening" value="Ubah Rekening" onclick="edit_rekening()">';
+                                                        echo "&nbsp;";
+                                                        echo '<input type="button" class="btn btn-danger text-white" name="" id="button_batal_edit_rekening" value="Batal" onclick="batal_edit_rekening()" style="display:none">';
+                                                        echo "&nbsp;";
+                                                        echo '<input type="submit" class="btn btn-primary text-white" name="submit_update_rekening" id="submit_update_rekening" value="Simpan" style="display:none" onclick="return confirm(\'Anda yakin ingin mengubah data?\')">';
+                                                        break;
+                                                    default:
+                                                        echo '<input type="button" class="btn btn-warning text-white" name="" id="button_edit_rekening" value="Edit" style="display:none">';
+                                                        echo "&nbsp;";
+                                                        echo '<input type="submit" class="btn btn-primary text-white" name="submit_update_rekening" id="submit_update_rekening" value="Simpan" onclick="return confirm(\'Anda yakin ingin informasi rekening anda sudah benar?\')">';
+                                                        break;
+                                                }
+                                                ?>
+                                            </div>
+                                            <script>
+                                                function edit_rekening() {
+                                                    document.getElementById('button_edit_rekening').style.display = "none";
+                                                    document.getElementById('submit_update_rekening').style.display = "";
+                                                    document.getElementById('button_batal_edit_rekening').style.display = "";
+
+                                                    document.getElementById('select_nama_bank').disabled = false;
+                                                    document.getElementById('input_nomor_rekening').disabled = false;
+                                                    document.getElementById('input_nama_pemilik_rekening').disabled = false;
+                                                }
+
+                                                function batal_edit_rekening() {
+                                                    document.getElementById('button_edit_rekening').style.display = "";
+                                                    document.getElementById('submit_update_rekening').style.display = "none";
+                                                    document.getElementById('button_batal_edit_rekening').style.display = "none";
+
+                                                    document.getElementById('select_nama_bank').disabled = true;
+                                                    document.getElementById('input_nomor_rekening').disabled = true;
+                                                    document.getElementById('input_nama_pemilik_rekening').disabled = true;
+                                                }
+                                            </script>
                                         </div>
                                     </form>
                                 </div>
