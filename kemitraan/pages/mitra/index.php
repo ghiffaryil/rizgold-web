@@ -3,10 +3,7 @@
 include "controller/mitra/controller_mitra.php";
 $result_perusahaan = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Organisasi_Kode", "$u_Organisasi_Kode");
 $data_perusahaan = $result_perusahaan['Hasil'];
-?>
 
-
-<?php
 include "controller/rekening/controller_rekening.php";
 ?>
 
@@ -251,42 +248,89 @@ include "controller/rekening/controller_rekening.php";
                                             }
 
                                             if ($filter_status == "Pending") {
-                                                // CEK SALDO
-                                                $search_field_where = array("Id_Pengguna", "Status_Saldo");
-                                                $search_criteria_where = array("=", "LIKE");
-                                                $search_value_where = array("$u_Id_Pengguna", "%$filter_status%");
-                                                $search_connector_where = array("AND", "ORDER BY Waktu_Simpan_Data DESC");
-                                                $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_top_up_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
-                                                if ($result['Status'] == "Sukses") {
+                                                // Fetch data from tb_top_up_saldo
+                                                $search_field_where_top_up = array("Id_Pengguna", "Status_Saldo");
+                                                $search_criteria_where_top_up = array("=", "LIKE");
+                                                $search_value_where_top_up = array("$u_Id_Pengguna", "%$filter_status%");
+                                                $search_connector_where_top_up = array("AND");
+
+                                                $result_top_up = $a_tambah_baca_update_hapus->baca_data_left_join_dengan_filter(
+                                                    "tb_top_up_saldo",
+                                                    array(),
+                                                    array(),
+                                                    $search_field_where_top_up,
+                                                    $search_criteria_where_top_up,
+                                                    $search_value_where_top_up,
+                                                    $search_connector_where_top_up
+                                                );
+
+                                                // Fetch data from tb_tarik_saldo
+                                                $search_field_where_tarik = array("Id_Pengguna", "Status_Saldo");
+                                                $search_criteria_where_tarik = array("=", "LIKE");
+                                                $search_value_where_tarik = array("$u_Id_Pengguna", "%$filter_status%");
+                                                $search_connector_where_tarik = array("AND");
+
+                                                $result_tarik = $a_tambah_baca_update_hapus->baca_data_left_join_dengan_filter(
+                                                    "tb_tarik_saldo",
+                                                    array(),
+                                                    array(),
+                                                    $search_field_where_tarik,
+                                                    $search_criteria_where_tarik,
+                                                    $search_value_where_tarik,
+                                                    $search_connector_where_tarik
+                                                );
+
+                                                // Combine results
+                                                $merged_results = array();
+
+                                                if ($result_top_up['Status'] == "Sukses") {
+                                                    foreach ($result_top_up['Hasil'] as $data_top_up) {
+                                                        $merged_results[] = array(
+                                                            'Waktu_Simpan_Data' => $data_top_up['Waktu_Simpan_Data'],
+                                                            'Tipe_Transaksi' => 'Top Up',
+                                                            'Keterangan' => $data_top_up['Keterangan'],
+                                                            'Saldo' => $data_top_up['Saldo'],
+                                                            'Status_Saldo' => $data_top_up['Status_Saldo']
+                                                        );
+                                                    }
+                                                }
+
+                                                if ($result_tarik['Status'] == "Sukses") {
+                                                    foreach ($result_tarik['Hasil'] as $data_tarik) {
+                                                        $merged_results[] = array(
+                                                            'Waktu_Simpan_Data' => $data_tarik['Waktu_Simpan_Data'],
+                                                            'Tipe_Transaksi' => 'Tarik Saldo',
+                                                            'Keterangan' => $data_tarik['Keterangan'],
+                                                            'Saldo' => $data_tarik['Saldo'],
+                                                            'Status_Saldo' => $data_tarik['Status_Saldo']
+                                                        );
+                                                    }
+                                                }
+
+                                                // Sort the merged results by Waktu_Simpan_Data (descending)
+                                                usort($merged_results, function ($a, $b) {
+                                                    return strtotime($b['Waktu_Simpan_Data']) - strtotime($a['Waktu_Simpan_Data']);
+                                                });
+
+                                                // Display the results
+                                                if (!empty($merged_results)) {
+                                                    echo '<table class="table table-borderless">';
+                                                    // echo '<tr><th>Tanggal</th><th>Tipe Transaksi</th><th>Keterangan</th><th>Saldo</th><th>Status</th></tr>';
+                                                    foreach ($merged_results as $data) {
+                                                        $tanggal = tanggal_dan_waktu_24_jam_indonesia($data['Waktu_Simpan_Data']);
+                                                        $tipe_transaksi = $data['Tipe_Transaksi'];
+                                                        $keterangan = $data['Keterangan'];
+                                                        $status = $data['Status_Saldo'];
                                             ?>
-                                                    <div class="">
-                                                        <div class="">
-                                                            <table class="table table-borderless">
-                                                                <?php
-                                                                $data_hasil_saldo = $result['Hasil'];
-                                                                foreach ($data_hasil_saldo as $data_saldo) {
-                                                                ?>
-                                                                    <tr>
-                                                                        <td style="width:25%">
-                                                                            <?php echo tanggal_dan_waktu_24_jam_indonesia($data_saldo['Waktu_Simpan_Data']) ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $data_saldo['Keterangan'] ?> <?php echo $a_format_angka->rupiah($data_saldo['Saldo']) ?>
-                                                                        </td>
-                                                                    </tr>
-                                                                <?php
-                                                                }
-                                                                ?>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                <?php
+                                                        <tr>
+                                                            <td style="width:25%"><?php echo $tanggal; ?> </td>
+                                                            <td class=""> <?php echo $keterangan ." Saldo - ". $a_format_angka->rupiah($data['Saldo']); ?></td>
+                                                        </tr>
+                                                    <?php
+                                                    }
+                                                    echo '</table>';
                                                 } else {
-                                                ?>
-                                                    <div class="timeline-content">
-                                                        <h4 class="text-muted"> Oops! Tidak ada data <?php echo $_POST['filter_value'] ?></h4>
-                                                    </div>
-                                                <?php
+                                                    echo '<p>Tidak ada data pending</p>';
                                                 }
                                             } else {
                                                 // LOG SALDO
@@ -296,38 +340,32 @@ include "controller/rekening/controller_rekening.php";
                                                 $search_connector_where = array("AND", "ORDER BY Waktu_Simpan_Data DESC");
                                                 $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_log_saldo", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
                                                 if ($result['Status'] == "Sukses") {
-                                                ?>
+                                                    ?>
+                                                    <table class="table table-borderless">
+                                                        <?php
+                                                        $data_hasil_log_saldo = $result['Hasil'];
+                                                        foreach ($data_hasil_log_saldo as $data_log_saldo) {
+                                                            if ($data_log_saldo['Aktor'] == "Kemitraan") {
+                                                                $Aktor = "Anda";
+                                                            } else {
+                                                                $Aktor = "Admin";
+                                                            }
+                                                        ?>
 
-                                                    <div class="">
-                                                        <div class="">
-                                                            <table class="table table-borderless">
-                                                                <?php
-                                                                $data_hasil_log_saldo = $result['Hasil'];
-                                                                foreach ($data_hasil_log_saldo as $data_log_saldo) {
+                                                            <tr>
 
-                                                                    if ($data_log_saldo['Aktor'] == "Kemitraan") {
-                                                                        $Aktor = "Anda";
-                                                                    } else {
-                                                                        $Aktor = "Admin";
-                                                                    }
-                                                                ?>
+                                                                <td style="width:25%">
+                                                                    <?php echo tanggal_dan_waktu_24_jam_indonesia($data_log_saldo['Waktu_Simpan_Data']) ?>
+                                                                </td>
+                                                                <td>
+                                                                    <?php echo $Aktor ?> <?php echo $data_log_saldo['Keterangan'] ?> <?php echo $a_format_angka->rupiah($data_log_saldo['Saldo']) ?>
+                                                                </td>
+                                                            </tr>
 
-                                                                    <tr>
-
-                                                                        <td style="width:25%">
-                                                                            <?php echo tanggal_dan_waktu_24_jam_indonesia($data_log_saldo['Waktu_Simpan_Data']) ?>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $Aktor ?> <?php echo $data_log_saldo['Keterangan'] ?> <?php echo $a_format_angka->rupiah($data_log_saldo['Saldo']) ?>
-                                                                        </td>
-                                                                    </tr>
-
-                                                                <?php
-                                                                }
-                                                                ?>
-                                                            </table>
-                                                        </div>
-                                                    </div>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </table>
                                                 <?php
                                                 } else {
                                                 ?>
@@ -776,7 +814,7 @@ include "controller/rekening/controller_rekening.php";
 
                                     <div class="row">
                                         <div class="col-lg-9">
-                                            <input type="file" name="Bukti_Transfer_Saldo" class="form-control" required accept="image/png, image/jpeg, image/jpg">
+                                            <input type="file" name="Bukti_Transfer_Top_Up_Saldo" class="form-control" required accept="image/png, image/jpeg, image/jpg">
                                         </div>
                                         <div class="col-lg-3">
                                             <input type="submit" name="submit_upload" class="btn btn-primary" value="Upload" onclick="return confirm('Anda yakin untuk mengunggah file ini?')">
@@ -882,6 +920,10 @@ include "controller/rekening/controller_rekening.php";
 
                     <hr>
 
+                    <?php
+                    include "controller/saldo/controller_tarik_saldo.php";
+                    ?>
+
                     <div style="display:<?php if ($get_data_rekening['Status'] == "Sukses") {
                                             echo "";
                                         } else {
@@ -889,7 +931,6 @@ include "controller/rekening/controller_rekening.php";
                                         } ?>">
 
                         <big> Saldo Anda : <b> <?php echo $a_format_angka->rupiah($saldo) ?> </b> </big> &nbsp;&nbsp; <input type="button" name="submit_set_saldo" id="submit_set_saldo" onclick="set_nominal_tarik_saldo()" class="btn btn-danger text-white btn-sm" value="Tarik Semua">
-
                         <form method="POST" enctype="multipart/form-data">
                             <div class="">
                                 <label class="mb-3">Pilih Nominal Tarik Saldo</label>
@@ -897,7 +938,7 @@ include "controller/rekening/controller_rekening.php";
                             <div class="mb-5">
                                 <div class="form-group row">
                                     <div class="col-lg-8">
-                                        <input type="number" name="input_nominal_tarik_saldo" id="input_nominal_tarik_saldo" class="form-control" pattern="[0-9]*" max="5000000" oninput="validateSaldo(this)">
+                                        <input type="number" name="nominal_saldo" id="input_nominal_tarik_saldo" class="form-control" pattern="[0-9]*" max="5000000" oninput="validateSaldo(this)">
                                     </div>
                                     <div class="col-lg-1">
                                         <input type="submit" name="submit_tarik_saldo" class="btn btn-block btn-success text-white" value="Tarik Saldo" onclick="return confirm('Anda yakin untuk menarik saldo ini?')">

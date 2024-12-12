@@ -141,7 +141,7 @@ include "controller/saldo/controller_top_up_saldo.php"
                                         </div>
                                         <div class="row mb-6">
                                             <div class="col-lg-9">
-                                                <input type="file" name="Bukti_Transfer_Saldo" class="form-control" required accept="image/png, image/jpeg, image/jpg">
+                                                <input type="file" name="Bukti_Transfer_Top_Up_Saldo" class="form-control" required accept="image/png, image/jpeg, image/jpg">
                                             </div>
                                             <div class="col-lg-3">
                                                 <input type="submit" name="submit_upload" class="btn btn-primary" value="Upload" onclick="return confirm('Anda yakin untuk mengunggah file ini?')">
@@ -219,7 +219,7 @@ include "controller/saldo/controller_top_up_saldo.php"
                                 </div>
                                 <div class="row mb-6">
                                     <div class="col-lg-9">
-                                        <input type="file" name="Bukti_Transfer_Saldo" class="form-control" required accept="image/png, image/jpeg, image/jpg">
+                                        <input type="file" name="Bukti_Transfer_Top_Up_Saldo" class="form-control" required accept="image/png, image/jpeg, image/jpg">
                                     </div>
                                     <div class="col-lg-3">
                                         <input type="submit" name="submit_upload" class="btn btn-primary" value="Upload" onclick="return confirm('Anda yakin untuk mengunggah file ini?')">

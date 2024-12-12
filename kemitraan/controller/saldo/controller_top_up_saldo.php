@@ -17,12 +17,12 @@ if (isset($_POST['submit_upload'])) {
             $Id_Auto_Increment = 1;
         }
 
-        if ($_FILES['Bukti_Transfer_Saldo']['size'] <> 0 && $_FILES['Bukti_Transfer_Saldo']['error'] == 0) {
-            $post_file_upload = $_FILES['Bukti_Transfer_Saldo'];
-            $path_file_upload = $_FILES['Bukti_Transfer_Saldo']['name'];
+        if ($_FILES['Bukti_Transfer_Top_Up_Saldo']['size'] <> 0 && $_FILES['Bukti_Transfer_Top_Up_Saldo']['error'] == 0) {
+            $post_file_upload = $_FILES['Bukti_Transfer_Top_Up_Saldo'];
+            $path_file_upload = $_FILES['Bukti_Transfer_Top_Up_Saldo']['name'];
             $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
-            $nama_file_upload = $a_hash->hash_nama_file($Id_Auto_Increment, "_Bukti_Transfer_Saldo_") . $Id_Auto_Increment . "_Bukti_Transfer_Saldo";
-            $folder_penyimpanan_file_upload = "../dashboard/media/Bukti_Transfer_Saldo/";
+            $nama_file_upload = $a_hash->hash_nama_file($Id_Auto_Increment, "_Bukti_Transfer_Top_Up_Saldo_") . $Id_Auto_Increment . "_Bukti_Transfer_Top_Up_Saldo";
+            $folder_penyimpanan_file_upload = "../dashboard/media/Bukti_Transfer_Top_Up_Saldo/";
             $tipe_file_yang_diizikan_file_upload = array("png", "jpg", "jpeg");
             $maksimum_ukuran_file_upload = 3000000;
 
@@ -30,7 +30,7 @@ if (isset($_POST['submit_upload'])) {
 
             if ($result_upload_file['Status'] == "Sukses") {
 
-                $form_field = array("Bukti_Transfer_Saldo");
+                $form_field = array("Bukti_Transfer_Top_Up_Saldo");
                 $form_value = array("$nama_file_upload.$ext_file_upload");
                 $form_field_where = array("Id_Top_Up_Saldo");
                 $form_criteria_where = array("=");

@@ -297,62 +297,56 @@ class a_tambah_baca_update_hapus extends a_database{
 
 
 
-	###MENGGABUKAN DENGAN LEFT JOIN LALU BACA DATA DENGAN FILTER WHERE
-	function baca_data_left_join_dengan_filter($Nama_Table_Utama, $Nama_Table_Lainnya = array(), $Field_Penghubung = array(), $Field_where = array(),$Criteria_where = array(),$Value_where = array(),$connector_where = array()){
-
-		#INPUTAN
-		$isi_field_where = "";
-		$isi_criteria_where = "";
-		$isi_value_where = "";
-		$isi_connector_where = "";
-		$wherenya = "";
-		$nomor = 0;
-		foreach ($Field_where as $Field_whereloop) {
-			$isi_field_where = mysqli_real_escape_string($this->koneksi,(trim($Field_where[$nomor])));
-			$isi_criteria_where = mysqli_real_escape_string($this->koneksi,(trim($Criteria_where[$nomor])));
-			$isi_value_where = mysqli_real_escape_string($this->koneksi,(trim($Value_where[$nomor])));
-			$isi_connector_where = mysqli_real_escape_string($this->koneksi,(trim($connector_where[$nomor])));
-
-
-			$wherenya = $wherenya." ".$isi_field_where." ".$isi_criteria_where." '".$isi_value_where."' ".$isi_connector_where."";
-			$nomor++;
-		}
-
+	function baca_data_left_join_dengan_filter(
+		$Nama_Table_Utama, 
+		$Nama_Table_Lainnya = array(), 
+		$Field_Penghubung = array(), 
+		$Field_where = array(),
+		$Criteria_where = array(),
+		$Value_where = array(),
+		$connector_where = array(),
+		$Selected_Fields = '*'
+	) {
+		// Use provided fields or default to '*'
+		$fields = is_array($Selected_Fields) ? implode(", ", $Selected_Fields) : $Selected_Fields;
+	
+		// Build SQL
+		$sql = "SELECT $fields FROM $Nama_Table_Utama";
+	
+		// Add joins
 		$table_left_join = "";
-		$nomor = 0;
-		foreach ($Nama_Table_Lainnya as $Table_Lainnya) {
-			$table_left_join = $table_left_join." LEFT JOIN ".$Table_Lainnya." ON ".$Nama_Table_Utama.".".$Field_Penghubung[$nomor]." = ".$Table_Lainnya.".".$Field_Penghubung[$nomor];
+		foreach ($Nama_Table_Lainnya as $index => $Table_Lainnya) {
+			$table_left_join .= " LEFT JOIN $Table_Lainnya ON $Nama_Table_Utama.{$Field_Penghubung[$index]} = $Table_Lainnya.{$Field_Penghubung[$index]}";
 		}
-
-		#SQL
-		$sql = "SELECT * FROM $Nama_Table_Utama $table_left_join WHERE ";
-		$sql = $sql.$wherenya;
-
-		#FUNGSI
+		$sql .= " $table_left_join";
+	
+		// Add WHERE
+		$wherenya = "";
+		foreach ($Field_where as $i => $field) {
+			$field = mysqli_real_escape_string($this->koneksi, trim($field));
+			$criteria = mysqli_real_escape_string($this->koneksi, trim($Criteria_where[$i]));
+			$value = mysqli_real_escape_string($this->koneksi, trim($Value_where[$i]));
+			$connector = isset($connector_where[$i]) ? mysqli_real_escape_string($this->koneksi, trim($connector_where[$i])) : "";
+			$wherenya .= " $field $criteria '$value' $connector";
+		}
+		if ($wherenya) {
+			$sql .= " WHERE $wherenya";
+		}
+	
+		// Execute query and process results (unchanged from your code)
 		$query = $this->koneksi->query($sql);
-		$hasil = array();
-
-
-		#HASIL
-		if($query){
-			$hitung = mysqli_num_rows($query);
-			if($hitung > 0){
+		$result = ['Hasil' => [], 'Status' => 'Gagal'];
+	
+		if ($query) {
+			if ($query->num_rows > 0) {
 				$result['Status'] = "Sukses";
-
-				while($data = mysqli_fetch_assoc($query)){
-					$hasil[] = $data;
+				while ($row = $query->fetch_assoc()) {
+					$result['Hasil'][] = $row;
 				}
-			}else{
+			} else {
 				$result['Status'] = "Tidak Ada Data";
-				$hasil[] = "";
 			}
-		}else{
-			$result['Status'] = "Gagal";
-			$hasil[] = "";
 		}
-
-		$result['Hasil'] = $hasil;
-		#RETURN
 		return $result;
 	}
 
