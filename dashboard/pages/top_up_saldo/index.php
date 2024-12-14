@@ -45,8 +45,8 @@
                                                     <span class="badge bg-warning text-dark">Pending</span>
                                                 <?php elseif ($edit['Status_Saldo'] == 'Approved'): ?>
                                                     <span class="badge bg-success">Approved</span>
-                                                <?php elseif ($edit['Status_Saldo'] == 'Void'): ?>
-                                                    <span class="badge bg-danger">Void</span>
+                                                <?php elseif ($edit['Status_Saldo'] == 'Rejected'): ?>
+                                                    <span class="badge bg-danger">Rejected</span>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
@@ -71,7 +71,7 @@
                                             <div class="form-group row">
                                                 <label class="col-lg-5 control-label">Saldo</label>
                                                 <div class="col-lg-7 ">
-                                                    <span class="badge badge-info fs-4"><?php echo $a_format_angka->rupiah($edit['Saldo']); ?></span>
+                                                    <span class="badge badge-info fs-5"><?php echo $a_format_angka->rupiah($edit['Saldo']); ?></span>
                                                 </div>
                                             </div>
                                           
@@ -81,13 +81,6 @@
                                                     <?php echo $edit['Keterangan']; ?>
                                                 </div>
                                             </div>
-
-                                            <div class="form-group row">
-                                                <label class="col-lg-5 control-label">Tanggal Upload Bukti Transfer</label>
-                                                <div class="col-lg-7">
-                                                    <span class="text-muted"><?php echo tanggal_dan_waktu_24_jam_indonesia($edit['Tanggal_Upload_Bukti_Transfer']); ?></span>
-                                                </div>
-                                            </div>
                                         </div>
 
                                         <div class="col-lg-4">
@@ -95,12 +88,12 @@
                                                 <label class="col-lg-5 control-label">Bukti Transfer</label>
                                                 <div class="col-lg-7">
                                                     <?php
-                                                    if ($edit['Bukti_Transfer_Saldo'] == "") {
+                                                    if ($edit['Bukti_Transfer_Top_Up_Saldo'] == "") {
                                                         echo "<h3> Transaksi ini tidak memiliki Bukti Transfer Saldo </h3>";
                                                     } else {
                                                     ?>
-                                                        <a href="media/bukti_transfer_saldo/<?php echo $edit['Bukti_Transfer_Saldo'] ?>" target="_blank">
-                                                            <img src="media/bukti_transfer_saldo/<?php echo $edit['Bukti_Transfer_Saldo'] ?>" alt="" style="width: 50%; height:auto">
+                                                        <a href="media/Bukti_Transfer_Top_Up_Saldo/<?php echo $edit['Bukti_Transfer_Top_Up_Saldo'] ?>" target="_blank">
+                                                            <img src="media/Bukti_Transfer_Top_Up_Saldo/<?php echo $edit['Bukti_Transfer_Top_Up_Saldo'] ?>" alt="" style="width: 50%; height:auto">
                                                         </a>
                                                     <?php
                                                     }
@@ -119,9 +112,9 @@
                                             <input type="hidden" readonly name="Id_Top_Up_Saldo" class="form-control" value="<?php echo $edit['Id_Top_Up_Saldo'] ?>">
                                             <input type="hidden" readonly name="Saldo" class="form-control" value="<?php echo $edit['Saldo'] ?>">
                                             <div class="form-group ">
-                                                <button type="submit" name="submit_approve_saldo" class="btn btn-success" onclick="return confirm('Anda yakin akan menyetujui Top Up saldo ini?')"> <i class="fa fa-check"></i> Approve </button>
+                                                <button type="submit" name="submit_approve_top_up_saldo" class="btn btn-success" onclick="return confirm('Anda yakin akan menyetujui Top Up saldo ini?')"> <i class="fa fa-check"></i> Approve </button>
                                                 &nbsp;
-                                                <button type="submit" name="submit_reject_saldo" class="btn btn-danger" onclick="return confirm('Anda yakin akan menplak Top Up saldo ini?')"> <i class="fa fa-close"> </i> Reject </button>
+                                                <button type="submit" name="submit_reject_top_up_saldo" class="btn btn-danger" onclick="return confirm('Anda yakin akan menolak Top Up saldo ini?')"> <i class="fa fa-close"> </i> Reject </button>
                                             </div>
                                         </form>
                                     </div>
@@ -133,7 +126,7 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-lg-12 text-center">
-                                        <a href="?menu=saldo" class="btn btn-danger"> Kembali </a>
+                                        <a href="?menu=top-up-saldo" class="btn btn-secondary"> Kembali </a>
                                     </div>
                                 </div>
                             </div>

@@ -138,27 +138,11 @@ include "controller/rekening/controller_rekening.php";
                             <div class="tab-pane fade show active" id="tab_saldo" role="tabpanel">
                                 <div class="card-header border-0">
                                     <div class="card-title">
-
                                         <?php
-                                        $saldo = 0;
-
-                                        // CEK SALDO
-                                        $search_field_where = array("Id_Pengguna");
-                                        $search_criteria_where = array("=");
-                                        $search_value_where = array("$u_Id_Pengguna");
-                                        $search_connector_where = array("");
-
-                                        $result = $a_tambah_baca_update_hapus->baca_data_dengan_filter("tb_top_up_saldo_release", $search_field_where, $search_criteria_where, $search_value_where, $search_connector_where);
-                                        if ($result['Status'] == "Sukses") {
-                                            $data_hasil_saldo = $result['Hasil'];
-                                            foreach ($data_hasil_saldo as $data_saldo) {
-                                                $saldo = $saldo + $data_saldo['Saldo'];
-                                            }
-                                        }
-
+                                        $read_data_pengguna = $a_tambah_baca_update_hapus->baca_data_id("tb_pengguna", "Id_Pengguna", $u_Id_Pengguna);
+                                        $data_pengguna_mitra = $read_data_pengguna['Hasil'];
                                         ?>
-
-                                        <h2>Saldo Anda : <b class="text-danger"><?php echo $a_format_angka->rupiah($saldo) ?></b></h2>
+                                        <h2>Saldo Anda : <b class="text-danger"><?php echo $a_format_angka->rupiah($data_pengguna_mitra['Saldo']) ?></b></h2>
                                     </div>
                                     <div class="card-toolbar">
                                         <?php
@@ -179,7 +163,9 @@ include "controller/rekening/controller_rekening.php";
                                         ?>
                                         <!-- <a href="< ?php echo $Link_Whatsapp_Top_Up?>" target="_blank" class="btn btn-light" disabled> Top Up Saldo</a> -->
                                         <button class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#topUpSaldoModal" onclick="generateCode()"> Top Up Saldo</button>
-                                        &nbsp; <button class="btn btn-danger text-white" data-bs-toggle="modal" data-bs-target="#tarikSaldoModal"> Tarik Saldo</button>
+                                        &nbsp; <button class="btn btn-danger text-white" data-bs-toggle="modal" data-bs-target="#tarikSaldoModal" <?php if ($data_pengguna_mitra['Saldo'] == 0) {
+                                                                                                                                                        echo "disabled";
+                                                                                                                                                    } ?>> Tarik Saldo</button>
                                     </div>
                                 </div>
 
@@ -324,7 +310,7 @@ include "controller/rekening/controller_rekening.php";
                                             ?>
                                                         <tr>
                                                             <td style="width:25%"><?php echo $tanggal; ?> </td>
-                                                            <td class=""> <?php echo $keterangan ." Saldo - ". $a_format_angka->rupiah($data['Saldo']); ?></td>
+                                                            <td class=""> <?php echo $keterangan . " Saldo - " . $a_format_angka->rupiah($data['Saldo']); ?></td>
                                                         </tr>
                                                     <?php
                                                     }
@@ -930,7 +916,7 @@ include "controller/rekening/controller_rekening.php";
                                             echo "none";
                                         } ?>">
 
-                        <big> Saldo Anda : <b> <?php echo $a_format_angka->rupiah($saldo) ?> </b> </big> &nbsp;&nbsp; <input type="button" name="submit_set_saldo" id="submit_set_saldo" onclick="set_nominal_tarik_saldo()" class="btn btn-danger text-white btn-sm" value="Tarik Semua">
+                        <big> Saldo Anda : <b> <?php echo $a_format_angka->rupiah($data_pengguna_mitra['Saldo']) ?> </b> </big> &nbsp;&nbsp; <input type="button" name="submit_set_saldo" id="submit_set_saldo" onclick="set_nominal_tarik_saldo()" class="btn btn-danger text-white btn-sm" value="Tarik Semua">
                         <form method="POST" enctype="multipart/form-data">
                             <div class="">
                                 <label class="mb-3">Pilih Nominal Tarik Saldo</label>
@@ -938,10 +924,10 @@ include "controller/rekening/controller_rekening.php";
                             <div class="mb-5">
                                 <div class="form-group row">
                                     <div class="col-lg-8">
-                                        <input type="number" name="nominal_saldo" id="input_nominal_tarik_saldo" class="form-control" pattern="[0-9]*" max="5000000" oninput="validateSaldo(this)">
+                                        <input type="number" name="nominal_tarik_saldo" id="nominal_tarik_saldo" class="form-control" pattern="[0-9]*" max="5000000" oninput="validateSaldo(this)">
                                     </div>
                                     <div class="col-lg-1">
-                                        <input type="submit" name="submit_tarik_saldo" class="btn btn-block btn-success text-white" value="Tarik Saldo" onclick="return confirm('Anda yakin untuk menarik saldo ini?')">
+                                        <input type="submit" name="submit_pengajuan_tarik_saldo" class="btn btn-block btn-success text-white" value="Tarik Saldo" onclick="return confirm('Anda yakin untuk menarik saldo ini?')">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -965,8 +951,8 @@ include "controller/rekening/controller_rekening.php";
                                 }
 
                                 function set_nominal_tarik_saldo() {
-                                    document.getElementById("input_nominal_tarik_saldo").value = <?php echo $saldo; ?>;
-                                    validateSaldo(document.getElementById("input_nominal_tarik_saldo"));
+                                    document.getElementById("nominal_tarik_saldo").value = <?php echo $data_pengguna_mitra['Saldo']; ?>;
+                                    validateSaldo(document.getElementById("nominal_tarik_saldo"));
                                 }
                             </script>
                         </form>

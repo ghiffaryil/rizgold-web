@@ -21,7 +21,7 @@ if (!((isset($_COOKIE['Cookie_1_Admin_Rizgold'])) and (isset($_COOKIE['Cookie_2_
     if ($result['Status'] == "Sukses") {
         $u_array_data_user = $result['Hasil'];
         $u_Login_Sebagai = $cek_login_Login_Sebagai;
-        $u_Id_User = $u_array_data_user[0]['Id_Admin'];
+        $u_Id_Admin_Login = $u_array_data_user[0]['Id_Admin'];
         $u_Sebagai = $u_array_data_user[0]['Sebagai'];
         $u_Id_Role = $u_array_data_user[0]['Id_Role'];
         $u_Nama_Lengkap = $u_array_data_user[0]['Nama_Lengkap'];

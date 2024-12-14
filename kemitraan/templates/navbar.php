@@ -60,18 +60,18 @@
                             </div>
                         </div>
                         <div class="separator my-2"></div>
-
                         <?php
                         if (((isset($_COOKIE['Cookie_1_Kemitraan_Rizgold'])) or (isset($_COOKIE['Cookie_2_Kemitraan_Rizgold'])) or (isset($_COOKIE['Cookie_3_Kemitraan_Rizgold'])))) {
                             $result_perusahaan = $a_tambah_baca_update_hapus->baca_data_id("tb_organisasi", "Organisasi_Kode", "$u_Organisasi_Kode");
                             $data_perusahaan = $result_perusahaan['Hasil'];
-
                         ?>
-                            <div class="menu-item px-5">
-                                <a href="?menu=profile&edit&id=<?php echo $a_hash->encode($u_Id_Pengguna, "profile") ?>" class="menu-link px-5">
-                                    Profile Saya
-                                </a>
-                            </div>
+                            <?php if ($data_pengguna['Akses_Profile'] == "Iya") { ?>
+                                <div class="menu-item px-5">
+                                    <a href="?menu=profile&edit&id=<?php echo $a_hash->encode($u_Id_Pengguna, "profile") ?>" class="menu-link px-5">
+                                        Profile Saya
+                                    </a>
+                                </div>
+                            <?php } ?>
                         <?php
                         }
                         ?>

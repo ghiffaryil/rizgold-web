@@ -38,7 +38,7 @@ if (isset($_POST['submit_simpan'])) {
 	if ($cek_required == "Sukses") {
 
 		$form_field = array("Id_Pengguna", "Judul_Artikel", "Isi_Artikel", "Tag_Artikel", "Status_Artikel", "Waktu_Terakhir_Update", "Waktu_Simpan_Data", "Status");
-		$form_value = array("$u_Id_User", "$_POST[Judul_Artikel]", "$_POST[Isi_Artikel]", "$_POST[Tag_Artikel]", "$_POST[Status_Artikel]", "$Waktu_Sekarang", "$Waktu_Sekarang", "Aktif");
+		$form_value = array("$u_Id_Admin_Login", "$_POST[Judul_Artikel]", "$_POST[Isi_Artikel]", "$_POST[Tag_Artikel]", "$_POST[Status_Artikel]", "$Waktu_Sekarang", "$Waktu_Sekarang", "Aktif");
 
 		$result = $a_tambah_baca_update_hapus->tambah_data("tb_blog_artikel", $form_field, $form_value, "Iya");
 

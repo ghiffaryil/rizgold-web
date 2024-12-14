@@ -22,7 +22,7 @@ if (isset($_POST['submit_upload'])) {
             $path_file_upload = $_FILES['Bukti_Transfer_Top_Up_Saldo']['name'];
             $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
             $nama_file_upload = $a_hash->hash_nama_file($Id_Auto_Increment, "_Bukti_Transfer_Top_Up_Saldo_") . $Id_Auto_Increment . "_Bukti_Transfer_Top_Up_Saldo";
-            $folder_penyimpanan_file_upload = "../dashboard/media/Bukti_Transfer_Top_Up_Saldo/";
+            $folder_penyimpanan_file_upload = "../dashboard/media/bukti_transfer_top_up_saldo/";
             $tipe_file_yang_diizikan_file_upload = array("png", "jpg", "jpeg");
             $maksimum_ukuran_file_upload = 3000000;
 
