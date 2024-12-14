@@ -106,10 +106,14 @@ include "controller/saldo/controller_top_up_saldo.php"
                                 <hr>
                             </div>
                             <div class="text-center">
-                                <h2 class="text-dark"><b>Bank Central Asia (BCA)</b> A/n : Rokim Abdul Karim</h2>
+                                <?php
+                                $read_data_rekening_admin = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan_rekening", "Id_Pengaturan_Rekening", 1);
+                                $result_data_rekening_admin = $read_data_rekening_admin['Hasil'];
+                                ?>
+                                <h2 class="text-dark"><b><?php echo $result_data_rekening_admin['Nama_Bank']?></b> A/n : <?php echo $result_data_rekening_admin['Nama_Pemilik_Rekening']?></h2>
                                 <h3><small>Nomor Rekening : </small>
                                     <span class="badge badge-warning text-hover-dark fs-2" onclick="copyToClipboard()" style="cursor: pointer;" title="Salin nomor rekening">
-                                        <span id="noRekening">32141 1231412 1231231</span> &nbsp;
+                                        <span id="noRekening"><?php echo $result_data_rekening_admin['Nomor_Rekening'] ?></span> &nbsp;
                                         <i class="ki-solid ki-copy fs-2 text-dark">
                                             <span class="path1"></span>
                                             <span class="path2"></span>

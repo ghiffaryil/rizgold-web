@@ -1,88 +1,4 @@
 <?php include "controller/mitra/controller_mitra.php"; ?>
-<!-- SUBMIT TOP UP SALDO -->
-<?php
-
-#-----------------------------------------------------------------------------------
-#SUBMIT TOP UP SALDO DARI ADMIN
-if (isset($_POST['submit_top_up_saldo'])) {
-
-
-    $form_field = array("Id_Pengguna", "Saldo", "Kode_Unik", "Tanggal_Upload_Bukti_Transfer", "Status_Saldo", "Keterangan", "Waktu_Simpan_Data", "Waktu_Update_Data");
-    $form_value = array("$Get_Id_Primary", "$_POST[Saldo]", "$_POST[Kode_Unik]", "$Waktu_Sekarang", "Pending", "$_POST[Keterangan]", "$Waktu_Sekarang", "$Waktu_Sekarang");
-    $result = $a_tambah_baca_update_hapus->tambah_data("tb_top_up_saldo", $form_field, $form_value);
-
-    if ($result['Status'] == "Sukses") {
-
-        $read_last_data_saldo = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_top_up_saldo", "Id_Top_Up_Saldo");
-        if ($read_last_data_saldo['Status'] == "Sukses") {
-            $Id_Auto_Increment = $read_last_data_saldo['Hasil'][0]['Id_Top_Up_Saldo'];
-        } else {
-            $Id_Auto_Increment = 1;
-        }
-
-        if ($_FILES['Bukti_Transfer_Top_Up_Saldo']['size'] <> 0 && $_FILES['Bukti_Transfer_Top_Up_Saldo']['error'] == 0) {
-            $post_file_upload = $_FILES['Bukti_Transfer_Top_Up_Saldo'];
-            $path_file_upload = $_FILES['Bukti_Transfer_Top_Up_Saldo']['name'];
-            $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
-            $nama_file_upload = $a_hash->hash_nama_file($Id_Auto_Increment, "_Bukti_Transfer_Top_Up_Saldo_") . $Id_Auto_Increment . "_Bukti_Transfer_Top_Up_Saldo";
-            $folder_penyimpanan_file_upload = "media/Bukti_Transfer_Top_Up_Saldo/";
-            $tipe_file_yang_diizikan_file_upload = array("png", "jpg", "jpeg");
-            $maksimum_ukuran_file_upload = 3000000;
-
-            $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
-
-            if ($result_upload_file['Status'] == "Sukses") {
-
-                $form_field = array("Bukti_Transfer_Top_Up_Saldo");
-                $form_value = array("$nama_file_upload.$ext_file_upload");
-                $form_field_where = array("Id_Top_Up_Saldo");
-                $form_criteria_where = array("=");
-                $form_value_where = array("$Id_Auto_Increment");
-                $form_connector_where = array("");
-
-                $result = $a_tambah_baca_update_hapus->update_data("tb_top_up_saldo", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
-            }
-
-            // INSERT LOG SALDO
-            $form_field = array("Aktivitas", "Keterangan", "Saldo", "Status_Saldo", "Aktor", "Id_Saldo", "Id_Pengguna", "Id_Aktor", "Waktu_Simpan_Data");
-            $form_value = array("Top Up", "melakukan Top-Up saldo", "$_POST[Saldo]", "Pending", "Admin", "$Id_Auto_Increment", "$Get_Id_Primary", "$Get_Id_Primary", "$Waktu_Sekarang");
-            $result = $a_tambah_baca_update_hapus->tambah_data("tb_log_saldo", $form_field, $form_value);
-            // exit();
-
-            echo "<script> alert('Terimakasih anda telah mengupload bukti transfer, silahkan konfirmasi ');document.location.href = 'index.php?menu=mitra&edit&id=$_GET[id]';</script>";
-        }
-    }
-}
-
-
-#-----------------------------------------------------------------------------------
-#PENGAJUAN TARIK SALDO
-if (isset($_POST['submit_pengajuan_tarik_saldo'])) {
-
-    $form_field = array("Id_Pengguna", "Saldo", "Status_Saldo", "Keterangan", "Waktu_Simpan_Data", "Waktu_Update_Data");
-    $form_value = array("$Get_Id_Primary", "$_POST[nominal_tarik_saldo]", "Pending", "Tarik", "$Waktu_Sekarang", "$Waktu_Sekarang");
-    $result = $a_tambah_baca_update_hapus->tambah_data("tb_tarik_saldo", $form_field, $form_value);
-
-    if ($result['Status'] == "Sukses") {
-
-
-        $read_last_data_saldo = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_tarik_saldo", "Id_Tarik_Saldo");
-        if ($read_last_data_saldo['Status'] == "Sukses") {
-            $Id_Auto_Increment = $read_last_data_saldo['Hasil'][0]['Id_Tarik_Saldo'];
-        } else {
-            $Id_Auto_Increment = 1;
-        }
-
-        // INSERT LOG SALDO
-        $form_field = array("Aktivitas", "Keterangan", "Saldo", "Status_Saldo", "Aktor", "Id_Saldo", "Id_Pengguna", "Id_Aktor", "Waktu_Simpan_Data");
-        $form_value = array("Tarik", "melakukan pengajuan tarik saldo", "$_POST[nominal_tarik_saldo]", "Pending", "Admin", "$Id_Auto_Increment", "$u_Id_Admin_Login", "$_POST[Id_Pengguna_Saldo]", "$Waktu_Sekarang");
-        $result = $a_tambah_baca_update_hapus->tambah_data("tb_log_saldo", $form_field, $form_value);
-        // exit();
-        echo "<script> alert('Pengajuan tarik saldo berhasil, silahkan update untuk Approve!');document.location.href = 'index.php?menu=mitra&edit&id=$_GET[id]';</script>";
-    }
-}
-
-?>
 
 <div class="content-wrapper">
     <div class="container-full">
@@ -298,7 +214,7 @@ if (isset($_POST['submit_pengajuan_tarik_saldo'])) {
                                                         <label class="mb-5">Foto Mitra</label>
                                                         <?php
                                                         if (isset($_GET['edit'])) {
-                                                            if ($edit['Foto'] <> "") {
+                                                            if ($edit['Foto'] != "") {
                                                         ?>
                                                                 <img src="media/kemitraan_foto/<?php echo $edit['Foto'] ?>" style="width: 100%; height:350px; object-fit: cover;" />
                                                         <?php
@@ -594,80 +510,6 @@ if (isset($_POST['submit_pengajuan_tarik_saldo'])) {
                                                 </div>
                                             </div>
 
-
-                                            <!-- MODAL TARIK SALDO -->
-                                            <div class="modal fade" id="modalTarikSaldo" tabindex="-1" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                                    <div class="modal-content">
-                                                        <!-- MODAL HEADER -->
-                                                        <div class="modal-header" id="">
-                                                            <h4 class="">Rekening Mitra</h4>
-                                                            <div data-bs-dismiss="modal">
-                                                                <i class="fa fa-close text-danger"></i>
-                                                            </div>
-                                                        </div>
-                                                        <!-- MODAL BODY -->
-                                                        <div class="modal-body">
-                                                            <div class="">
-                                                                <div class="">
-                                                                    <h4>Informasi Rekening</h4>
-
-                                                                    <?php
-                                                                    $Get_Id_Primary = $a_hash->decode($_GET['id'], $_GET['menu']);
-                                                                    $get_data_rekening = $a_tambah_baca_update_hapus->baca_data_id("tb_rekening_pengguna", "Id_Pengguna", $Get_Id_Primary);
-                                                                    if ($get_data_rekening['Status'] == "Sukses") {
-                                                                        $data_rekening = $get_data_rekening['Hasil'];
-                                                                        $nama_bank = $data_rekening['Nama_Bank'];
-                                                                        $nomor_rekening = $data_rekening['Nomor_Rekening'];
-                                                                        $nama_pemilik_rekening = $data_rekening['Nama_Pemilik_Rekening'];
-                                                                    } else {
-                                                                        $nama_bank = "Informasi Rekening Belum diisi";
-                                                                        $nomor_rekening = "";
-                                                                        $nama_pemilik_rekening = "";
-                                                                    }
-                                                                    ?>
-
-                                                                    <?php echo $nama_bank?> <br>
-                                                                    No.Rekening : <?php echo $nomor_rekening?> &nbsp;<br>
-                                                                    A/n : <?php echo $nama_pemilik_rekening?>
-                                                                    <br>
-                                                                    Saldo Anda : <?php echo $a_format_angka->rupiah($edit['Saldo']) ?> <input type="button" name="submit_set_saldo" id="submit_set_saldo" onclick="set_nominal_tarik_saldo()" class="btn btn-warning btn-sm" value="Tarik Semua">
-
-                                                                </div>
-
-                                                                <hr>
-                                                                <form method="POST" enctype="multipart/form-data">
-                                                                    <div class="">
-                                                                        <label class="mb-3">Pilih Nominal Tarik Saldo</label>
-                                                                    </div>
-                                                                    <div class="mb-5">
-                                                                        <div class="form-group row">
-                                                                            <div class="col-lg-6">
-                                                                                <input type="hidden" name="Id_Pengguna_Saldo" class="form-control" value="<?php echo $edit['Id_Pengguna'] ?>">
-                                                                                <input type="number" name="nominal_tarik_saldo" id="nominal_tarik_saldo" class="form-control" pattern="[0-9]*" max="5000000" oninput="if (this.value > 5000000) { this.value = 5000000; document.getElementById('batas_maksimal_penarikan').style.display = 'block'; } else { document.getElementById('batas_maksimal_penarikan').style.display = 'none'; }">
-                                                                                <div id="batas_maksimal_penarikan" style="display: none;">
-                                                                                    <font class="text-danger"> Batas maksimal tarik saldo adalah Rp 5.000.000,-</font>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-2">
-                                                                                <input type="submit" name="submit_pengajuan_tarik_saldo" class="btn btn-success btn-sm" value="Tarik Saldo" onclick="return confirm('Anda yakin untuk menarik saldo ini?')">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-
-                                                            <script>
-                                                                function set_nominal_tarik_saldo() {
-                                                                    document.getElementById("nominal_tarik_saldo").value = <?php echo $edit['Saldo']; ?>
-                                                                }
-                                                            </script>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
                                             <!-- MODAL RIWAYAT SALDO -->
                                             <div class="modal fade" id="modalRiwayatSaldo" tabindex="-1" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 700px;">
@@ -733,7 +575,6 @@ if (isset($_POST['submit_pengajuan_tarik_saldo'])) {
                                                 </div>
                                             </div>
 
-
                                             <!-- MODAL TOP UP SALDO -->
                                             <script>
                                                 function generateCode() {
@@ -756,6 +597,64 @@ if (isset($_POST['submit_pengajuan_tarik_saldo'])) {
                                                         <!-- MODAL BODY -->
                                                         <div class="modal-body">
                                                             <div class="">
+
+                                                                <?php
+
+                                                                if (isset($_POST['submit_top_up_saldo'])) {
+
+                                                                    if ($_FILES['Bukti_Transfer_Top_Up_Saldo']['size'] == 0 && $_FILES['Bukti_Transfer_Top_Up_Saldo']['error'] != 0) {
+                                                                        echo "<script> alert('Harap upload bukti transfer telebih dahulu');</script>";
+                                                                    } else {
+
+                                                                        $form_field = array("Id_Pengguna", "Saldo", "Kode_Unik", "Tanggal_Upload_Bukti_Transfer", "Status_Saldo", "Keterangan", "Waktu_Simpan_Data", "Waktu_Update_Data");
+                                                                        $form_value = array("$Get_Id_Primary", "$_POST[Saldo]", "$_POST[Kode_Unik]", "$Waktu_Sekarang", "Pending", "$_POST[Keterangan]", "$Waktu_Sekarang", "$Waktu_Sekarang");
+                                                                        $result = $a_tambah_baca_update_hapus->tambah_data("tb_top_up_saldo", $form_field, $form_value);
+
+                                                                        if ($result['Status'] == "Sukses") {
+
+                                                                            $read_last_data_saldo = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_top_up_saldo", "Id_Top_Up_Saldo");
+                                                                            if ($read_last_data_saldo['Status'] == "Sukses") {
+                                                                                $Id_Auto_Increment = $read_last_data_saldo['Hasil'][0]['Id_Top_Up_Saldo'];
+                                                                            } else {
+                                                                                $Id_Auto_Increment = 1;
+                                                                            }
+
+                                                                            if ($_FILES['Bukti_Transfer_Top_Up_Saldo']['size'] != 0 && $_FILES['Bukti_Transfer_Top_Up_Saldo']['error'] == 0) {
+                                                                                $post_file_upload = $_FILES['Bukti_Transfer_Top_Up_Saldo'];
+                                                                                $path_file_upload = $_FILES['Bukti_Transfer_Top_Up_Saldo']['name'];
+                                                                                $ext_file_upload = pathinfo($path_file_upload, PATHINFO_EXTENSION);
+                                                                                $nama_file_upload = $a_hash->hash_nama_file($Id_Auto_Increment, "_Bukti_Transfer_Top_Up_Saldo_") . $Id_Auto_Increment . "_Bukti_Transfer_Top_Up_Saldo";
+                                                                                $folder_penyimpanan_file_upload = "media/Bukti_Transfer_Top_Up_Saldo/";
+                                                                                $tipe_file_yang_diizikan_file_upload = array("png", "jpg", "jpeg");
+                                                                                $maksimum_ukuran_file_upload = 3000000;
+
+                                                                                $result_upload_file = $a_upload_file->upload_file($post_file_upload, $nama_file_upload, $folder_penyimpanan_file_upload, $tipe_file_yang_diizikan_file_upload, $maksimum_ukuran_file_upload);
+
+                                                                                if ($result_upload_file['Status'] == "Sukses") {
+
+                                                                                    $form_field = array("Bukti_Transfer_Top_Up_Saldo");
+                                                                                    $form_value = array("$nama_file_upload.$ext_file_upload");
+                                                                                    $form_field_where = array("Id_Top_Up_Saldo");
+                                                                                    $form_criteria_where = array("=");
+                                                                                    $form_value_where = array("$Id_Auto_Increment");
+                                                                                    $form_connector_where = array("");
+
+                                                                                    $result = $a_tambah_baca_update_hapus->update_data("tb_top_up_saldo", $form_field, $form_value, $form_field_where, $form_criteria_where, $form_value_where, $form_connector_where);
+                                                                                }
+
+                                                                                // INSERT LOG SALDO
+                                                                                $form_field = array("Aktivitas", "Keterangan", "Saldo", "Status_Saldo", "Aktor", "Id_Saldo", "Id_Pengguna", "Id_Aktor", "Waktu_Simpan_Data");
+                                                                                $form_value = array("Top Up", "melakukan Top-Up saldo", "$_POST[Saldo]", "Pending", "Admin", "$Id_Auto_Increment", "$Get_Id_Primary", "$Get_Id_Primary", "$Waktu_Sekarang");
+                                                                                $result = $a_tambah_baca_update_hapus->tambah_data("tb_log_saldo", $form_field, $form_value);
+                                                                                // exit();
+
+                                                                                echo "<script> alert('Terimakasih anda telah mengupload bukti transfer, silahkan konfirmasi ');document.location.href = 'index.php?menu=mitra&edit&id=$_GET[id]';</script>";
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                                ?>
+
                                                                 <form method="POST" enctype="multipart/form-data">
                                                                     <div class="">
                                                                         <label class="mb-3">Pilih Nominal Top-Up Saldo</label>
@@ -769,19 +668,24 @@ if (isset($_POST['submit_pengajuan_tarik_saldo'])) {
                                                                     </div>
                                                                     <div class="">
                                                                         <div style="display: none; font-style:bold;" id="div_nominal_update_saldo">
-
                                                                             <br>
+                                                                            <?php
+                                                                            $read_data_rekening_admin = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan_rekening", "Id_Pengaturan_Rekening", 1);
+                                                                            $result_data_rekening_admin = $read_data_rekening_admin['Hasil'];
+                                                                            ?>
                                                                             <h5>Silahkan transfer <span class="text-danger fw-bold" id="nominal_update_saldo"></span> ke rekening di bawah ini : </h5>
-                                                                            <h5 class="fw-bold text-dark">Bank Central Asia (BCA)</h5>
-                                                                            <h5 class="fw-bold text-dark">A/n : Rokim Abdul Karim</h5>
-
-                                                                            <div class="">
-                                                                                Nomor Rekening : <br>
-                                                                                <span id="noRekening">
-                                                                                    <h5 class="badge badge-danger fs-4">32141 1231412 1231231</h5>
-                                                                                </span> &nbsp;
-                                                                                <div class="d-flex" onclick="copyToClipboard()" style="cursor: pointer;" title="Salin nomor rekening">
-                                                                                    <i class="fa fa-copy text-dark"></i> &nbsp; kilk icon ini untuk salin
+                                                                            <hr>
+                                                                            <div class="text-center">
+                                                                                <h5 class=""><?php echo $result_data_rekening_admin['Nama_Bank'] ?></h5>
+                                                                                <h5 class="">A/n : <?php echo $result_data_rekening_admin['Nama_Pemilik_Rekening'] ?></h5>
+                                                                                <div class="">
+                                                                                    Nomor Rekening : <br>
+                                                                                    <span id="noRekening">
+                                                                                        <h2 class="badge badge-danger fs-4"><?php echo $result_data_rekening_admin['Nomor_Rekening'] ?></h2>
+                                                                                    </span> &nbsp;
+                                                                                    <div class="" onclick="copyToClipboard()" style="cursor: pointer;" title="Salin nomor rekening">
+                                                                                        <i class="fa fa-copy text-dark"></i> &nbsp; kilk icon ini untuk salin Nomor Rekening
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -797,10 +701,10 @@ if (isset($_POST['submit_pengajuan_tarik_saldo'])) {
 
                                                                         <div class="row">
                                                                             <div class="col-lg-9">
-                                                                                <input type="file" name="Bukti_Transfer_Top_Up_Saldo" class="form-control" accept="image/png, image/jpeg, image/jpg">
+                                                                                <input type="file" name="Bukti_Transfer_Top_Up_Saldo" class="form-control" accept="image/png, image/jpeg, image/jpg" required>
                                                                             </div>
                                                                             <div class="col-lg-3">
-                                                                                <input type="submit" name="submit_top_up_saldo" class="btn btn-primary" value="Top Up" onclick="return confirm('Anda yakin untuk mengunggah file ini?')">
+                                                                                <input type="submit" name="submit_top_up_saldo" class="btn btn-success btn-md" value="Top Up" onclick="checkFileUpload()">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -847,6 +751,145 @@ if (isset($_POST['submit_pengajuan_tarik_saldo'])) {
                                                     </div>
                                                 </div>
                                             </div>
+
+
+                                            <!-- MODAL TARIK SALDO -->
+                                            <div class="modal fade" id="modalTarikSaldo" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <!-- MODAL HEADER -->
+                                                        <div class="modal-header" id="">
+                                                            <h4 class="">Rekening Mitra</h4>
+                                                            <div data-bs-dismiss="modal">
+                                                                <i class="fa fa-close text-danger"></i>
+                                                            </div>
+                                                        </div>
+                                                        <!-- MODAL BODY -->
+                                                        <div class="modal-body">
+
+                                                            <?php
+                                                            if (isset($_POST['submit_pengajuan_tarik_saldo'])) {
+
+                                                                if ($_POST['nominal_tarik_saldo'] == 0) {
+                                                                    echo "<script> alert('Saldo tidak boleh kosong');</script>";
+                                                                } else {
+
+                                                                    $form_field = array("Id_Pengguna", "Saldo", "Status_Saldo", "Keterangan", "Waktu_Simpan_Data", "Waktu_Update_Data");
+                                                                    $form_value = array("$Get_Id_Primary", "$_POST[nominal_tarik_saldo]", "Pending", "Tarik", "$Waktu_Sekarang", "$Waktu_Sekarang");
+                                                                    $result = $a_tambah_baca_update_hapus->tambah_data("tb_tarik_saldo", $form_field, $form_value);
+
+                                                                    if ($result['Status'] == "Sukses") {
+
+
+                                                                        $read_last_data_saldo = $a_tambah_baca_update_hapus->baca_data_terbaru("tb_tarik_saldo", "Id_Tarik_Saldo");
+                                                                        if ($read_last_data_saldo['Status'] == "Sukses") {
+                                                                            $Id_Auto_Increment = $read_last_data_saldo['Hasil'][0]['Id_Tarik_Saldo'];
+                                                                        } else {
+                                                                            $Id_Auto_Increment = 1;
+                                                                        }
+
+                                                                        // INSERT LOG SALDO
+                                                                        $form_field = array("Aktivitas", "Keterangan", "Saldo", "Status_Saldo", "Aktor", "Id_Saldo", "Id_Pengguna", "Id_Aktor", "Waktu_Simpan_Data");
+                                                                        $form_value = array("Tarik", "melakukan pengajuan tarik saldo", "$_POST[nominal_tarik_saldo]", "Pending", "Admin", "$Id_Auto_Increment", "$u_Id_Admin_Login", "$_POST[Id_Pengguna_Saldo]", "$Waktu_Sekarang");
+                                                                        $result = $a_tambah_baca_update_hapus->tambah_data("tb_log_saldo", $form_field, $form_value);
+                                                                        // exit();
+                                                                        echo "<script> alert('Pengajuan tarik saldo berhasil, silahkan update untuk Approve!');document.location.href = 'index.php?menu=mitra&edit&id=$_GET[id]';</script>";
+                                                                    }
+                                                                }
+                                                            }
+                                                            ?>
+
+                                                            <div class="">
+                                                                <div class="">
+                                                                    <h4>Informasi Rekening Mitra</h4>
+                                                                    <hr>
+
+                                                                    <?php
+                                                                    $Get_Id_Primary = $a_hash->decode($_GET['id'], $_GET['menu']);
+                                                                    $get_data_rekening = $a_tambah_baca_update_hapus->baca_data_id("tb_rekening_pengguna", "Id_Pengguna", $Get_Id_Primary);
+                                                                    if ($get_data_rekening['Status'] == "Sukses") {
+                                                                        $data_rekening = $get_data_rekening['Hasil'];
+                                                                        $nama_bank = $data_rekening['Nama_Bank'];
+                                                                        $nomor_rekening = $data_rekening['Nomor_Rekening'];
+                                                                        $nama_pemilik_rekening = $data_rekening['Nama_Pemilik_Rekening'];
+                                                                    } else {
+                                                                        $nama_bank = "Informasi Rekening Belum diisi";
+                                                                        $nomor_rekening = "";
+                                                                        $nama_pemilik_rekening = "";
+                                                                    }
+                                                                    ?>
+
+                                                                    <h5 class="">Bank : <?php echo $nama_bank ?> </h5>
+                                                                    <h5 class="">No.Rekening : <?php echo $nomor_rekening ?> </h5>
+                                                                    <h5 class="">A/n : <?php echo $nama_pemilik_rekening ?> </h5>
+                                                                    <br>
+                                                                    <h5 class="fs-4">Saldo Mitra : <?php echo $a_format_angka->rupiah($edit['Saldo']) ?> <input <?php if ($edit['Saldo'] == 0) {
+                                                                                                                                                                    echo "style='display:none'";
+                                                                                                                                                                } ?> type="button" name="submit_set_saldo" id="submit_set_saldo" onclick="set_nominal_tarik_saldo()" class="btn btn-warning btn-sm" value="Tarik Semua"></h5>
+
+                                                                </div>
+
+                                                                <hr>
+                                                                <div <?php if ($edit['Saldo'] == 0) {
+                                                                            echo "style='display:none'";
+                                                                        } ?>>
+
+                                                                    <form method="POST" enctype="multipart/form-data">
+                                                                        <div class="">
+                                                                            <label class="mb-3">Pilih Nominal Tarik Saldo</label>
+                                                                        </div>
+                                                                        <div class="mb-5">
+                                                                            <div class="form-group row">
+                                                                                <div class="col-lg-6">
+                                                                                    <input type="hidden" name="Id_Pengguna_Saldo" class="form-control" value="<?php echo $edit['Id_Pengguna'] ?>">
+                                                                                    <input type="number" name="nominal_tarik_saldo" id="nominal_tarik_saldo" value="0" class="form-control" pattern="[0-9]*" max="5000000" oninput="if (this.value > 5000000) { this.value = 5000000; document.getElementById('batas_maksimal_penarikan').style.display = 'block'; } else { document.getElementById('batas_maksimal_penarikan').style.display = 'none'; }" oninput="validateNominalTarikSaldo(this)">
+                                                                                    <div id="batas_maksimal_penarikan" style="display: none;">
+                                                                                        <font class="text-danger"> Batas maksimal tarik saldo adalah Rp 5.000.000,-</font>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-2">
+                                                                                    <input type="submit" name="submit_pengajuan_tarik_saldo" class="btn btn-success btn-md" value="Tarik Saldo" onclick="return cekNominalSaldo() && confirm('Anda yakin untuk menarik saldo ini?');">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+
+                                                                    <script>
+                                                                        function validateNominalTarikSaldo(element) {
+                                                                            const value = parseInt(element.value);
+                                                                            if (value > 5000000) {
+                                                                                element.value = 5000000;
+                                                                                document.getElementById('batas_maksimal_penarikan').style.display = 'block';
+                                                                                alert('Batas penarikan minimal saldo adalah Rp 5.0000.000,-');
+                                                                            } else {
+                                                                                document.getElementById('batas_maksimal_penarikan').style.display = 'none';
+                                                                            }
+                                                                        }
+
+                                                                        function cekNominalSaldo() {
+                                                                            var nominal_tarik_saldo = document.getElementById('nominal_tarik_saldo').value;
+                                                                            if (nominal_tarik_saldo == 0 || nominal_tarik_saldo == null) {
+                                                                                alert('Nominal tarik saldo tidak boleh 0!');
+                                                                                return false;
+                                                                            } else {
+                                                                                return true;
+                                                                            }
+                                                                        }
+                                                                    </script>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <script>
+                                                                function set_nominal_tarik_saldo() {
+                                                                    document.getElementById("nominal_tarik_saldo").value = <?php echo $edit['Saldo']; ?>
+                                                                }
+                                                            </script>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     <?php } ?>
                                 </form>

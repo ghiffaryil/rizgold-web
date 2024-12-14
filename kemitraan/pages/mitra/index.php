@@ -775,13 +775,18 @@ include "controller/rekening/controller_rekening.php";
                                 </div>
                                 <div class="mt-6">
                                     <div style="display: none; font-style:bold;" id="div_nominal_update_saldo">
+
+                                        <?php
+                                        $read_data_rekening_admin = $a_tambah_baca_update_hapus->baca_data_id("tb_pengaturan_rekening", "Id_Pengaturan_Rekening", 1);
+                                        $result_data_rekening_admin = $read_data_rekening_admin['Hasil'];
+                                        ?>
                                         <div class="text-danger" id="nominal_update_saldo"></div> <br>
-                                        <h3 class="text-dark"><b>Bank Central Asia (BCA)</b></h3>
-                                        <h3 class="text-dark">A/n : Rokim Abdul Karim</h3>
+                                        <h3 class="text-dark"><b><?php echo $result_data_rekening_admin['Nama_Bank'] ?></b></h3>
+                                        <h3 class="text-dark">A/n : <?php echo $result_data_rekening_admin['Nama_Pemilik_Rekening'] ?></h3>
                                         <h5><small>Nomor Rekening : </small></h5>
-                                        <span class="badge badge-warning text-hover-dark fs-2" onclick="copyToClipboard()" style="cursor: pointer;" title="Salin nomor rekening">
-                                            <span id="noRekening">32141 1231412 1231231</span> &nbsp;
-                                            <i class="ki-solid ki-copy fs-2 text-dark">
+                                        <span class="badge badge-warning text-hover-dark fs-4" onclick="copyToClipboard()" style="cursor: pointer;" title="Salin nomor rekening">
+                                            <span id="noRekening"><?php echo $result_data_rekening_admin['Nomor_Rekening'] ?></span> &nbsp;
+                                            <i class="ki-solid ki-copy fs-4 text-dark">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                             </i>
@@ -917,6 +922,7 @@ include "controller/rekening/controller_rekening.php";
                                         } ?>">
 
                         <big> Saldo Anda : <b> <?php echo $a_format_angka->rupiah($data_pengguna_mitra['Saldo']) ?> </b> </big> &nbsp;&nbsp; <input type="button" name="submit_set_saldo" id="submit_set_saldo" onclick="set_nominal_tarik_saldo()" class="btn btn-danger text-white btn-sm" value="Tarik Semua">
+                        
                         <form method="POST" enctype="multipart/form-data">
                             <div class="">
                                 <label class="mb-3">Pilih Nominal Tarik Saldo</label>
@@ -924,10 +930,10 @@ include "controller/rekening/controller_rekening.php";
                             <div class="mb-5">
                                 <div class="form-group row">
                                     <div class="col-lg-8">
-                                        <input type="number" name="nominal_tarik_saldo" id="nominal_tarik_saldo" class="form-control" pattern="[0-9]*" max="5000000" oninput="validateSaldo(this)">
+                                        <input type="number" name="nominal_tarik_saldo" id="nominal_tarik_saldo" value="0" class="form-control" pattern="[0-9]*" max="5000000" oninput="validateNominalTarikSaldo(this)">
                                     </div>
                                     <div class="col-lg-1">
-                                        <input type="submit" name="submit_pengajuan_tarik_saldo" class="btn btn-block btn-success text-white" value="Tarik Saldo" onclick="return confirm('Anda yakin untuk menarik saldo ini?')">
+                                        <input type="submit" name="submit_pengajuan_tarik_saldo" class="btn btn-block btn-success text-white" value="Tarik Saldo" onclick="return cekNominalSaldo() && confirm('Anda yakin untuk menarik saldo ini?');">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -940,19 +946,34 @@ include "controller/rekening/controller_rekening.php";
                                 </div>
                             </div>
                             <script>
-                                function validateSaldo(element) {
+                                function validateNominalTarikSaldo(element) {
                                     const value = parseInt(element.value);
-                                    if (value > 5000000) {
+                                    if (value == 0) {
+                                        element.value = 0;
+                                        document.getElementById('batas_maksimal_penarikan').style.display = 'block';
+                                        alert('Saldo yang ditarik tidak boleh 0');
+                                    } else if (value > 5000000) {
                                         element.value = 5000000;
                                         document.getElementById('batas_maksimal_penarikan').style.display = 'block';
+                                        alert('Batas penarikan minimal saldo adalah Rp 5.0000.000,-');
                                     } else {
                                         document.getElementById('batas_maksimal_penarikan').style.display = 'none';
                                     }
                                 }
 
+                                function cekNominalSaldo() {
+                                    var nominal_tarik_saldo = document.getElementById('nominal_tarik_saldo').value;
+                                    if (nominal_tarik_saldo == 0 || nominal_tarik_saldo == null) {
+                                        alert('Nominal tarik saldo tidak boleh 0!');
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+
                                 function set_nominal_tarik_saldo() {
                                     document.getElementById("nominal_tarik_saldo").value = <?php echo $data_pengguna_mitra['Saldo']; ?>;
-                                    validateSaldo(document.getElementById("nominal_tarik_saldo"));
+                                    validateNominalTarikSaldo(document.getElementById("nominal_tarik_saldo"));
                                 }
                             </script>
                         </form>

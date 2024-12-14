@@ -202,15 +202,15 @@
 
 					<li>
 						<a href="?menu=pengaturan-kemitraan&edit">
-							<i class="mdi mdi-settings"><span class="path1"></span><span class="path2"></span></i>
-							<span>SK Kemitraan</span>
+							<i class="mdi mdi-file"><span class="path1"></span><span class="path2"></span></i>
+							<span>Pngtrn SK Kemitraan</span>
 						</a>
 					</li>
 
 					<li>
 						<a href="?menu=pengaturan-rekening&edit">
 							<i class="mdi mdi-cash"><span class="path1"></span><span class="path2"></span></i>
-							<span>Rekening</span>
+							<span>Pngtrn Rekening Admin</span>
 						</a>
 					</li>
 
